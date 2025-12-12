@@ -626,25 +626,12 @@ export const Navbar = () => {
                     whileTap="tap"
                     className="relative"
                   >
-                    <Link
-                      to={route.path}
-                      className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-300 ${
-                        location.pathname === route.path
-                          ? "bg-white/25 shadow-lg backdrop-blur-sm"
-                          : `bg-white/5 hover:bg-white/10 backdrop-blur-sm`
-                      }`}
-                    >
-                      <Button>
+                    <Link to={route.path}>
+                      <button className="bg-gradient-to-b from-indigo-400 to-violet-400">
                         <span className="font-medium text-sm xl:text-base">
                           {route.label}
                         </span>
-                        {location.pathname === route.path && (
-                          <motion.div
-                            layoutId="activeTab"
-                            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500"
-                          />
-                        )}
-                      </Button>
+                      </button>
                     </Link>
                   </motion.div>
                 ))}

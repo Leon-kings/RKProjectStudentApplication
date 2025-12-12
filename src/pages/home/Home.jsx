@@ -4,6 +4,7 @@ import { About } from "../about/About";
 import { Services } from "../services/Services";
 import { Blogs } from "../blogs/Blogs";
 import { FAQ } from "../faq/FAQ";
+import { Testimonials } from "../testimony/Testimony";
 
 export const Home = () => {
   return (
@@ -13,6 +14,7 @@ export const Home = () => {
       <Services />
       <Blogs />
       <FAQ/>
+      <Testimonials/>
     </div>
   );
 };

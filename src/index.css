@@ -54,5 +54,10 @@ button {
     color: #1a1a1a;
     font-family: Georgia, "Times New Roman", Times, serif;
   }
+  .button {
+    background-color: #c7cdf1;
+    color: #1a1a1a;
+    font-family: Georgia, "Times New Roman", Times, serif;
+  }
 }
 @import "tailwindcss";
