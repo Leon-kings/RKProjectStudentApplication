@@ -34,334 +34,405 @@ import WifiIcon from "@mui/icons-material/Wifi";
 import LocalLaundryServiceIcon from "@mui/icons-material/LocalLaundryService";
 import SecurityIcon from "@mui/icons-material/Security";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LanguageIcon from "@mui/icons-material/Language";
+import FlagIcon from "@mui/icons-material/Flag";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import BookIcon from "@mui/icons-material/Book";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import { RocketLaunch } from "@mui/icons-material";
 
 export const Services = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [activeCategory, setActiveCategory] = useState("all");
   const [bookingStep, setBookingStep] = useState(1);
 
+  // RECAPPLY Introduction
+  const recapplyInfo = {
+    title: "RECAPPLY SERVICES",
+    description: "Comprehensive international education services from application to arrival and beyond",
+    mission: "to guide every student confidently from application to arrival",
+    focusCountries: [
+      { name: "China", flag: "🇨🇳", description: "CSCA Specialization" },
+      { name: "Canada", flag: "🇨🇦", description: "Top Destination" },
+      { name: "Germany", flag: "🇩🇪", description: "Tuition-Free Options" },
+      { name: "USA", flag: "🇺🇸", description: "Scholarship Opportunities" },
+      { name: "Poland", flag: "🇵🇱", description: "European Education" },
+      { name: "Turkey", flag: "🇹🇷", description: "Quality & Affordable" }
+    ]
+  };
+
   const serviceCategories = [
     {
-      id: "application",
-      name: "Application Services",
-      description: "Complete university application support across Asia",
-      icon: AssignmentTurnedInIcon,
-      color: "from-blue-500 to-cyan-500",
+      id: "admissions",
+      name: "Admissions Services",
+      description: "Complete university application and admission support",
+      icon: SchoolIcon,
+      color: "from-blue-600 to-cyan-600",
       services: [
         {
           id: 1,
           title: "University Admissions",
           icon: SchoolIcon,
-          description:
-            "End-to-end university application support for top Asian universities",
+          description: "End-to-end university application support for global universities",
           details:
-            "We guide you through selecting the right university, preparing application documents, and securing admission letters from prestigious institutions across China, India, Japan, South Korea, Malaysia, and Singapore.",
+            "We guide you through selecting the right university, preparing application documents, and securing admission letters from prestigious institutions worldwide with special expertise in China admissions and CSCA requirements.",
           features: [
-            "University selection & counseling session",
-            "Application documentation support (transcripts, letters)",
+            "University selection & career counseling",
+            "Academic profile assessment",
+            "Application documentation support",
+            "CSCA exam preparation guidance (for China)",
             "Admission letter processing",
-            "Scholarship and financial aid guidance",
+            "Scholarship matching and applications",
             "Document verification and authentication",
             "Interview preparation sessions",
             "Follow-up with admission offices",
+            "Multiple university applications"
           ],
           countries: [
-            "China",
-            "India",
-            "Japan",
-            "South Korea",
+            "China (CSCA Specialization)",
+            "Canada",
+            "Germany",
+            "USA",
+            "Poland",
+            "Turkey",
+            "UK",
+            "Australia",
             "Malaysia",
-            "Singapore",
-            "Thailand",
-            "Taiwan",
+            "Singapore"
           ],
-          processingTime: "2-4 weeks",
-          successRate: "95%",
+          processingTime: "2-8 weeks",
+          successRate: "98%",
           price: "Starting from $299",
+          specialNote: "Free initial consultation and profile assessment"
         },
         {
           id: 2,
-          title: "Document Translation",
-          icon: TranslateIcon,
-          description: "Professional translation of academic documents",
+          title: "CSCA Exam Preparation",
+          icon: BookIcon,
+          description: "Specialized China Scholastic Competency Assessment preparation",
           details:
-            "Certified translation services for academic transcripts, diplomas, recommendation letters, and other required documents for university applications.",
+            "Complete support for students applying to Chinese universities requiring the CSCA exam. Our comprehensive preparation program includes study materials, mock tests, and expert guidance.",
           features: [
-            "Certified translation services",
-            "Academic transcript translation",
-            "Diploma and certificate translation",
-            "Recommendation letter translation",
-            "Notarization services",
-            "Express translation option",
+            "CSCA registration guidance",
+            "Subject selection assistance (Math, Physics, Chemistry)",
+            "Comprehensive study materials",
+            "Weekly mock tests and assessments",
+            "Chinese language preparation",
+            "Exam strategy and time management",
+            "Progress tracking and feedback",
+            "Scholarship documentation support",
+            "University-specific preparation",
+            "24/7 tutor support"
           ],
-          processingTime: "3-7 business days",
-          price: "Starting from $49/document",
+          subjects: ["Mathematics", "Physics", "Chemistry", "Chinese Language"],
+          successRate: "95%",
+          price: "Starting from $399",
+          specialNote: "Includes access to exclusive study materials"
         },
         {
           id: 3,
-          title: "Scholarship Applications",
-          icon: LocalAtmIcon,
-          description: "Maximize your scholarship opportunities",
+          title: "Document Preparation",
+          icon: AssignmentIcon,
+          description: "Professional academic document preparation and translation",
           details:
-            "Comprehensive scholarship search and application support for government, university, and private scholarships across Asian countries.",
+            "High-quality document preparation including SOP, Study Plan, CV, Motivation Letter, and all required visa documents with certified translation services.",
           features: [
-            "Scholarship database access",
-            "Eligibility assessment",
-            "Application strategy development",
-            "Essay and personal statement review",
-            "Interview preparation",
-            "Financial documentation support",
+            "Statement of Purpose writing",
+            "Study Plan development",
+            "CV/Resume optimization",
+            "Motivation Letter preparation",
+            "Reference letter writing",
+            "Academic transcript translation",
+            "Diploma and certificate translation",
+            "Notarization and certification",
+            "University-specific formatting",
+            "Unlimited revisions"
           ],
-          countries: [
-            "China (CSC)",
-            "India (ICCR)",
-            "Japan (MEXT)",
-            "South Korea (KGSP)",
-          ],
-          successRate: "85%",
-          price: "Starting from $199",
+          processingTime: "5-10 business days",
+          price: "Starting from $149/document",
+          languages: ["English", "Chinese", "French", "German", "Spanish"],
+          specialNote: "Certified translation services available"
         },
       ],
     },
     {
-      id: "airport",
-      name: "Airport Services",
-      description: "Complete arrival and transportation solutions",
-      icon: AirportShuttleIcon,
-      color: "from-green-500 to-emerald-500",
+      id: "scholarship",
+      name: "Scholarship Services",
+      description: "Maximize your scholarship and financial aid opportunities",
+      icon: EmojiEventsIcon,
+      color: "from-purple-600 to-pink-600",
       services: [
         {
           id: 4,
-          title: "Airport Pickup Service",
-          icon: DirectionsCarIcon,
-          description: "24/7 airport pickup and transfer to accommodation",
+          title: "Scholarship Guidance",
+          icon: LocalAtmIcon,
+          description: "Comprehensive scholarship search and application support",
           details:
-            "Professional airport pickup service with English-speaking drivers, comfortable vehicles, and welcome packages for new students.",
+            "Expert guidance in identifying and securing scholarship opportunities including fully funded scholarships, partial scholarships, tuition waivers, and government subsidies.",
           features: [
-            "24/7 airport pickup service",
-            "English-speaking driver",
-            "Comfortable AC vehicles",
-            "Welcome package (SIM card, map, essentials)",
-            "Direct transfer to accommodation",
-            "Flight tracking for delays",
-            "Multiple vehicle options",
+            "Scholarship database access (1000+ programs)",
+            "Eligibility assessment",
+            "Application strategy development",
+            "Essay and personal statement review",
+            "Financial documentation support",
+            "Interview preparation",
+            "Multiple scholarship applications",
+            "Post-application follow-up",
+            "Financial planning assistance",
+            "Success rate tracking"
           ],
-          countries: ["All major airports in Asia"],
-          responseTime: "15-30 minutes",
-          vehicleTypes: ["Sedan", "SUV", "Van", "Luxury"],
-          price: "Starting from $35",
+          scholarshipTypes: [
+            "Fully Funded Scholarships",
+            "Partial Scholarships",
+            "Tuition Waivers",
+            "Government Subsidies",
+            "University Scholarships",
+            "Private Scholarships"
+          ],
+          successRate: "85%",
+          price: "Starting from $199",
+          specialNote: "Free scholarship matching service"
         },
         {
           id: 5,
-          title: "Airport Assistance",
-          icon: SupportAgentIcon,
-          description: "Personal airport assistance and guidance",
+          title: "Financial Aid Support",
+          icon: PaymentIcon,
+          description: "Complete financial planning and aid application support",
           details:
-            "Dedicated airport assistant to help with arrival procedures, immigration, baggage claim, and initial orientation.",
+            "Assistance with financial documentation, bank statements, sponsor letters, and all financial requirements for university and visa applications.",
           features: [
-            "Personal airport assistant",
-            "Immigration procedure guidance",
-            "Baggage claim assistance",
-            "Currency exchange help",
-            "Local SIM card setup",
-            "Initial orientation briefing",
-            "Emergency support",
+            "Financial requirement analysis",
+            "Bank statement preparation",
+            "Sponsor letter drafting",
+            "Financial affidavit support",
+            "Budget planning assistance",
+            "Currency conversion guidance",
+            "Bank verification support",
+            "Financial guarantee letters",
+            "Cost of living estimates",
+            "Payment plan setup"
           ],
-          serviceHours: "24/7",
-          languages: ["English", "Chinese", "Hindi", "Korean", "Japanese"],
-          price: "Starting from $75",
+          processingTime: "3-7 business days",
+          price: "Starting from $129",
+          specialNote: "Includes financial planning consultation"
         },
         {
           id: 6,
-          title: "City Transfer Package",
-          icon: ApartmentIcon,
-          description: "Complete city transfer and orientation",
+          title: "Grant Writing",
+          icon: DescriptionIcon,
+          description: "Professional grant and proposal writing services",
           details:
-            "Comprehensive package including airport transfer, city tour, and essential locations orientation.",
+            "Expert assistance with research grants, project proposals, and funding applications for postgraduate and research students.",
           features: [
-            "Airport to accommodation transfer",
-            "City orientation tour",
-            "Bank account opening assistance",
-            "Local mobile plan setup",
-            "Essential shopping assistance",
-            "Public transport orientation",
-            "Emergency contact setup",
+            "Grant proposal writing",
+            "Research project proposals",
+            "Funding application support",
+            "Budget justification preparation",
+            "Impact statement writing",
+            "Review and editing services",
+            "Compliance checking",
+            "Submission guidance",
+            "Follow-up support",
+            "Success tracking"
           ],
-          duration: "3-5 hours",
-          price: "Starting from $120",
+          successRate: "80%",
+          price: "Starting from $349",
+          specialNote: "Specialized for research students"
         },
       ],
     },
     {
-      id: "hotel",
-      name: "Hotel & Accommodation",
-      description: "Premium accommodation solutions",
-      icon: HotelIcon,
-      color: "from-purple-500 to-pink-500",
+      id: "visa",
+      name: "Visa & Immigration",
+      description: "Complete visa processing and immigration support",
+      icon: VerifiedUserIcon,
+      color: "from-green-600 to-emerald-600",
       services: [
         {
           id: 7,
-          title: "Hotel Booking",
-          icon: HotelIcon,
-          description:
-            "Premium hotels near universities with student discounts",
+          title: "Student Visa Processing",
+          icon: FlagIcon,
+          description: "End-to-end student visa application support",
           details:
-            "Exclusive access to student-friendly hotels with special rates, flexible check-in/out, and proximity to universities.",
+            "Complete visa processing for study visas including document preparation, appointment booking, interview preparation, and follow-up for multiple countries.",
           features: [
-            "Student discount rates (up to 40% off)",
-            "Flexible check-in/out times",
-            "Proximity to universities",
-            "Free WiFi and breakfast",
-            "24-hour reception",
-            "Laundry facilities",
-            "Study areas",
+            "Visa requirement assessment",
+            "Document checklist preparation",
+            "Application form assistance",
+            "Appointment scheduling",
+            "Interview preparation sessions",
+            "Financial documentation support",
+            "Health insurance guidance",
+            "Application tracking",
+            "Emergency processing",
+            "Multi-entry visa assistance"
           ],
-          amenities: [
-            "WiFi",
-            "Breakfast",
-            "Gym",
-            "Laundry",
-            "Study Room",
-            "24/7 Security",
+          countries: [
+            "China (X1/X2 Visa)",
+            "Canada (Study Permit)",
+            "USA (F-1 Visa)",
+            "Germany (Student Visa)",
+            "UK (Student Route)",
+            "Australia (Student Visa)"
           ],
-          priceRange: "$25 - $150/night",
-          minimumStay: "1 night",
+          processingTime: "2-8 weeks",
+          successRate: "98%",
+          price: "Starting from $249",
+          specialNote: "Includes mock interview sessions"
         },
         {
           id: 8,
-          title: "Student Hostels",
-          icon: GroupsIcon,
-          description: "Budget-friendly student hostels and dorms",
+          title: "Post-Study Visa Guidance",
+          icon: ConnectWithoutContactIcon,
+          description: "Work permit and post-study visa assistance",
           details:
-            "Affordable hostel accommodation specifically for students with community spaces and study facilities.",
+            "Guidance on work permits, post-study work options, and immigration pathways after graduation in various countries.",
           features: [
-            "Budget-friendly options",
-            "Shared and private rooms",
-            "Common study areas",
-            "Kitchen facilities",
-            "Laundry services",
-            "Student community events",
-            "Monthly payment plans",
+            "Post-study work permit information",
+            "Work visa application support",
+            "Permanent residency pathways",
+            "Job search assistance",
+            "Employer sponsorship guidance",
+            "Immigration consultation",
+            "Document preparation",
+            "Application timeline planning",
+            "Compliance guidance",
+            "Future planning"
           ],
-          amenities: [
-            "Shared Kitchen",
-            "Study Lounge",
-            "Laundry",
-            "Common Room",
-            "Security",
-            "WiFi",
-          ],
-          priceRange: "$10 - $40/night",
-          minimumStay: "1 week",
-        },
-        {
-          id: 9,
-          title: "Apartment Rental",
-          icon: ApartmentIcon,
-          description: "Fully furnished apartments for long-term stay",
-          details:
-            "Complete apartment solutions with all utilities included, perfect for semester or year-long stays.",
-          features: [
-            "Fully furnished apartments",
-            "All utilities included",
-            "High-speed internet",
-            "Kitchen equipped",
-            "Monthly cleaning service",
-            "24/7 maintenance",
-            "Flexible lease terms",
-          ],
-          apartmentTypes: ["Studio", "1 Bedroom", "2 Bedroom", "Shared"],
-          minimumStay: "3 months",
-          priceRange: "$300 - $800/month",
+          countries: ["Canada", "Germany", "Australia", "UK", "New Zealand"],
+          price: "Starting from $199",
+          specialNote: "Free initial immigration consultation"
         },
       ],
     },
     {
-      id: "other",
-      name: "Other Services",
-      description: "Additional support services for students",
-      icon: PublicIcon,
-      color: "from-orange-500 to-red-500",
+      id: "support",
+      name: "Student Support",
+      description: "Pre-departure and ongoing student support services",
+      icon: SupportAgentIcon,
+      color: "from-orange-600 to-red-600",
       services: [
         {
-          id: 10,
-          title: "Visa Processing",
-          icon: DescriptionIcon,
-          description: "Complete visa application and processing",
+          id: 9,
+          title: "Pre-Departure Orientation",
+          icon: AirportShuttleIcon,
+          description: "Complete preparation for international study",
           details:
-            "End-to-end visa processing for study visas including document preparation, appointment booking, and follow-up.",
+            "Comprehensive orientation covering travel preparation, cultural adaptation, academic expectations, and essential logistics for studying abroad.",
           features: [
-            "Visa application filing",
-            "Document checklist and preparation",
-            "Appointment scheduling",
-            "Interview preparation",
-            "Application tracking",
-            "Emergency processing",
-            "Multi-entry visa assistance",
+            "Travel preparation checklist",
+            "Cultural adaptation training",
+            "Academic expectation briefing",
+            "Health and safety guidance",
+            "Accommodation assistance",
+            "Travel insurance setup",
+            "Banking and finance setup",
+            "Emergency contact setup",
+            "Language preparation resources",
+            "Country-specific orientation"
           ],
-          countries: [
-            "China (X1/X2)",
-            "India (Student Visa)",
-            "Japan (Student Visa)",
-            "South Korea (D-2)",
+          orientationDuration: "3-5 hours",
+          languages: ["English", "French", "Chinese", "German"],
+          price: "Starting from $99",
+          specialNote: "Includes digital orientation package"
+        },
+        {
+          id: 10,
+          title: "Accommodation Assistance",
+          icon: ApartmentIcon,
+          description: "University accommodation and housing support",
+          details:
+            "Assistance with finding and securing suitable accommodation including university dorms, shared apartments, and private housing options.",
+          features: [
+            "University dormitory booking",
+            "Private apartment search",
+            "Homestay arrangements",
+            "Rental agreement review",
+            "Deposit payment assistance",
+            "Utility setup guidance",
+            "Neighborhood orientation",
+            "Safety assessment",
+            "Roommate matching",
+            "Move-in coordination"
           ],
-          processingTime: "2-6 weeks",
-          successRate: "98%",
+          accommodationTypes: [
+            "University Dorms",
+            "Shared Apartments",
+            "Private Studios",
+            "Homestays",
+            "Student Residences"
+          ],
           price: "Starting from $149",
+          specialNote: "Free accommodation search service"
         },
         {
           id: 11,
-          title: "Online Learning Platform",
-          icon: ComputerIcon,
-          description: "Access to digital learning resources",
+          title: "Airport & Travel Services",
+          icon: FlightIcon,
+          description: "Complete travel and arrival assistance",
           details:
-            "Comprehensive online learning platform with course materials, virtual classrooms, and certification programs.",
+            "24/7 airport pickup, transfer services, and travel arrangements to ensure smooth arrival and transition to your study destination.",
           features: [
-            "Course registration assistance",
-            "E-learning platform access",
-            "Online certification programs",
-            "Virtual classrooms",
-            "Digital study materials",
-            "24/7 tutor support",
-            "Progress tracking",
+            "24/7 airport pickup service",
+            "English-speaking driver",
+            "Accommodation transfer",
+            "Welcome package (SIM card, maps)",
+            "Local transportation orientation",
+            "Flight booking assistance",
+            "Travel insurance setup",
+            "Luggage shipping assistance",
+            "Emergency travel support",
+            "Multi-city transfers"
           ],
-          courses: [
-            "Language Courses",
-            "Prep Courses",
-            "Certification Programs",
-            "Skill Development",
-          ],
-          access: "6-12 months",
-          price: "Starting from $99",
+          serviceHours: "24/7",
+          vehicleTypes: ["Standard", "Premium", "Group", "VIP"],
+          price: "Starting from $45",
+          specialNote: "Includes welcome orientation"
         },
         {
           id: 12,
-          title: "Flight Booking",
-          icon: FlightIcon,
-          description: "Best deals on international student flights",
+          title: "Ongoing Student Support",
+          icon: GroupsIcon,
+          description: "Continuous support throughout your studies",
           details:
-            "Exclusive student discounts on flights to Asian destinations with extra baggage allowance and flexible dates.",
+            "24/7 support services including academic assistance, cultural adaptation, emergency support, and regular check-ins throughout your study period.",
           features: [
-            "Student discount fares (up to 30% off)",
-            "Extra baggage allowance",
-            "Travel insurance included",
-            "Date change flexibility",
-            "Multi-city bookings",
-            "24/7 customer support",
-            "Emergency assistance",
+            "24/7 emergency support line",
+            "Academic progress monitoring",
+            "Cultural adaptation counseling",
+            "Health and wellness support",
+            "Legal assistance referral",
+            "Financial guidance",
+            "Career counseling",
+            "Social integration events",
+            "Alumni network access",
+            "Regular progress reviews"
           ],
-          airlines: ["20+ International Airlines"],
-          baggage: "Up to 40kg allowance",
-          price: "Market competitive rates",
+          supportHours: "24/7",
+          languages: ["English", "Chinese", "French", "German", "Spanish"],
+          price: "Monthly from $79",
+          specialNote: "Free first month of support"
         },
       ],
     },
   ];
 
+  // Contact Information
+  const contactInfo = {
+    email: "services@recapply.com",
+    phone: "+250 783 408 617",
+    whatsapp: "+250783408617",
+    chinaPhone: "+86 186 5833 2879",
+    office: "Kigali – Kicukiro Centre, Sangwa Plaza, 1st Floor, R6 Door",
+    workingHours: "Monday - Friday: 8:00 AM - 6:00 PM | Saturday: 9:00 AM - 2:00 PM"
+  };
+
   const handleBookingSubmit = (e) => {
     e.preventDefault();
     toast.success(
-      "Booking submitted successfully! Our team will contact you within 24 hours.",
+      "Booking submitted successfully! Our RECAPPLY team will contact you within 24 hours.",
       {
         position: "top-right",
         autoClose: 5000,
@@ -425,7 +496,7 @@ export const Services = () => {
                   className="flex items-start text-sm text-gray-600"
                 >
                   <span className="h-1.5 w-1.5 bg-blue-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                  {feature}
+                  <span className="line-clamp-2">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -439,6 +510,9 @@ export const Services = () => {
                   {service.price}
                 </span>
               </div>
+              {service.specialNote && (
+                <p className="text-xs text-blue-600 mt-2">{service.specialNote}</p>
+              )}
             </div>
           )}
 
@@ -448,7 +522,7 @@ export const Services = () => {
             }
             className={`w-full py-3 px-4 rounded-xl bg-gradient-to-r ${category.color} text-white font-bold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center group/btn`}
           >
-            <span>Book Now</span>
+            <span>Book Service</span>
             <ArrowForwardIcon className="ml-2 h-5 w-5 group-hover/btn:translate-x-1 transition-transform duration-300" />
           </button>
         </div>
@@ -504,6 +578,12 @@ export const Services = () => {
                         <span className="flex items-center text-sm text-gray-600">
                           <AccessTimeIcon className="h-4 w-4 mr-1" />
                           {selectedService.processingTime}
+                        </span>
+                      )}
+                      {selectedService.successRate && (
+                        <span className="flex items-center text-sm text-green-600 font-semibold">
+                          <CheckCircleIcon className="h-4 w-4 mr-1" />
+                          {selectedService.successRate} Success Rate
                         </span>
                       )}
                     </div>
@@ -611,11 +691,10 @@ export const Services = () => {
                 >
                   <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-6 rounded-2xl">
                     <h3 className="text-2xl font-bold mb-2">
-                      Book This Service
+                      Book This Service with RECAPPLY
                     </h3>
                     <p className="text-gray-300">
-                      Complete the form below and our team will contact you
-                      within 24 hours
+                      Complete the form below and our RECAPPLY team will contact you within 24 hours
                     </p>
                   </div>
 
@@ -676,6 +755,18 @@ export const Services = () => {
                           />
                         </div>
 
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Phone Number *
+                          </label>
+                          <input
+                            type="tel"
+                            required
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                            placeholder="+250 XXX XXX XXX"
+                          />
+                        </div>
+
                         <button
                           type="button"
                           onClick={() => setBookingStep(2)}
@@ -695,19 +786,34 @@ export const Services = () => {
                       >
                         <div>
                           <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Preferred Country *
+                            Target Country *
                           </label>
                           <select
                             required
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
                           >
                             <option value="">Select a country</option>
-                            {selectedService.countries?.map((country) => (
-                              <option key={country} value={country}>
-                                {country}
-                              </option>
-                            ))}
+                            <option value="China">China (CSCA Required)</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Germany">Germany</option>
+                            <option value="USA">USA</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Turkey">Turkey</option>
                           </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Interested Program *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                            placeholder="e.g., Computer Science, Medicine, Engineering"
+                          />
                         </div>
 
                         <div>
@@ -748,29 +854,39 @@ export const Services = () => {
                       >
                         <div>
                           <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Academic Background
+                          </label>
+                          <select className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                            <option value="">Select highest qualification</option>
+                            <option value="highschool">High School</option>
+                            <option value="bachelor">Bachelor's Degree</option>
+                            <option value="master">Master's Degree</option>
+                            <option value="phd">PhD</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Budget Range
+                          </label>
+                          <select className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                            <option value="">Select budget range</option>
+                            <option value="low">Less than $5,000</option>
+                            <option value="medium">$5,000 - $15,000</option>
+                            <option value="high">$15,000 - $30,000</option>
+                            <option value="premium">More than $30,000</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Additional Requirements
                           </label>
                           <textarea
                             rows="4"
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                            placeholder="Please specify any special requirements, preferred budget, or additional services needed..."
+                            placeholder="Please specify any special requirements, scholarship needs, or additional services required..."
                           />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            How did you hear about us?
-                          </label>
-                          <select className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
-                            <option value="">Select an option</option>
-                            <option value="friend">Friend/Family</option>
-                            <option value="social">Social Media</option>
-                            <option value="search">Search Engine</option>
-                            <option value="university">
-                              University Referral
-                            </option>
-                            <option value="other">Other</option>
-                          </select>
                         </div>
 
                         <div className="flex space-x-4">
@@ -786,7 +902,7 @@ export const Services = () => {
                             className={`flex-1 py-3 px-6 rounded-xl bg-gradient-to-r ${category.color} text-white font-bold hover:shadow-lg transition-all duration-300 flex items-center justify-center`}
                           >
                             <AssignmentTurnedInIcon className="mr-2 h-5 w-5" />
-                            Submit Booking
+                            Submit Booking to RECAPPLY
                           </button>
                         </div>
                       </motion.div>
@@ -794,18 +910,25 @@ export const Services = () => {
                   </form>
 
                   <div className="pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-between text-sm text-gray-600">
+                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
                       <div className="flex items-center">
                         <PhoneIcon className="h-4 w-4 mr-2" />
-                        <span>+1 (555) 123-4567</span>
+                        <div>
+                          <div>Rwanda: {contactInfo.phone}</div>
+                          <div className="text-xs text-gray-500">China: {contactInfo.chinaPhone}</div>
+                        </div>
                       </div>
                       <div className="flex items-center">
                         <EmailIcon className="h-4 w-4 mr-2" />
-                        <span>bookings@studyasia.com</span>
+                        <span>{contactInfo.email}</span>
                       </div>
                       <div className="flex items-center">
                         <AccessTimeIcon className="h-4 w-4 mr-2" />
-                        <span>24/7 Support</span>
+                        <span className="text-xs">24/7 Support Available</span>
+                      </div>
+                      <div className="flex items-center">
+                        <LocationOnIcon className="h-4 w-4 mr-2" />
+                        <span className="text-xs">Kigali, Rwanda</span>
                       </div>
                     </div>
                   </div>
@@ -819,7 +942,7 @@ export const Services = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 md:py-16 px-3 xs:px-4 sm:px-6 lg:px-8">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -833,71 +956,84 @@ export const Services = () => {
       />
 
       <div className="max-w-7xl mx-auto">
-        {/* Header with Text Marker Animation */}
+        {/* Header with RECAPPLY Branding */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16 relative"
+          className="text-center mb-12 md:mb-16 relative"
         >
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 1.2, delay: 0.3, ease: "easeInOut" }}
-            className="relative inline-block"
+          <div className="mb-6">
+            <span className="inline-block px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full text-sm font-bold mb-4">
+              RECAPPLY SERVICES
+            </span>
+          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ staggerChildren: 0.1 }}
+            className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 md:mb-6"
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 inline-block">
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ staggerChildren: 0.1 }}
-                className="inline-block"
-              >
-                {"Premium Student Services".split("").map((char, index) => (
-                  <motion.span
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                    className="inline-block"
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-              </motion.span>
-            </h1>
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
-              className="absolute -bottom-3 left-0 right-0 h-3 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 origin-left transform -skew-x-12"
-              style={{ transformOrigin: "left" }}
-            />
-          </motion.div>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              Premium International Education Services
+            </span>
+          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mt-10 leading-relaxed"
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="text-lg xs:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8 leading-relaxed"
           >
-            Complete support package for graduate students pursuing education
-            across
-            <motion.span
-              initial={{ backgroundSize: "0% 100%" }}
-              animate={{ backgroundSize: "100% 100%" }}
-              transition={{ delay: 1.5, duration: 1.5 }}
-              className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-bold mx-2"
-              style={{
-                backgroundImage: "linear-gradient(to right, #3b82f6, #2563eb)",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "0 100%",
-                transition: "background-size 1.5s ease-in-out",
-              }}
-            >
-              China, India, Japan, South Korea, Malaysia, and Singapore
-            </motion.span>
+            Complete support package from application to arrival with special expertise in 
+            <span className="font-bold text-blue-600"> China CSCA preparation</span> and global admissions
           </motion.p>
+
+          {/* Focus Countries */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="mt-8"
+          >
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Our Specialized Countries:</h3>
+            <div className="flex flex-wrap justify-center gap-3 xs:gap-4">
+              {recapplyInfo.focusCountries.map((country, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.9 + index * 0.1, type: "spring" }}
+                  className="flex items-center px-4 py-2 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <span className="text-2xl mr-2">{country.flag}</span>
+                  <div className="text-center">
+                    <div className="font-semibold text-gray-800">{country.name}</div>
+                    <div className="text-xs text-blue-600">{country.description}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Mission Statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="mb-12 md:mb-16"
+        >
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 md:p-8 text-white text-center">
+            <div className="flex items-center justify-center mb-4">
+              <RocketLaunch className="h-6 w-6 mr-3" />
+              <h2 className="text-2xl md:text-3xl font-bold">Our Mission</h2>
+            </div>
+            <p className="text-lg md:text-xl opacity-90 max-w-3xl mx-auto">
+              {recapplyInfo.mission}
+            </p>
+          </div>
         </motion.div>
 
         {/* Category Filters */}
@@ -905,14 +1041,14 @@ export const Services = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 xs:gap-3 sm:gap-4">
             <button
               onClick={() => setActiveCategory("all")}
-              className={`px-8 py-3 rounded-full font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 ${
+              className={`px-4 xs:px-6 sm:px-8 py-2 xs:py-3 rounded-full font-bold text-sm xs:text-base transition-all duration-300 transform hover:-translate-y-1 ${
                 activeCategory === "all"
-                  ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-2xl"
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl"
                   : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-300 hover:border-blue-300"
               }`}
             >
@@ -924,13 +1060,13 @@ export const Services = () => {
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`px-8 py-3 rounded-full font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-3 ${
+                  className={`px-4 xs:px-6 sm:px-8 py-2 xs:py-3 rounded-full font-bold text-sm xs:text-base transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-2 xs:space-x-3 ${
                     activeCategory === category.id
                       ? `bg-gradient-to-r ${category.color} text-white shadow-2xl`
                       : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-300 hover:border-blue-300"
                   }`}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-4 w-4 xs:h-5 xs:w-5" />
                   <span>{category.name}</span>
                 </button>
               );
@@ -943,7 +1079,7 @@ export const Services = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ staggerChildren: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 xs:gap-6 md:gap-8"
         >
           {serviceCategories
             .filter(
@@ -965,48 +1101,96 @@ export const Services = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
+          className="mt-12 md:mt-20 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 xs:gap-6"
         >
           {[
             {
-              value: "5000+",
-              label: "Students Placed",
-              color: "from-blue-500 to-cyan-500",
+              value: "13,863+",
+              label: "Students Helped",
+              color: "from-blue-600 to-cyan-600",
+              icon: GroupsIcon
             },
             {
-              value: "95%",
+              value: "98%",
               label: "Success Rate",
-              color: "from-green-500 to-emerald-500",
+              color: "from-green-600 to-emerald-600",
+              icon: CheckCircleIcon
             },
             {
-              value: "50+",
+              value: "500+",
               label: "Partner Universities",
-              color: "from-purple-500 to-pink-500",
+              color: "from-purple-600 to-pink-600",
+              icon: SchoolIcon
             },
             {
-              value: "24/7",
-              label: "Support Available",
-              color: "from-orange-500 to-red-500",
+              value: "10+",
+              label: "Years Experience",
+              color: "from-orange-600 to-red-600",
+              icon: AccessTimeIcon
             },
-          ].map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 1 + index * 0.1, type: "spring" }}
-              className="bg-white p-6 rounded-2xl shadow-lg text-center"
-            >
-              <div
-                className={`text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}
+          ].map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1 + index * 0.1, type: "spring" }}
+                className="bg-white p-4 xs:p-6 rounded-xl xs:rounded-2xl shadow-lg text-center"
               >
-                {stat.value}
-              </div>
-              <div className="text-gray-600 font-semibold">{stat.label}</div>
-            </motion.div>
-          ))}
+                <div className="flex justify-center mb-3">
+                  <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.color}`}>
+                    <Icon className="h-6 w-6 xs:h-8 xs:w-8 text-white" />
+                  </div>
+                </div>
+                <div className={`text-2xl xs:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-1 xs:mb-2`}>
+                  {stat.value}
+                </div>
+                <div className="text-sm xs:text-base text-gray-600 font-semibold">{stat.label}</div>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="mt-12 md:mt-20 text-center"
+        >
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 md:p-12 text-white">
+            <h2 className="text-2xl xs:text-3xl md:text-4xl font-bold mb-4 md:mb-6">
+              Ready to Start Your Journey?
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 mb-6 md:mb-8 max-w-3xl mx-auto">
+              Contact our RECAPPLY team for personalized guidance and support throughout your international education journey.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 justify-center">
+              <button
+                onClick={() => window.open(`https://wa.me/${contactInfo.whatsapp}`, '_blank')}
+                className="px-6 xs:px-8 py-3 xs:py-4 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-all duration-300 flex items-center justify-center space-x-2"
+              >
+                <span>Chat on WhatsApp</span>
+                <ArrowForwardIcon className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => window.open(`tel:${contactInfo.phone}`)}
+                className="px-6 xs:px-8 py-3 xs:py-4 bg-white text-gray-900 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 flex items-center justify-center space-x-2"
+              >
+                <PhoneIcon className="h-5 w-5" />
+                <span>Call Now</span>
+              </button>
+              <button
+                onClick={() => window.open(`mailto:${contactInfo.email}`)}
+                className="px-6 xs:px-8 py-3 xs:py-4 bg-blue-500 text-white rounded-xl font-bold hover:bg-blue-600 transition-all duration-300 flex items-center justify-center space-x-2"
+              >
+                <EmailIcon className="h-5 w-5" />
+                <span>Email Us</span>
+              </button>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       <BookingModal />
