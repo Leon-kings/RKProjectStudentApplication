@@ -48,6 +48,10 @@ import {
   WhatsApp,
   Send,
   Download,
+  Flag,
+  Language as LanguageIcon,
+  AirportShuttle,
+  AccountBalance as PartnershipIcon,
 } from "@mui/icons-material";
 
 export const About = () => {
@@ -65,7 +69,7 @@ export const About = () => {
 
   // Text animation states
   const [animatedText, setAnimatedText] = useState("");
-  const fullText = "Your Trusted Partner in Study in China & Global Education";
+  const fullText = "Your Trusted Partner in Global Education & China CSCA Preparation";
 
   // Animation variants
   const fadeInUp = {
@@ -116,219 +120,279 @@ export const About = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Statistics from screenshot
+  // RECAPPLY Introduction
+  const recapplyInfo = {
+    title: "ABOUT US – RECAPPLY",
+    description: "RECAPPLY is the international education division of Ruziga Enterprise Corporation Ltd (REC Ltd), dedicated to helping students access world-class education with accuracy, professionalism, and trust.",
+    mission: "to guide every student confidently from application to arrival",
+    countries: ["China", "Canada", "Poland", "Turkey", "Germany", "USA"],
+    services: [
+      {
+        icon: <School />,
+        title: "University Admissions",
+        description: "We help students choose the best country, university, and major based on academic strengths, career goals, budget and scholarship potential, and long-term professional plans.",
+        color: "from-blue-500 to-cyan-500"
+      },
+      {
+        icon: <Book />,
+        title: "CSCA Exam Preparation",
+        description: "Full support for students applying to China who must sit for the China Scholastic Competency Assessment (CSCA). Includes registration guidance, study materials, mock tests, and documentation assistance.",
+        color: "from-red-500 to-orange-500"
+      },
+      {
+        icon: <EmojiEvents />,
+        title: "Scholarship Guidance",
+        description: "We help students access fully funded scholarships, partial scholarships, tuition waivers, and university & government subsidies matched to their academic and financial situation.",
+        color: "from-purple-500 to-pink-500"
+      },
+      {
+        icon: <Description />,
+        title: "Documents Preparation",
+        description: "High-quality documents including Statement of Purpose, Study Plan, CV/Resume, Motivation Letter, Sponsor Letter, Reference Letters, and Visa Explanations.",
+        color: "from-green-500 to-emerald-500"
+      },
+      {
+        icon: <Flag />,
+        title: "Visa Assistance",
+        description: "Step-by-step visa support including checklist preparation, financial requirement guidance, document review, explanation letters, and interview preparation.",
+        color: "from-indigo-500 to-blue-500"
+      },
+      {
+        icon: <AirportShuttle />,
+        title: "Pre-Departure Guidance",
+        description: "We prepare students for life abroad with accommodation search, budget planning, travel guidance, cultural adaptation, and academic expectations support.",
+        color: "from-amber-500 to-orange-500"
+      },
+      {
+        icon: <PartnershipIcon />,
+        title: "Institutional Partnerships",
+        description: "RECAPPLY partners with universities and colleges worldwide that seek reliable and ethical student recruitment across Africa.",
+        color: "from-teal-500 to-green-500"
+      }
+    ]
+  };
+
+  // Statistics from screenshot - Updated for RECAPPLY
   const statistics = [
     {
       icon: <Timer />,
       value: "10+",
       label: "Years Experience",
       color: "from-blue-500 to-cyan-500",
-      description: "Decades of expertise in international education",
+      description: "Expertise in international education and student placement",
     },
     {
       icon: <CheckCircle />,
       value: "98%",
       label: "Success Rate",
       color: "from-purple-500 to-pink-500",
-      description: "Admission success across top universities",
+      description: "High admission & visa success rate across top universities",
     },
     {
       icon: <People />,
       value: "13,863+",
-      label: "Number of Students",
+      label: "Students Helped",
       color: "from-green-500 to-emerald-500",
       description: "Students successfully placed worldwide",
     },
     {
       icon: <School />,
       value: "500+",
-      label: "University Partners",
+      label: "Partner Universities",
       color: "from-orange-500 to-amber-500",
-      description: "Partnered with top institutions globally",
+      description: "Global institutional partnerships",
     },
     {
-      icon: <VerifiedUser />,
-      value: "95%",
-      label: "Satisfied Parents",
+      icon: <LanguageIcon />,
+      value: "20+",
+      label: "Countries Covered",
       color: "from-indigo-500 to-blue-500",
-      description: "Parent satisfaction and trust rate",
+      description: "Study destinations worldwide including China",
     },
   ];
 
-  // Why Choose Us features from screenshot
+  // Why Choose RECAPPLY features
   const whyChooseUs = [
     {
       icon: <Assignment />,
       title: "PERSONALIZED STUDY PLANS",
-      description:
-        "Tailored guidance and support, ensuring you choose the right university and program to match your career aspirations and personal goals.",
+      description: "Tailored guidance based on your academic strengths, career goals, budget, and long-term professional plans.",
       details: [
-        "Individual academic assessment",
-        "Career path matching",
-        "Customized university shortlisting",
-        "Personal timeline planning",
+        "Academic strengths assessment",
+        "Career goal matching",
+        "Budget and scholarship analysis",
+        "Personalized university selection"
       ],
       fullDetails: [
-        "Comprehensive academic profile analysis to identify strengths and areas for improvement",
-        "One-on-one career counseling sessions with industry experts",
-        "Customized university selection based on 100+ parameters",
-        "Personalized application timeline with milestone tracking",
-        "Regular progress reviews and strategy adjustments",
-        "Access to exclusive university partnerships and early admission programs",
+        "Comprehensive academic profile analysis",
+        "One-on-one career counseling sessions",
+        "Customized country and university selection",
+        "Personalized application timeline planning",
+        "Scholarship potential assessment",
+        "Regular progress reviews and adjustments",
       ],
       color: "from-blue-500 to-cyan-500",
     },
     {
-      icon: <Work />,
-      title: "PLACEMENT ASSISTANCE",
-      description:
-        "Leveraging our extensive network of partnered universities and industry contacts, we provide robust placement support to help you secure internships and job opportunities post-graduation.",
+      icon: <Description />,
+      title: "PROFESSIONAL DOCUMENTS PREPARATION",
+      description: "High-quality document preparation including SOP, Study Plan, CV, Motivation Letter, and all required visa documents.",
       details: [
-        "Industry partnership network",
-        "Internship placement support",
-        "Career counseling sessions",
-        "Job placement assistance",
+        "Statement of Purpose writing",
+        "Study Plan development",
+        "CV/Resume optimization",
+        "Visa documentation support"
       ],
       fullDetails: [
-        "Direct partnerships with 500+ global companies for internships",
-        "Dedicated career coach assigned to each student",
-        "Resume building workshops and LinkedIn profile optimization",
-        "Mock interview sessions with industry professionals",
-        "Access to exclusive job fairs and recruitment events",
-        "Post-placement follow-up and career progression support",
-        "Alumni network access for mentorship opportunities",
+        "Professional document verification",
+        "Personal statement writing with multiple editing rounds",
+        "University-specific application strategy",
+        "Scholarship essay assistance",
+        "Visa documentation and interview preparation",
+        "Notarization and certification support",
       ],
       color: "from-purple-500 to-pink-500",
     },
     {
       icon: <Chat />,
-      title: "EASY ACCESS TO EXPERTS",
-      description:
-        "Our consultants are readily available through multiple channels, including video chats, emails, and phone calls, ensuring you get the help and advice you need at any time.",
+      title: "CSCA EXAM SPECIALIZATION",
+      description: "Expert support for China Scholastic Competency Assessment with comprehensive preparation resources and guidance.",
       details: [
-        "24/7 consultant availability",
-        "Multiple communication channels",
-        "Quick response time",
-        "Dedicated student manager",
+        "CSCA registration guidance",
+        "Study materials (Math, Physics, Chemistry)",
+        "Mock tests & exam strategy",
+        "Chinese language preparation"
       ],
       fullDetails: [
-        "Round-the-clock support via WhatsApp, email, and phone",
-        "Dedicated student manager with average response time < 2 hours",
-        "Weekly progress update calls and reports",
-        "Emergency support hotline for urgent queries",
-        "Parent communication portal for regular updates",
-        "Multilingual support team covering 15+ languages",
-        "Regular webinars and Q&A sessions with university representatives",
+        "Full CSCA registration process guidance",
+        "Subject selection assistance based on major",
+        "Comprehensive study materials for all subjects",
+        "Regular mock tests and performance analysis",
+        "Exam strategy and time management training",
+        "Chinese language preparation support",
+        "Scholarship documentation for China admissions",
       ],
       color: "from-green-500 to-emerald-500",
     },
     {
-      icon: <Description />,
-      title: "COMPREHENSIVE APPLICATION SUPPORT",
-      description:
-        "From crafting compelling personal statements to preparing documents and interview coaching, we guide you through every step of the application process.",
+      icon: <EmojiEvents />,
+      title: "SCHOLARSHIP MATCHING",
+      description: "We match students with appropriate scholarships based on academic achievements and financial situation.",
       details: [
-        "Document preparation",
-        "Personal statement writing",
-        "Interview preparation",
-        "Application review",
+        "Fully funded scholarship access",
+        "Partial scholarship identification",
+        "Tuition waiver assistance",
+        "Government subsidy guidance"
       ],
       fullDetails: [
-        "Professional document verification and notarization services",
-        "Personal statement writing with 5+ rounds of editing",
-        "University-specific application strategy development",
-        "Interview preparation with former admission officers",
-        "Scholarship application assistance and essay writing",
-        "Visa documentation and interview preparation",
-        "Pre-departure orientation and cultural training",
+        "Comprehensive scholarship database access",
+        "Personalized scholarship matching algorithm",
+        "Scholarship application strategy development",
+        "Essay and documentation preparation support",
+        "Interview preparation for scholarship panels",
+        "Post-scholarship compliance guidance",
+        "Multiple scholarship combination strategies",
       ],
       color: "from-orange-500 to-amber-500",
     },
     {
-      icon: <Book />,
-      title: "FLEXIBLE LEARNING RESOURCES",
-      description:
-        "Access a wealth of resources, including guides, webinars, and tools designed to help you succeed in your academic journey abroad.",
+      icon: <Flag />,
+      title: "VISA SUCCESS GUARANTEE",
+      description: "Comprehensive visa assistance to avoid common mistakes and maximize approval chances.",
       details: [
-        "Study guides and materials",
-        "Online webinars",
-        "Language preparation resources",
-        "Cultural orientation",
+        "Checklist preparation",
+        "Financial requirement guidance",
+        "Document review",
+        "Interview preparation"
       ],
       fullDetails: [
-        "Digital library with 1000+ study materials and e-books",
-        "Live webinars with successful alumni and industry leaders",
-        "Language preparation courses (IELTS, TOEFL, Mandarin, etc.)",
-        "Cultural adaptation workshops and country-specific guides",
-        "Mobile app with personalized study plans and progress tracking",
-        "Access to online tutoring and subject matter experts",
-        "Financial planning tools and scholarship databases",
+        "Complete visa document checklist preparation",
+        "Financial documentation and proof guidance",
+        "Professional document review and verification",
+        "Visa explanation letter writing",
+        "Mock interview sessions with feedback",
+        "Country-specific visa requirement expertise",
+        "Appeal preparation for visa refusals",
       ],
       color: "from-indigo-500 to-blue-500",
     },
     {
-      icon: <FourGPlusMobiledata />,
-      title: "INNOVATIVE LEARNING TRANSITION",
-      description:
-        "We assist you in transitioning to a new academic environment with cultural orientation and ongoing support throughout your study abroad journey.",
+      icon: <SupportAgent />,
+      title: "END-TO-END SUPPORT",
+      description: "Support from initial consultation to post-arrival adjustment in the destination country.",
       details: [
-        "Cultural orientation programs",
-        "Pre-departure briefings",
+        "Pre-departure orientation",
         "Accommodation assistance",
-        "Ongoing student support",
+        "Cultural adaptation",
+        "Ongoing student support"
       ],
       fullDetails: [
-        "Comprehensive pre-departure orientation covering legal, academic, and cultural aspects",
-        "Accommodation assistance with verified housing partners",
-        "Airport pickup and local orientation upon arrival",
-        "Local SIM card and bank account setup assistance",
-        "24/7 emergency support in destination country",
-        "Regular check-ins and academic progress monitoring",
-        "Alumni meetups and networking events in host country",
+        "Comprehensive pre-departure briefing",
+        "Accommodation search and booking assistance",
+        "Airport pickup coordination",
+        "Local SIM card and bank account setup",
+        "Cultural adaptation workshops",
+        "24/7 emergency support in destination",
+        "Regular check-ins and progress monitoring",
       ],
       color: "from-teal-500 to-green-500",
     },
   ];
 
-  // Country specializations
+  // Country specializations - Updated with RECAPPLY focus countries
   const countries = [
     {
       name: "China",
       icon: <LocationOn />,
       universities: 150,
       color: "from-red-500 to-orange-500",
-    },
-    {
-      name: "Italy",
-      icon: <Map />,
-      universities: 80,
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      name: "Malaysia",
-      icon: <Public />,
-      universities: 120,
-      color: "from-blue-500 to-cyan-500",
+      description: "Special expertise in CSCA preparation and Chinese universities"
     },
     {
       name: "Canada",
-      icon: <CalendarToday />,
+      icon: <Map />,
       universities: 200,
-      color: "from-purple-500 to-pink-500",
+      color: "from-blue-500 to-cyan-500",
+      description: "Popular destination with high success rate"
+    },
+    {
+      name: "Germany",
+      icon: <Public />,
+      universities: 120,
+      color: "from-yellow-500 to-amber-500",
+      description: "Quality education with tuition-free options"
     },
     {
       name: "USA",
       icon: <Star />,
       universities: 300,
       color: "from-indigo-500 to-blue-500",
+      description: "Top universities with scholarship opportunities"
     },
     {
-      name: "UK",
+      name: "Poland",
+      icon: <CalendarToday />,
+      universities: 80,
+      color: "from-purple-500 to-pink-500",
+      description: "Affordable European education"
+    },
+    {
+      name: "Turkey",
       icon: <School />,
-      universities: 150,
-      color: "from-amber-500 to-orange-500",
+      universities: 100,
+      color: "from-green-500 to-emerald-500",
+      description: "Quality education at competitive costs"
     },
   ];
+
+  // Contact Information for RECAPPLY
+  const contactInfo = {
+    email: "r.educationalconsultance@gmail.com",
+    rwandaPhone: "+250 783 408 617",
+    chinaPhone: "+86 186 5833 2879",
+    office: "Kigali – Kicukiro Centre, Sangwa Plaza, 1st Floor, R6 Door",
+    whatsapp: "+250783408617"
+  };
 
   // Form handlers
   const handleInputChange = (e) => {
@@ -357,12 +421,9 @@ export const About = () => {
 
   // WhatsApp handler
   const handleWhatsAppClick = () => {
-    const phoneNumber = "+1234567890"; // Replace with your WhatsApp number
-    const message =
-      "Hello! I'm interested in studying abroad. Can you help me?";
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-      message
-    )}`;
+    const phoneNumber = contactInfo.whatsapp;
+    const message = "Hello! I'm interested in studying abroad with RECAPPLY. Can you help me?";
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
 
@@ -379,7 +440,7 @@ export const About = () => {
   const openBookingModal = () => {
     setModalContent({
       type: "booking",
-      title: "Book Free Consultation",
+      title: "Book Free Consultation with RECAPPLY",
     });
     setActiveModal(true);
   };
@@ -388,7 +449,7 @@ export const About = () => {
   const openRequestPackageModal = () => {
     setModalContent({
       type: "requestPackage",
-      title: "Request Information Package",
+      title: "Request RECAPPLY Information Package",
     });
     setActiveModal(true);
   };
@@ -406,7 +467,7 @@ export const About = () => {
   const openApplyNowModal = () => {
     setModalContent({
       type: "applyNow",
-      title: "Apply Now - Complete Your Application",
+      title: "Apply Now with RECAPPLY",
     });
     setActiveModal(true);
   };
@@ -506,7 +567,7 @@ export const About = () => {
             {modalContent.type === "booking" && (
               <div>
                 <h4 className="text-xl font-bold text-gray-800 mb-6">
-                  Schedule Your Free Consultation
+                  Schedule Your Free Consultation with RECAPPLY
                 </h4>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
@@ -560,11 +621,22 @@ export const About = () => {
                     >
                       <option value="">Select Country</option>
                       <option value="China">China</option>
-                      <option value="USA">USA</option>
-                      <option value="UK">UK</option>
                       <option value="Canada">Canada</option>
-                      <option value="Australia">Australia</option>
                       <option value="Germany">Germany</option>
+                      <option value="USA">USA</option>
+                      <option value="Poland">Poland</option>
+                      <option value="Turkey">Turkey</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 mb-2">
+                      Interested in CSCA Preparation?
+                    </label>
+                    <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                      <option value="">Select Option</option>
+                      <option value="yes">Yes, for China admission</option>
+                      <option value="no">No, other countries</option>
+                      <option value="maybe">Considering it</option>
                     </select>
                   </div>
                   <div>
@@ -580,7 +652,7 @@ export const About = () => {
                     type="submit"
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-xl transition-all"
                   >
-                    Book Consultation
+                    Book Consultation with RECAPPLY
                   </button>
                 </form>
               </div>
@@ -589,7 +661,7 @@ export const About = () => {
             {modalContent.type === "requestPackage" && (
               <div>
                 <h4 className="text-xl font-bold text-gray-800 mb-6">
-                  Request Information Package
+                  Request RECAPPLY Information Package
                 </h4>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
@@ -641,12 +713,11 @@ export const About = () => {
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                       <option value="">Select Country</option>
-                      <option value="China">China</option>
-                      <option value="USA">USA</option>
-                      <option value="UK">UK</option>
+                      <option value="China">China (CSCA Specialization)</option>
                       <option value="Canada">Canada</option>
-                      <option value="Australia">Australia</option>
                       <option value="Germany">Germany</option>
+                      <option value="USA">USA</option>
+                      <option value="Poland">Poland</option>
                     </select>
                   </div>
                   <div>
@@ -659,14 +730,14 @@ export const About = () => {
                       value={formData.course}
                       onChange={handleInputChange}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="e.g., MBA, Computer Science, Medicine"
+                      placeholder="e.g., Computer Science, Medicine, Engineering"
                     />
                   </div>
                   <button
                     type="submit"
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-xl transition-all"
                   >
-                    Request Package
+                    Request RECAPPLY Package
                   </button>
                 </form>
               </div>
@@ -675,7 +746,7 @@ export const About = () => {
             {modalContent.type === "downloadGuide" && (
               <div>
                 <h4 className="text-xl font-bold text-gray-800 mb-6">
-                  Study Abroad Guide
+                  RECAPPLY Study Abroad Guide
                 </h4>
                 <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-xl mb-6">
                   <div className="flex items-center mb-4">
@@ -685,12 +756,12 @@ export const About = () => {
                         Complete Study Abroad Guide 2024
                       </h5>
                       <p className="text-gray-600">
-                        PDF Document • 45 pages • 12MB
+                        PDF Document • 50 pages • 15MB
                       </p>
                     </div>
                   </div>
                   <p className="text-gray-700 mb-4">
-                    This comprehensive guide includes:
+                    This comprehensive RECAPPLY guide includes:
                   </p>
                   <ul className="space-y-2 mb-6">
                     <li className="flex items-center">
@@ -699,11 +770,11 @@ export const About = () => {
                     </li>
                     <li className="flex items-center">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                      University selection criteria
+                      CSCA exam preparation guide
                     </li>
                     <li className="flex items-center">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                      Scholarship opportunities
+                      Scholarship opportunities worldwide
                     </li>
                     <li className="flex items-center">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
@@ -711,7 +782,7 @@ export const About = () => {
                     </li>
                     <li className="flex items-center">
                       <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                      Pre-departure checklist
+                      Pre-departure and cultural adaptation
                     </li>
                   </ul>
                   <div className="flex space-x-4">
@@ -719,8 +790,8 @@ export const About = () => {
                       onClick={() => {
                         // Simulate download
                         const link = document.createElement("a");
-                        link.href = "/sample-guide.pdf"; // Replace with actual PDF URL
-                        link.download = "Study_Abroad_Guide_2024.pdf";
+                        link.href = "/sample-guide.pdf";
+                        link.download = "RECAPPLY_Study_Abroad_Guide_2024.pdf";
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
@@ -741,7 +812,7 @@ export const About = () => {
             {modalContent.type === "applyNow" && (
               <div>
                 <h4 className="text-xl font-bold text-gray-800 mb-6">
-                  Complete Your Application
+                  Apply Now with RECAPPLY
                 </h4>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -788,25 +859,13 @@ export const About = () => {
                   </div>
                   <div>
                     <label className="block text-gray-700 mb-2">
-                      Date of Birth
+                      Nationality
                     </label>
                     <input
-                      type="date"
+                      type="text"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g., Rwandan, Kenyan, Nigerian"
                     />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 mb-2">
-                      Country of Citizenship
-                    </label>
-                    <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                      <option value="">Select Country</option>
-                      <option value="India">India</option>
-                      <option value="China">China</option>
-                      <option value="USA">USA</option>
-                      <option value="UK">UK</option>
-                      <option value="Other">Other</option>
-                    </select>
                   </div>
                   <div>
                     <label className="block text-gray-700 mb-2">
@@ -819,7 +878,6 @@ export const About = () => {
                         Bachelor's Degree
                       </option>
                       <option value="Master's Degree">Master's Degree</option>
-                      <option value="PhD">PhD</option>
                     </select>
                   </div>
                   <div>
@@ -831,11 +889,11 @@ export const About = () => {
                       required
                     >
                       <option value="">Select Country</option>
-                      <option value="China">China</option>
-                      <option value="USA">USA</option>
-                      <option value="UK">UK</option>
+                      <option value="China">China (CSCA Required)</option>
                       <option value="Canada">Canada</option>
-                      <option value="Australia">Australia</option>
+                      <option value="Germany">Germany</option>
+                      <option value="USA">USA</option>
+                      <option value="Poland">Poland</option>
                     </select>
                   </div>
                   <div>
@@ -845,9 +903,21 @@ export const About = () => {
                     <input
                       type="text"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="e.g., MBA, Computer Science"
+                      placeholder="e.g., Computer Science, Medicine, Engineering"
                       required
                     />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 mb-2">
+                      Scholarship Interest
+                    </label>
+                    <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                      <option value="">Select Option</option>
+                      <option value="full">Fully Funded Scholarship</option>
+                      <option value="partial">Partial Scholarship</option>
+                      <option value="tuition">Tuition Waiver</option>
+                      <option value="self">Self-funded</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block text-gray-700 mb-2">
@@ -856,14 +926,14 @@ export const About = () => {
                     <textarea
                       rows="4"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Tell us about your goals and expectations..."
+                      placeholder="Tell us about your academic goals and expectations..."
                     ></textarea>
                   </div>
                   <button
                     type="submit"
                     className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-lg font-semibold hover:shadow-xl transition-all"
                   >
-                    Submit Application
+                    Submit Application to RECAPPLY
                   </button>
                 </form>
               </div>
@@ -876,7 +946,7 @@ export const About = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
+      {/* Hero Section - RECAPPLY Focus */}
       <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3')] bg-cover bg-center opacity-5" />
@@ -895,10 +965,7 @@ export const About = () => {
                 transition={{ delay: 0.2 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
               >
-                <span className="text-gray-900">ABOUT </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  US
-                </span>
+                <span className="text-gray-900">{recapplyInfo.title}</span>
               </motion.h1>
 
               <motion.div
@@ -919,12 +986,79 @@ export const About = () => {
                 transition={{ delay: 0.4 }}
                 className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto"
               >
-                At <span className="font-bold text-blue-600">RK Edu</span>, we
-                believe in the transformative power of education and the
-                boundless opportunities that studying abroad can offer.
+                {recapplyInfo.description} We support students from Africa and beyond to secure admissions, scholarships, and visas to top universities worldwide.
               </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-8"
+              >
+                <div className="inline-flex items-center bg-gradient-to-r from-blue-100 to-purple-100 px-6 py-3 rounded-full">
+                  <RocketLaunch className="w-5 h-5 text-blue-600 mr-2" />
+                  <span className="font-semibold text-blue-800">
+                    Our Mission: <span className="text-purple-600">{recapplyInfo.mission}</span>
+                  </span>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* RECAPPLY Services Section */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12 md:mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                WHAT WE DO
+              </span>
+            </h2>
+            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+              Comprehensive services designed for your international education success
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {recapplyInfo.services.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+                className="relative bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden border border-gray-100"
+              >
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 hover:opacity-5 transition-opacity`}
+                />
+
+                <div className="p-6 md:p-8 relative z-10">
+                  <div
+                    className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${service.color} text-white mb-6 transform transition-transform duration-300 hover:scale-110`}
+                  >
+                    <div className="w-8 h-8">{service.icon}</div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    {service.title}
+                  </h3>
+
+                  <p className="text-gray-600 mb-6 leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -938,10 +1072,10 @@ export const About = () => {
             className="text-center mb-12"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-              The Numbers Say It All
+              The RECAPPLY Impact
             </h2>
             <p className="text-xl text-blue-200">
-              Key statistics that showcase our impact and expertise
+              Key statistics that showcase our expertise and success
             </p>
           </motion.div>
 
@@ -984,7 +1118,7 @@ export const About = () => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
+      {/* Why Choose RECAPPLY Section */}
       <section className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -995,12 +1129,11 @@ export const About = () => {
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                WHY CHOOSE US
+                WHY STUDENTS CHOOSE RECAPPLY
               </span>
             </h2>
             <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
-              Comprehensive services designed for your international education
-              success
+              Clear, honest, and transparent service with professional support
             </p>
           </motion.div>
 
@@ -1086,99 +1219,163 @@ export const About = () => {
         </div>
       </section>
 
-      {/* Additional Features */}
+      {/* Countries We Specialize In */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Our <span className="text-blue-600">Holistic Approach</span> to
-                Education Consulting
-              </h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12 md:mb-16"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                COUNTRIES WE SPECIALIZE IN
+              </span>
+            </h2>
+            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+              Top destinations including {recapplyInfo.countries.join(", ")} and many others
+            </p>
+          </motion.div>
 
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                    <VideoCall className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      Virtual Campus Tours
-                    </h3>
-                    <p className="text-gray-600">
-                      Experience university campuses through immersive virtual
-                      tours before making your decision.
-                    </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {countries.map((country, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                className={`bg-gradient-to-br ${country.color} rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all`}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="p-3 bg-white/20 rounded-xl mr-4">
+                      {country.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold">{country.name}</h3>
+                      <p className="text-white/80">{country.universities}+ Universities</p>
+                    </div>
                   </div>
                 </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                    <SupportAgent className="w-6 h-6 text-white" />
+                <p className="text-white/90">{country.description}</p>
+                {country.name === "China" && (
+                  <div className="mt-4 inline-flex items-center bg-white/20 px-3 py-1 rounded-full text-sm">
+                    <Book className="w-4 h-4 mr-1" />
+                    CSCA Exam Specialization
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      Post-Arrival Support
-                    </h3>
-                    <p className="text-gray-600">
-                      Continued assistance with accommodation, cultural
-                      adaptation, and academic transition after you arrive.
-                    </p>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact RECAPPLY Section */}
+      <section className="py-16 md:py-24 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-2xl shadow-xl p-8 md:p-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
+                Contact RECAPPLY
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div className="space-y-4">
+                  <div className="flex items-center">
+                    <Email className="w-6 h-6 text-blue-600 mr-4" />
+                    <div>
+                      <p className="font-semibold text-gray-700">Email</p>
+                      <a href={`mailto:${contactInfo.email}`} className="text-blue-600 hover:text-blue-800">
+                        {contactInfo.email}
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <Phone className="w-6 h-6 text-green-600 mr-4" />
+                    <div>
+                      <p className="font-semibold text-gray-700">Rwanda Office</p>
+                      <a href={`tel:${contactInfo.rwandaPhone}`} className="text-green-600 hover:text-green-800">
+                        {contactInfo.rwandaPhone}
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <Phone className="w-6 h-6 text-red-600 mr-4" />
+                    <div>
+                      <p className="font-semibold text-gray-700">China Office</p>
+                      <a href={`tel:${contactInfo.chinaPhone}`} className="text-red-600 hover:text-red-800">
+                        {contactInfo.chinaPhone}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="flex items-start mb-4">
+                    <LocationOn className="w-6 h-6 text-purple-600 mr-4 mt-1" />
+                    <div>
+                      <p className="font-semibold text-gray-700 mb-1">Office Location</p>
+                      <p className="text-gray-600">{contactInfo.office}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6">
+                    <h4 className="font-semibold text-gray-700 mb-3">Why Choose RECAPPLY?</h4>
+                    <ul className="space-y-2 text-gray-600">
+                      <li className="flex items-center">
+                        <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                        High admission & visa success rate
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                        Clear, honest, and transparent service
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                        Professional academic and visa documentation
+                      </li>
+                      <li className="flex items-center">
+                        <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                        Specialized expertise for China CSCA requirements
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold mb-4">
-                    Start Your Journey Today
-                  </h3>
-                  <p className="opacity-90">
-                    Get personalized guidance for your international education
-                    dreams
-                  </p>
-                </div>
-
-                <div className="space-y-4">
+              
+              <div className="text-center">
+                <p className="text-gray-700 italic mb-6">
+                  We believe in education that builds futures and transforms communities.
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleWhatsAppClick}
+                    className="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-all flex items-center justify-center space-x-2"
+                  >
+                    <WhatsApp className="w-5 h-5" />
+                    <span>Chat on WhatsApp</span>
+                  </motion.button>
+                  
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={openBookingModal}
-                    className="w-full bg-white text-blue-900 py-4 rounded-xl font-semibold hover:shadow-xl transition-all flex items-center justify-center space-x-3"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-xl transition-all"
                   >
-                    <Phone className="w-5 h-5" />
-                    <span>Book Free Consultation</span>
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={openRequestPackageModal}
-                    className="w-full bg-transparent border-2 border-white text-white py-4 rounded-xl font-semibold hover:bg-white/10 transition-all flex items-center justify-center space-x-3"
-                  >
-                    <Email className="w-5 h-5" />
-                    <span>Request Information Package</span>
-                  </motion.button>
-
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={openDownloadGuideModal}
-                    className="w-full bg-white/20 backdrop-blur-sm text-white py-4 rounded-xl font-semibold hover:bg-white/30 transition-all flex items-center justify-center space-x-3"
-                  >
-                    <Assignment className="w-5 h-5" />
-                    <span>Download Study Abroad Guide</span>
+                    Book Free Consultation
                   </motion.button>
                 </div>
               </div>
@@ -1188,7 +1385,7 @@ export const About = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-blue-50 to-purple-50">
+      <section className="py-16 md:py-24 bg-gradient-to-r from-blue-900 to-purple-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
@@ -1196,13 +1393,13 @@ export const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Ready to Begin Your International Education Journey?
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+                Start Your International Education Journey with RECAPPLY
               </h2>
 
-              <p className="text-xl text-gray-600 mb-8">
-                Join thousands of successful students who achieved their dreams
-                with our guidance. Let us help you write your own success story.
+              <p className="text-xl text-blue-200 mb-8">
+                Join thousands of successful students who achieved their dreams with our guidance.
+                Let us help you write your own success story.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1210,21 +1407,21 @@ export const About = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={openApplyNowModal}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transition-all flex items-center justify-center space-x-3"
+                  className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl transition-all flex items-center justify-center space-x-3"
                 >
                   <PersonAdd className="w-5 h-5" />
-                  <span>Apply Now</span>
+                  <span>Apply Now with RECAPPLY</span>
                   <ArrowForward className="w-5 h-5" />
                 </motion.button>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={handleWhatsAppClick}
+                  onClick={openDownloadGuideModal}
                   className="bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold border-2 border-blue-200 hover:border-blue-300 transition-all flex items-center justify-center space-x-3"
                 >
-                  <WhatsApp className="w-5 h-5 text-green-500" />
-                  <span>Chat with Advisor</span>
+                  <Description className="w-5 h-5" />
+                  <span>Download Free Guide</span>
                 </motion.button>
               </div>
             </motion.div>

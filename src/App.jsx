@@ -39,6 +39,12 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ErrorIcon from "@mui/icons-material/Error";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { Admission } from "./components/services/admission/Admission";
+import { Scholarship } from "./components/services/scholarship/Scholarship";
+import { CESP } from "./components/services/china/CESP";
+import { VISA } from "./components/services/visa/VISA";
+import { Accommodation } from "./components/services/accomodation/Accomodation";
+import { AirportServices } from "./components/services/airport/Airport";
 
 // DARK MODE CONTEXT
 const ThemeContext = createContext();
@@ -589,6 +595,62 @@ export default function App() {
                         </PageTransition>
                       }
                     />
+
+
+
+                                        <Route
+                      path="/admission"
+                      element={
+                        <PageTransition>
+                          <Admission />
+                        </PageTransition>
+                      }
+                    />
+                                                <Route
+                      path="/scholarship"
+                      element={
+                        <PageTransition>
+                          <Scholarship />
+                        </PageTransition>
+                      }
+                    />
+                                                       <Route
+                      path="/china/specialist/exam"
+                      element={
+                        <PageTransition>
+                          <CESP />
+                        </PageTransition>
+                      }
+                    />
+                                                        <Route
+                      path="/visa/application"
+                      element={
+                        <PageTransition>
+                          <VISA />
+                        </PageTransition>
+                      }
+                    />
+                                                                <Route
+                      path="/accomodation/application"
+                      element={
+                        <PageTransition>
+                          <Accommodation />
+                        </PageTransition>
+                      }
+                    />
+                                                                        <Route
+                      path="/airport/services"
+                      element={
+                        <PageTransition>
+                          <AirportServices />
+                        </PageTransition>
+                      }
+                    />
+
+
+
+
+
                     <Route
                       path="/blog"
                       element={
