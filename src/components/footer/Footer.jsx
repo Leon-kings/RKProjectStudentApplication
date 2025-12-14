@@ -32,9 +32,18 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import AppleIcon from '@mui/icons-material/Apple';
 import AndroidIcon from '@mui/icons-material/Android';
 import CopyrightIcon from '@mui/icons-material/Copyright';
+import FlagIcon from '@mui/icons-material/Flag';
+import ScholarshipIcon from '@mui/icons-material/School';
+import VisaIcon from '@mui/icons-material/CardTravel';
+import DocumentIcon from '@mui/icons-material/Description';
+import ExamIcon from '@mui/icons-material/Quiz';
+import DepartureIcon from '@mui/icons-material/FlightTakeoff';
+import PartnershipIcon from '@mui/icons-material/Handshake';
 
 export const Footer = () => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [country, setCountry] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -67,20 +76,41 @@ export const Footer = () => {
     }
 
     try {
-      // Simulate API call
-      await axios.post('https://your-api.com/subscribe', {
-        email,
+      // Send newsletter subscription data to API
+      const newsletterData = {
+        email: email,
+        name: name || 'Anonymous',
+        country: country || 'Not specified',
         source: 'footer_newsletter',
-        timestamp: new Date().toISOString()
+        subscription_date: new Date().toISOString(),
+        preferences: {
+          updates: true,
+          scholarships: true,
+          university_news: true,
+          visa_updates: true
+        }
+      };
+
+      // Replace with your actual API endpoint
+      const API_URL = 'https://api.recrecapply.com/newsletter/subscribe'; // Update this to your actual API
+      
+      await axios.post(API_URL, newsletterData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
       });
 
       toast.success('Successfully subscribed to our newsletter!');
       setEmail('');
+      setName('');
+      setCountry('');
       setIsSubscribed(true);
       
       // Reset subscription status after 5 seconds
       setTimeout(() => setIsSubscribed(false), 5000);
     } catch (error) {
+      console.error('Subscription error:', error);
       toast.error('Subscription failed. Please try again.');
     }
   };
@@ -90,29 +120,73 @@ export const Footer = () => {
     return re.test(email);
   };
 
-  // Service categories
+  // Service categories based on RECAPPLY services
   const serviceCategories = [
     {
-      title: 'University Services',
+      title: 'University Admissions',
+      icon: SchoolIcon,
       services: [
-        { name: 'University Admissions', link: '/services/admissions' },
-        { name: 'Scholarship Guidance', link: '/services/scholarships' },
+        { name: 'Country & University Selection', link: '/services/admissions' },
+        { name: 'Course/Major Guidance', link: '/services/major-guidance' },
         { name: 'Application Processing', link: '/services/application' },
-        { name: 'Document Translation', link: '/services/translation' },
-        { name: 'Interview Preparation', link: '/services/interview' }
+        { name: 'Admission Support', link: '/services/admission-support' },
+        { name: 'Follow-up & Placement', link: '/services/placement' }
       ]
     },
-
+    {
+      title: 'CSCA Exam Preparation',
+      icon: ExamIcon,
+      services: [
+        { name: 'CSCA Registration Guidance', link: '/services/csca-registration' },
+        { name: 'Subject Selection Assistance', link: '/services/subject-selection' },
+        { name: 'Study Materials & Resources', link: '/services/study-materials' },
+        { name: 'Mock Tests & Strategy', link: '/services/mock-tests' },
+        { name: 'Scholarship Documentation', link: '/services/scholarship-docs' }
+      ]
+    },
+    {
+      title: 'Scholarship Guidance',
+      icon: ScholarshipIcon,
+      services: [
+        { name: 'Fully Funded Scholarships', link: '/services/fully-funded' },
+        { name: 'Partial Scholarships', link: '/services/partial-scholarships' },
+        { name: 'Tuition Waivers', link: '/services/tuition-waivers' },
+        { name: 'Government Subsidies', link: '/services/government-subsidies' },
+        { name: 'Financial Aid Matching', link: '/services/financial-aid' }
+      ]
+    },
+    {
+      title: 'Document Preparation',
+      icon: DocumentIcon,
+      services: [
+        { name: 'Statement of Purpose (SOP)', link: '/services/sop' },
+        { name: 'Study Plan & Motivation Letter', link: '/services/study-plan' },
+        { name: 'CV / Resume Writing', link: '/services/cv-writing' },
+        { name: 'Reference Letters', link: '/services/reference-letters' },
+        { name: 'Sponsor Letters', link: '/services/sponsor-letters' }
+      ]
+    },
+    {
+      title: 'Visa & Pre-Departure',
+      icon: VisaIcon,
+      services: [
+        { name: 'Visa Application Assistance', link: '/services/visa-assistance' },
+        { name: 'Interview Preparation', link: '/services/interview' },
+        { name: 'Document Review', link: '/services/document-review' },
+        { name: 'Accommodation Support', link: '/services/accommodation' },
+        { name: 'Pre-Departure Guidance', link: '/services/pre-departure' }
+      ]
+    }
   ];
 
   // Quick links
   const quickLinks = [
     { name: 'Home', link: '/' },
-    { name: 'About Us', link: '/about' },
-    { name: 'Services', link: '/services' },
-    { name: 'Universities', link: '/universities' },
-    { name: 'Blog', link: '/blog' },
-    { name: 'Testimonials', link: '/testimonials' },
+    { name: 'About RECAPPLY', link: '/about' },
+    { name: 'Our Services', link: '/services' },
+    { name: 'Study Destinations', link: '/destinations' },
+    { name: 'Scholarships', link: '/scholarships' },
+    { name: 'CSCA Exam Info', link: '/csca-exam' },
     { name: 'Success Stories', link: '/success-stories' },
     { name: 'Contact Us', link: '/contact' }
   ];
@@ -126,35 +200,28 @@ export const Footer = () => {
     { name: 'Disclaimer', link: '/disclaimer' }
   ];
 
-  // Country offices
+  // Country offices - RECAPPLY locations
   const countryOffices = [
-    { country: 'China', city: 'Beijing', phone: '+86 10 1234 5678' },
-    { country: 'India', city: 'New Delhi', phone: '+91 11 2345 6789' },
-    { country: 'Japan', city: 'Tokyo', phone: '+81 3 1234 5678' },
+    { country: 'Rwanda', city: 'Kigali Office', phone: '+250 783 408 617', address: 'Kicukiro Centre, Sangwa Plaza, 1st Floor, R6 Door' },
+    { country: 'China', city: 'China Office', phone: '+86 186 5833 2879', address: 'Educational Consultation Office' },
+    { country: 'Headquarters', city: 'REC Ltd', phone: '+250 783 408 617', address: 'Ruziga Enterprise Corporation Ltd' },
+  ];
 
+  // Study destinations
+  const studyDestinations = [
+    'China', 'Canada', 'Poland', 'Turkey', 'Germany', 'USA', 
+    'UK', 'Australia', 'Malaysia', 'Japan', 'South Korea'
   ];
 
   // Social media links
   const socialLinks = [
-    { icon: FacebookIcon, link: 'https://facebook.com', color: 'hover:bg-blue-600' },
-    { icon: TwitterIcon, link: 'https://twitter.com', color: 'hover:bg-blue-400' },
-    { icon: InstagramIcon, link: 'https://instagram.com', color: 'hover:bg-pink-600' },
-    { icon: LinkedInIcon, link: 'https://linkedin.com', color: 'hover:bg-blue-700' },
-    { icon: YouTubeIcon, link: 'https://youtube.com', color: 'hover:bg-red-600' },
-    { icon: WhatsAppIcon, link: 'https://wa.me', color: 'hover:bg-green-500' },
-    { icon: TelegramIcon, link: 'https://t.me', color: 'hover:bg-blue-500' }
-  ];
-
-  // Partner universities
-  const partnerUniversities = [
-    'Tsinghua University',
-    'Peking University',
-    'University of Tokyo',
-    'National University of Singapore',
-    'Seoul National University',
-    'University of Hong Kong',
-    'Indian Institute of Technology',
-    'University of Malaya'
+    { icon: FacebookIcon, link: 'https://facebook.com/recrecapply', color: 'hover:bg-blue-600' },
+    { icon: TwitterIcon, link: 'https://twitter.com/recrecapply', color: 'hover:bg-blue-400' },
+    { icon: InstagramIcon, link: 'https://instagram.com/recrecapply', color: 'hover:bg-pink-600' },
+    { icon: LinkedInIcon, link: 'https://linkedin.com/company/recrecapply', color: 'hover:bg-blue-700' },
+    { icon: YouTubeIcon, link: 'https://youtube.com/recrecapply', color: 'hover:bg-red-600' },
+    { icon: WhatsAppIcon, link: 'https://wa.me/250783408617', color: 'hover:bg-green-500' },
+    { icon: TelegramIcon, link: 'https://t.me/recrecapply', color: 'hover:bg-blue-500' }
   ];
 
   return (
@@ -198,22 +265,39 @@ export const Footer = () => {
                   <div>
                     <h3 className="text-2xl font-bold mb-3 flex items-center">
                       <EmailIcon className="mr-3 h-8 w-8 text-blue-400" />
-                      Stay Updated with Study Abroad News
+                      Get Education Updates & Scholarship Alerts
                     </h3>
                     <p className="text-gray-300">
-                      Get weekly updates on scholarships, visa changes, and university admissions
+                      Subscribe for weekly updates on admissions, scholarships, visa changes, and study abroad opportunities
                     </p>
                   </div>
                   
                   <form onSubmit={handleNewsletterSubmit} className="w-full md:w-auto">
-                    <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Your Name"
+                        className="px-4 py-3 rounded-xl bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
-                        className="px-6 py-3 rounded-xl bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[300px]"
+                        placeholder="Email Address"
+                        required
+                        className="px-4 py-3 rounded-xl bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                      <input
+                        type="text"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                        placeholder="Country"
+                        className="px-4 py-3 rounded-xl bg-white/10 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <button
                         type="submit"
                         disabled={isSubscribed}
@@ -231,13 +315,13 @@ export const Footer = () => {
                         ) : (
                           <>
                             <SendIcon className="h-5 w-5" />
-                            Subscribe
+                            Subscribe Now
                           </>
                         )}
                       </button>
                     </div>
                     <p className="text-gray-400 text-sm mt-3">
-                      By subscribing, you agree to our Privacy Policy
+                      By subscribing, you agree to our Privacy Policy. We'll send you educational updates and scholarship opportunities.
                     </p>
                   </form>
                 </div>
@@ -251,11 +335,27 @@ export const Footer = () => {
                   <PhoneIcon className="h-6 w-6 text-blue-400" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg mb-1">24/7 Support</h4>
-                  <a href="tel:+11234567890" className="text-gray-300 hover:text-white transition-colors">
-                    +1 (123) 456-7890
+                  <h4 className="font-bold text-lg mb-1">Contact RECAPPLY</h4>
+                  <a href="tel:+250783408617" className="text-gray-300 hover:text-white transition-colors">
+                    Rwanda: +250 783 408 617
                   </a>
-                  <p className="text-sm text-gray-400 mt-1">Available in multiple languages</p>
+                  <br />
+                  <a href="tel:+8618658332879" className="text-gray-300 hover:text-white transition-colors">
+                    China: +86 186 5833 2879
+                  </a>
+                  <p className="text-sm text-gray-400 mt-1">Available for consultation</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="p-3 bg-blue-900/30 rounded-xl">
+                  <EmailIcon className="h-6 w-6 text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg mb-1">Email Us</h4>
+                  <a href="mailto:r.educationalconsultance@gmail.com" className="text-gray-300 hover:text-white transition-colors break-all">
+                    r.educationalconsultance@gmail.com
+                  </a>
                 </div>
               </div>
 
@@ -264,11 +364,11 @@ export const Footer = () => {
                   <LocationOnIcon className="h-6 w-6 text-blue-400" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg mb-1">Head Office</h4>
-                  <p className="text-gray-300">
-                    123 Education Street,<br />
-                    Academic District,<br />
-                    Singapore 123456
+                  <h4 className="font-bold text-lg mb-1">Kigali Office</h4>
+                  <p className="text-gray-300 text-sm">
+                    Kicukiro Centre, Sangwa Plaza,<br />
+                    1st Floor, R6 Door,<br />
+                    Kigali, Rwanda
                   </p>
                 </div>
               </div>
@@ -279,10 +379,10 @@ export const Footer = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg mb-1">Working Hours</h4>
-                  <p className="text-gray-300">
-                    Monday - Friday: 9:00 - 18:00<br />
-                    Saturday: 10:00 - 16:00<br />
-                    Sunday: Emergency Support Only
+                  <p className="text-gray-300 text-sm">
+                    Monday - Friday: 8:00 - 18:00<br />
+                    Saturday: 9:00 - 15:00<br />
+                    Sunday: By Appointment
                   </p>
                 </div>
               </div>
@@ -299,50 +399,48 @@ export const Footer = () => {
                   <SchoolIcon className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold">Study Asia Connect</h2>
-                  <p className="text-gray-400">Your Gateway to Asian Education</p>
+                  <h2 className="text-2xl font-bold">RECAPPLY</h2>
+                  <p className="text-gray-400">International Education Division of REC Ltd</p>
                 </div>
               </div>
               
               <p className="text-gray-300 mb-6">
-                We bridge the gap between international students and premier educational institutions 
-                across Asia. With over 10,000 successful placements, we're your trusted partner for 
-                study abroad success.
+                RECAPPLY is dedicated to helping students from Africa and beyond access world-class education 
+                with accuracy, professionalism, and trust. We guide students from application to arrival 
+                at top universities worldwide.
               </p>
               
-              <div className="flex flex-wrap gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="flex items-center space-x-2">
                   <VerifiedIcon className="h-5 w-5 text-green-400" />
-                  <span className="text-sm">ISO 9001 Certified</span>
+                  <span className="text-sm">Professional Service</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <SecurityIcon className="h-5 w-5 text-blue-400" />
-                  <span className="text-sm">Data Protected</span>
+                  <FlagIcon className="h-5 w-5 text-blue-400" />
+                  <span className="text-sm">Multiple Countries</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <PeopleIcon className="h-5 w-5 text-purple-400" />
-                  <span className="text-sm">10,000+ Students</span>
+                  <span className="text-sm">Personalized Support</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <SecurityIcon className="h-5 w-5 text-yellow-400" />
+                  <span className="text-sm">High Success Rate</span>
                 </div>
               </div>
 
-              {/* App Download */}
+              {/* Study Destinations */}
               <div className="mb-6">
-                <h4 className="font-bold mb-3">Download Our App</h4>
-                <div className="flex flex-wrap gap-3">
-                  <button className="flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
-                    <AppleIcon className="h-6 w-6" />
-                    <div className="text-left">
-                      <div className="text-xs">Download on the</div>
-                      <div className="font-bold">App Store</div>
-                    </div>
-                  </button>
-                  <button className="flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors">
-                    <AndroidIcon className="h-6 w-6" />
-                    <div className="text-left">
-                      <div className="text-xs">Get it on</div>
-                      <div className="font-bold">Google Play</div>
-                    </div>
-                  </button>
+                <h4 className="font-bold mb-3 flex items-center">
+                  <LanguageIcon className="mr-2 h-5 w-5" />
+                  Our Study Destinations
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {studyDestinations.map((country, index) => (
+                    <span key={index} className="px-3 py-1 bg-gray-800/50 rounded-full text-sm">
+                      {country}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -375,46 +473,57 @@ export const Footer = () => {
                 Our Services
               </h3>
               <div className="space-y-4">
-                {serviceCategories.map((category, index) => (
-                  <div key={index}>
-                    <h4 className="font-semibold text-blue-300 mb-2">{category.title}</h4>
-                    <ul className="space-y-2 mb-4">
-                      {category.services.map((service, sIndex) => (
-                        <li key={sIndex}>
-                          <a 
-                            href={service.link}
-                            className="text-gray-300 hover:text-white transition-colors text-sm"
-                          >
-                            • {service.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                {serviceCategories.slice(0, 3).map((category, index) => {
+                  const Icon = category.icon;
+                  return (
+                    <div key={index} className="group">
+                      <h4 className="font-semibold text-blue-300 mb-2 flex items-center">
+                        <Icon className="mr-2 h-4 w-4" />
+                        {category.title}
+                      </h4>
+                      <ul className="space-y-1 mb-4">
+                        {category.services.slice(0, 3).map((service, sIndex) => (
+                          <li key={sIndex}>
+                            <a 
+                              href={service.link}
+                              className="text-gray-300 hover:text-white transition-colors text-sm hover:pl-2 duration-200"
+                            >
+                              • {service.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
+                <a href="/services" className="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+                  View All Services →
+                </a>
               </div>
             </div>
 
             {/* Country Offices */}
             <div>
               <h3 className="text-xl font-bold mb-6 flex items-center">
-                <LanguageIcon className="mr-2 h-5 w-5 text-purple-400" />
+                <LocationOnIcon className="mr-2 h-5 w-5 text-purple-400" />
                 Our Offices
               </h3>
               <div className="space-y-4">
                 {countryOffices.map((office, index) => (
-                  <div key={index} className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors">
-                    <div className="flex justify-between items-start">
+                  <div key={index} className="p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors group">
+                    <div className="flex items-start space-x-3">
+                      <FlagIcon className="h-5 w-5 text-gray-400 group-hover:text-blue-400 mt-1" />
                       <div>
                         <h4 className="font-semibold">{office.city}</h4>
                         <p className="text-sm text-gray-400">{office.country}</p>
+                        <p className="text-xs text-gray-500 mt-1">{office.address}</p>
+                        <a 
+                          href={`tel:${office.phone.replace(/\s+/g, '')}`}
+                          className="text-blue-400 hover:text-blue-300 text-sm block mt-2"
+                        >
+                          {office.phone}
+                        </a>
                       </div>
-                      <a 
-                        href={`tel:${office.phone.replace(/\s+/g, '')}`}
-                        className="text-blue-400 hover:text-blue-300 text-sm"
-                      >
-                        {office.phone}
-                      </a>
                     </div>
                   </div>
                 ))}
@@ -422,18 +531,27 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Partner Universities */}
-          <div className="mb-12">
-            <h3 className="text-xl font-bold mb-6 text-center">Partner Universities</h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              {partnerUniversities.map((university, index) => (
-                <div 
-                  key={index}
-                  className="px-4 py-2 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
-                >
-                  <span className="text-gray-300">{university}</span>
-                </div>
-              ))}
+          {/* Why Choose RECAPPLY Section */}
+          <div className="mb-12 bg-gray-800/30 rounded-2xl p-8 border border-gray-700">
+            <h3 className="text-2xl font-bold mb-6 text-center">Why Students Choose RECAPPLY</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: VerifiedIcon, title: 'High Success Rate', desc: 'Proven track record of admissions & visas' },
+                { icon: DescriptionIcon, title: 'Professional Documents', desc: 'High-quality SOPs and application materials' },
+                { icon: PeopleIcon, title: 'Personalized Support', desc: 'One-on-one guidance throughout the process' },
+                { icon: PartnershipIcon, title: 'University Partnerships', desc: 'Direct connections with institutions worldwide' },
+              ].map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <div key={index} className="text-center p-4">
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-900/30 rounded-xl mb-4">
+                      <Icon className="h-6 w-6 text-blue-400" />
+                    </div>
+                    <h4 className="font-bold mb-2">{item.title}</h4>
+                    <p className="text-gray-400 text-sm">{item.desc}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -443,7 +561,7 @@ export const Footer = () => {
               
               {/* Social Media */}
               <div className="flex items-center space-x-4">
-                <span className="text-gray-400">Follow us:</span>
+                <span className="text-gray-400">Connect with us:</span>
                 <div className="flex space-x-2">
                   {socialLinks.map((social, index) => {
                     const Icon = social.icon;
@@ -478,7 +596,7 @@ export const Footer = () => {
               {/* Copyright */}
               <div className="flex items-center space-x-2 text-gray-400 text-sm">
                 <CopyrightIcon className="h-4 w-4" />
-                <span>© 2024 Study Asia Connect. All rights reserved.</span>
+                <span>© 2024 RECAPPLY - Ruziga Enterprise Corporation Ltd. All rights reserved.</span>
               </div>
             </div>
 
@@ -487,25 +605,29 @@ export const Footer = () => {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
                 <div className="flex items-center space-x-2">
                   <HelpIcon className="h-4 w-4" />
-                  <span>FAQs</span>
+                  <span>FAQs & Support</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <PolicyIcon className="h-4 w-4" />
-                  <span>Compliance</span>
+                  <span>Compliance & Ethics</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <ContactSupportIcon className="h-4 w-4" />
-                  <span>Support Center</span>
+                  <span>Student Support Center</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <BusinessIcon className="h-4 w-4" />
-                  <span>Careers</span>
+                  <PartnershipIcon className="h-4 w-4" />
+                  <span>University Partnerships</span>
                 </div>
               </div>
-              <p className="text-xs text-gray-600 mt-4">
-                Study Asia Connect is an ISO 9001:2015 certified education consultancy. 
-                We are not directly affiliated with any universities. We provide consultancy 
-                services to help students with their applications.
+              <p className="text-xs text-gray-600 mt-4 max-w-3xl mx-auto">
+                RECAPPLY is the international education division of Ruziga Enterprise Corporation Ltd (REC Ltd). 
+                We provide professional educational consultancy services to help students secure admissions, 
+                scholarships, and visas to universities worldwide. We are not directly affiliated with any 
+                universities but work as authorized educational consultants.
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                Mission: To guide every student confidently from application to arrival.
               </p>
             </div>
           </div>
@@ -514,4 +636,3 @@ export const Footer = () => {
     </>
   );
 };
-
