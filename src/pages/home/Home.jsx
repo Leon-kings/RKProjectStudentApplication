@@ -11,12 +11,12 @@ export const Home = () => {
   return (
     <div className="w-full">
       <Hero />
-      {/* <About />
-      <Services /> */}
+      <About />
+      <Services />
       <Blogs />
-      {/* <FAQ/>
+      <FAQ/>
       <Testimonials/>
-      <Team /> */}
+      <Team />
     </div>
   );
 };

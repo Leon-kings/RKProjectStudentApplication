@@ -1152,45 +1152,7 @@ export const Services = () => {
           })}
         </motion.div>
 
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2 }}
-          className="mt-12 md:mt-20 text-center"
-        >
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 md:p-12 text-white">
-            <h2 className="text-2xl xs:text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-              Ready to Start Your Journey?
-            </h2>
-            <p className="text-lg md:text-xl text-gray-300 mb-6 md:mb-8 max-w-3xl mx-auto">
-              Contact our RECAPPLY team for personalized guidance and support throughout your international education journey.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 justify-center">
-              <button
-                onClick={() => window.open(`https://wa.me/${contactInfo.whatsapp}`, '_blank')}
-                className="px-6 xs:px-8 py-3 xs:py-4 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-all duration-300 flex items-center justify-center space-x-2"
-              >
-                <span>Chat on WhatsApp</span>
-                <ArrowForwardIcon className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => window.open(`tel:${contactInfo.phone}`)}
-                className="px-6 xs:px-8 py-3 xs:py-4 bg-white text-gray-900 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 flex items-center justify-center space-x-2"
-              >
-                <PhoneIcon className="h-5 w-5" />
-                <span>Call Now</span>
-              </button>
-              <button
-                onClick={() => window.open(`mailto:${contactInfo.email}`)}
-                className="px-6 xs:px-8 py-3 xs:py-4 bg-blue-500 text-white rounded-xl font-bold hover:bg-blue-600 transition-all duration-300 flex items-center justify-center space-x-2"
-              >
-                <EmailIcon className="h-5 w-5" />
-                <span>Email Us</span>
-              </button>
-            </div>
-          </div>
-        </motion.div>
+
       </div>
 
       <BookingModal />
