@@ -1,4 +1,3 @@
-
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -134,20 +133,17 @@ export const Navbar = () => {
     {
       path: "/",
       label: "Home",
-
       gradient: "from-blue-600 to-cyan-600",
     },
     {
       path: "/about",
       label: "About",
-
       gradient: "from-purple-600 to-pink-600",
       description: "Learn about RECAPPLY",
     },
     {
       path: "/team",
       label: "Team",
-
       gradient: "from-orange-600 to-red-600",
       description: "Meet our experts",
     },
@@ -796,13 +792,11 @@ export const Navbar = () => {
                     variants={navItemVariants}
                     whileHover="hover"
                     className={`px-4 py-2.5 rounded-xl transition-all duration-300 flex items-center space-x-2 ${
-                      location.pathname === "" ||
-                      isServicesDropdownOpen
+                      location.pathname === "" || isServicesDropdownOpen
                         ? "bg-white/25 shadow-lg backdrop-blur-sm"
                         : "bg-white/10 hover:bg-white/20"
                     }`}
                   >
-                    <ServicesIcon className="w-5 h-5" />
                     <span className="font-medium">Services</span>
                     <ExpandMoreIcon
                       className={`w-4 h-4 transition-transform ${
@@ -1153,7 +1147,6 @@ export const Navbar = () => {
                           className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl hover:shadow-lg transition-all"
                         >
                           <DashboardIcon className="w-5 h-5" />
-                         
                         </motion.button>
 
                         <motion.button
@@ -1271,10 +1264,7 @@ export const Navbar = () => {
                       <PhoneIcon className="w-5 h-5 text-blue-600 mr-3" />
                       <div>
                         <p className="text-sm text-gray-600">Rwanda Office</p>
-                        <b
-                        
-                          className="font-semibold text-gray-800 hover:text-blue-600"
-                        >
+                        <b className="font-semibold text-gray-800 hover:text-blue-600">
                           {recapplyContact.rwandaPhone}
                         </b>
                       </div>
@@ -1283,10 +1273,7 @@ export const Navbar = () => {
                       <LanguageIcon className="w-5 h-5 text-red-600 mr-3" />
                       <div>
                         <p className="text-sm text-gray-600">China Office</p>
-                        <b
-                
-                          className="font-semibold text-gray-800 hover:text-red-600"
-                        >
+                        <b className="font-semibold text-gray-800 hover:text-red-600">
                           {recapplyContact.chinaPhone}
                         </b>
                       </div>
@@ -1490,7 +1477,6 @@ export const Navbar = () => {
                     </motion.button>
                   </div>
                 </div>
-
 
                 {/* Form Content */}
                 <div className="overflow-y-auto max-h-[calc(90vh-180px)]">
@@ -1852,6 +1838,3 @@ export const Navbar = () => {
     </>
   );
 };
-
-
-
