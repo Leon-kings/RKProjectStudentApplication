@@ -1,33 +1,34 @@
 #root {
-
+  width: 100%;
   padding: 0.5rem;
   text-align: center;
 }
 /* Responsive Utility System */
 :root {
-  --responsive-breakpoint-sm: 40rem;    /* 640px */
-  --responsive-breakpoint-md: 48rem;    /* 768px */
-  --responsive-breakpoint-lg: 64rem;    /* 1024px */
-  --responsive-breakpoint-xl: 80rem;    /* 1280px */
-  --responsive-breakpoint-2xl: 96rem;   /* 1536px */
+  --responsive-breakpoint-sm: 40rem; /* 640px */
+  --responsive-breakpoint-md: 48rem; /* 768px */
+  --responsive-breakpoint-lg: 64rem; /* 1024px */
+  --responsive-breakpoint-xl: 80rem; /* 1280px */
+  --responsive-breakpoint-2xl: 96rem; /* 1536px */
 }
 
 /* Container Queries Approach */
 .responsiveContainer {
   container-type: inline-size;
   width: 100%;
+  border-radius: 12px;
   margin-inline: auto;
   max-width: var(--responsive-breakpoint-2xl);
   padding-inline: 1rem;
-  
+
   @container (width >= 40rem) {
     padding-inline: 1.5rem;
   }
-  
+
   @container (width >= 64rem) {
     padding-inline: 2rem;
   }
-  
+
   @container (width >= 80rem) {
     padding-inline: 3rem;
   }
@@ -37,7 +38,7 @@
 .responsiveTextXs {
   font-size: 0.75rem;
   line-height: 1.5;
-  
+
   @media (width >= 40rem) {
     font-size: 0.875rem;
   }
@@ -46,7 +47,7 @@
 .responsiveTextSm {
   font-size: 0.875rem;
   line-height: 1.5;
-  
+
   @media (width >= 40rem) {
     font-size: 1rem;
   }
@@ -55,7 +56,7 @@
 .responsiveTextBase {
   font-size: 1rem;
   line-height: 1.5;
-  
+
   @media (width >= 40rem) {
     font-size: 1.125rem;
   }
@@ -64,11 +65,11 @@
 .responsiveTextLg {
   font-size: 1.125rem;
   line-height: 1.5;
-  
+
   @media (width >= 40rem) {
     font-size: 1.25rem;
   }
-  
+
   @media (width >= 48rem) {
     font-size: 1.5rem;
   }
@@ -77,15 +78,15 @@
 .responsiveTextXl {
   font-size: 1.25rem;
   line-height: 1.5;
-  
+
   @media (width >= 40rem) {
     font-size: 1.5rem;
   }
-  
+
   @media (width >= 48rem) {
     font-size: 1.875rem;
   }
-  
+
   @media (width >= 64rem) {
     font-size: 2.25rem;
   }
@@ -94,15 +95,15 @@
 .responsiveText2xl {
   font-size: 1.5rem;
   line-height: 1.5;
-  
+
   @media (width >= 40rem) {
     font-size: 1.875rem;
   }
-  
+
   @media (width >= 48rem) {
     font-size: 2.25rem;
   }
-  
+
   @media (width >= 64rem) {
     font-size: 3rem;
   }
@@ -111,15 +112,15 @@
 .responsiveText3xl {
   font-size: 1.875rem;
   line-height: 1.5;
-  
+
   @media (width >= 40rem) {
     font-size: 2.25rem;
   }
-  
+
   @media (width >= 48rem) {
     font-size: 3rem;
   }
-  
+
   @media (width >= 64rem) {
     font-size: 3.75rem;
   }
@@ -130,17 +131,17 @@
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
-  
+
   @media (width >= 40rem) {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
-  
+
   @media (width >= 64rem) {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
   }
-  
+
   @media (width >= 80rem) {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -154,15 +155,15 @@
   transition-property: box-shadow, transform;
   transition-duration: 300ms;
   transition-timing-function: ease-in-out;
-  
+
   @media (width >= 40rem) {
     padding: 1.5rem;
   }
-  
+
   @media (width >= 48rem) {
     padding: 2rem;
   }
-  
+
   &:hover {
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
   }
@@ -175,7 +176,7 @@
   font-weight: 500;
   border-radius: 0.5rem;
   transition: all 200ms ease;
-  
+
   @media (width >= 40rem) {
     padding-block: 0.75rem;
     padding-inline: 1.5rem;
@@ -191,13 +192,13 @@
   border: 1px solid #d1d5db;
   background-color: white;
   transition: border-color 150ms ease;
-  
+
   @media (width >= 40rem) {
     padding-block: 0.75rem;
     padding-inline: 1.5rem;
     font-size: 1rem;
   }
-  
+
   &:focus {
     border-color: #3b82f6;
     outline: 2px solid transparent;
@@ -245,6 +246,6 @@
 
 /* Global Transitions */
 .globalTransition {
-  transition: color 200ms ease, background-color 200ms ease, 
-              border-color 200ms ease, box-shadow 200ms ease;
+  transition: color 200ms ease, background-color 200ms ease,
+    border-color 200ms ease, box-shadow 200ms ease;
 }

@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -49,6 +49,913 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 // API Configuration
 const API_BASE_URL = 'https://your-api-server.com/api';
 
+// Constants
+const EXAM_TYPES = [
+  'All Exams',
+  'HSK (Chinese Proficiency)',
+  'HSKK (Speaking Test)',
+  'BCT (Business Chinese)',
+  'YCT (Youth Chinese Test)',
+  'CSCA (China Scholastic Assessment)',
+  'Gaokao (University Entrance)',
+  'Subject-specific Tests'
+];
+
+const EXAM_LEVELS = [
+  'All Levels',
+  'Beginner (HSK 1-2)',
+  'Intermediate (HSK 3-4)',
+  'Advanced (HSK 5-6)',
+  'Business Chinese',
+  'Academic Chinese',
+  'University Entrance'
+];
+
+const STUDY_MODES = [
+  'Online Self-paced',
+  'Online Live Classes',
+  'In-person Intensive',
+  'Weekend Classes',
+  'One-on-one Tutoring',
+  'Group Study'
+];
+
+const INITIAL_ENROLLMENT_FORM = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  nationality: '',
+  currentEducation: '',
+  targetExam: '',
+  targetLevel: '',
+  preferredDate: '',
+  studyMode: '',
+  hoursPerWeek: '',
+  priorExperience: '',
+  specificNeeds: ''
+};
+
+// Featured exams data
+const FEATURED_EXAMS = [
+  {
+    id: 1,
+    name: 'HSK (Hanyu Shuiping Kaoshi)',
+    type: 'Chinese Proficiency',
+    levels: ['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5', 'Level 6'],
+    nextExamDate: 'March 16, 2024',
+    registrationDeadline: 'February 28, 2024',
+    registrationStatus: 'open',
+    duration: '2-3 hours',
+    fee: '$30 - $100',
+    difficulty: 'Intermediate',
+    passingScore: '180/300',
+    image: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=800&q=80',
+    featured: true,
+    description: 'The official Chinese proficiency test for non-native speakers. Required for university admissions in China.',
+    requirements: ['Valid passport', 'Recent photo', 'Registration form'],
+    testCenters: ['Beijing', 'Shanghai', 'Guangzhou', 'Online'],
+    preparationTime: '3-6 months',
+    recommendedFor: ['University applicants', 'Job seekers', 'Language learners']
+  },
+  {
+    id: 2,
+    name: 'CSCA (China Scholastic Competency Assessment)',
+    type: 'University Entrance',
+    levels: ['Undergraduate Entry'],
+    nextExamDate: 'May 18, 2024',
+    registrationDeadline: 'April 15, 2024',
+    registrationStatus: 'open',
+    duration: '4 hours',
+    fee: '$150',
+    difficulty: 'Advanced',
+    passingScore: '60%',
+    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
+    featured: true,
+    description: 'Mandatory exam for international students applying to Chinese undergraduate programs. Tests academic readiness.',
+    requirements: ['High school diploma', 'Passport copy', 'Application form'],
+    testCenters: ['Designated centers worldwide'],
+    preparationTime: '6-12 months',
+    recommendedFor: ['Undergraduate applicants to China'],
+    subjects: ['Mathematics', 'Physics', 'Chemistry', 'Chinese', 'English']
+  },
+  {
+    id: 3,
+    name: 'HSKK (Chinese Speaking Test)',
+    type: 'Speaking Proficiency',
+    levels: ['Beginner', 'Intermediate', 'Advanced'],
+    nextExamDate: 'April 20, 2024',
+    registrationDeadline: 'March 30, 2024',
+    registrationStatus: 'open',
+    duration: '30-45 minutes',
+    fee: '$40 - $80',
+    difficulty: 'Varies by level',
+    passingScore: '60/100',
+    image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=800&q=80',
+    featured: true,
+    description: 'Assesses spoken Chinese ability. Often required with HSK for comprehensive language evaluation.',
+    requirements: ['HSK registration', 'Audio recording equipment'],
+    testCenters: ['Same as HSK centers', 'Online option'],
+    preparationTime: '2-4 months',
+    recommendedFor: ['Scholarship applicants', 'Teaching positions']
+  }
+];
+
+// Quiz questions
+const QUIZ_QUESTIONS = [
+  {
+    id: 1,
+    question: 'What is the minimum HSK level required for undergraduate study in China?',
+    options: ['HSK 3', 'HSK 4', 'HSK 5', 'HSK 6'],
+    correctAnswer: 1,
+    explanation: 'Most Chinese universities require HSK 4 (180 points minimum) for undergraduate programs taught in Chinese.'
+  },
+  {
+    id: 2,
+    question: 'How long is the CSCA exam valid?',
+    options: ['1 year', '2 years', '3 years', '4 years'],
+    correctAnswer: 1,
+    explanation: 'CSCA results are valid for 2 years from the exam date.'
+  },
+  {
+    id: 3,
+    question: 'Which section has the highest weight in CSCA?',
+    options: ['Mathematics', 'Physics', 'Chemistry', 'Chinese'],
+    correctAnswer: 0,
+    explanation: 'Mathematics carries 40% weight in the CSCA exam, making it the most important section.'
+  }
+];
+
+// Memoized Exam Card Component
+const ExamCard = React.memo(({ exam, isSaved, onToggleSave, onViewDetails }) => {
+  const daysUntilExam = Math.ceil((new Date(exam.nextExamDate) - new Date()) / (1000 * 60 * 60 * 24));
+  const isUpcoming = daysUntilExam <= 60;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300"
+    >
+      <div className="relative h-48 overflow-hidden">
+        <img
+          src={exam.image}
+          alt={exam.name}
+          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute top-4 left-4">
+          <div className={`px-3 py-1 text-white text-xs font-bold rounded-full ${
+            exam.type.includes('Proficiency') ? 'bg-blue-600' : 
+            exam.type.includes('Entrance') ? 'bg-purple-600' : 
+            exam.type.includes('Business') ? 'bg-green-600' : 'bg-orange-600'
+          }`}>
+            {exam.type.split(' ')[0]}
+          </div>
+        </div>
+        <div className="absolute top-4 right-4 flex space-x-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleSave(exam.id);
+            }}
+            className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+          >
+            {isSaved ? (
+              <BookmarkIcon className="h-5 w-5 text-blue-600" />
+            ) : (
+              <BookmarkBorderIcon className="h-5 w-5 text-gray-600" />
+            )}
+          </button>
+          {exam.featured && (
+            <div className="px-2 py-1 bg-yellow-500 text-white text-xs font-bold rounded-full">
+              Featured
+            </div>
+          )}
+        </div>
+        {isUpcoming && (
+          <div className="absolute bottom-4 left-4">
+            <div className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full">
+              {daysUntilExam <= 30 ? 'Register Now!' : 'Upcoming'}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="p-6">
+        <div className="flex items-start justify-between mb-3">
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-1">{exam.name}</h3>
+            <div className="flex items-center text-gray-600">
+              <AssessmentIcon className="h-4 w-4 mr-1" />
+              <span className="text-sm">{exam.type}</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-sm text-gray-600">Difficulty</div>
+            <div className={`font-semibold ${
+              exam.difficulty === 'Beginner' ? 'text-green-600' :
+              exam.difficulty === 'Intermediate' ? 'text-yellow-600' :
+              exam.difficulty === 'Advanced' ? 'text-orange-600' : 'text-red-600'
+            }`}>
+              {exam.difficulty}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="bg-blue-50 p-3 rounded-lg">
+            <div className="flex items-center mb-1">
+              <CalendarMonthIcon className="h-4 w-4 text-blue-600 mr-2" />
+              <span className="text-sm font-semibold text-gray-700">Next Exam</span>
+            </div>
+            <p className="text-sm text-gray-600 font-bold">{exam.nextExamDate}</p>
+          </div>
+          <div className="bg-green-50 p-3 rounded-lg">
+            <div className="flex items-center mb-1">
+              <AttachMoneyIcon className="h-4 w-4 text-green-600 mr-2" />
+              <span className="text-sm font-semibold text-gray-700">Fee</span>
+            </div>
+            <p className="text-sm text-gray-600">{exam.fee}</p>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">Available Levels</h4>
+          <div className="flex flex-wrap gap-2">
+            {exam.levels.slice(0, 3).map((level, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
+              >
+                {level}
+              </span>
+            ))}
+            {exam.levels.length > 3 && (
+              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
+                +{exam.levels.length - 3} more
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <div className="text-sm text-gray-600">
+            <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+              exam.registrationStatus === 'open' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-red-100 text-red-800'
+            }`}>
+              Registration {exam.registrationStatus.toUpperCase()}
+            </span>
+          </div>
+          <button
+            onClick={() => onViewDetails(exam)}
+            className="text-blue-600 font-semibold text-sm flex items-center hover:text-blue-700"
+          >
+            View Details
+            <ArrowForwardIcon className="ml-1 h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+
+// Exam Detail Modal Component
+const ExamDetailModal = React.memo(({ exam, isSaved, onToggleSave, onClose, onEnroll }) => {
+  if (!exam) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 50 }}
+        transition={{ type: "spring", damping: 25 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <div className="flex items-center space-x-2 mb-2">
+                <div className={`px-3 py-1 text-white text-sm font-bold rounded-full ${
+                  exam.type.includes('Proficiency') ? 'bg-blue-600' : 
+                  exam.type.includes('Entrance') ? 'bg-purple-600' : 
+                  exam.type.includes('Business') ? 'bg-green-600' : 'bg-orange-600'
+                }`}>
+                  {exam.type}
+                </div>
+                {exam.featured && (
+                  <div className="px-3 py-1 bg-yellow-500 text-white text-sm font-bold rounded-full">
+                    Featured Exam
+                  </div>
+                )}
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900">{exam.name}</h2>
+              <div className="flex items-center mt-2 space-x-4">
+                <div className="flex items-center">
+                  <TimerIcon className="h-5 w-5 text-gray-500 mr-2" />
+                  <span className="text-gray-600">{exam.duration}</span>
+                </div>
+                <div className="flex items-center">
+                  <AssessmentIcon className="h-5 w-5 text-gray-500 mr-2" />
+                  <span className={`font-semibold ${
+                    exam.difficulty === 'Beginner' ? 'text-green-600' :
+                    exam.difficulty === 'Intermediate' ? 'text-yellow-600' :
+                    exam.difficulty === 'Advanced' ? 'text-orange-600' : 'text-red-600'
+                  }`}>
+                    {exam.difficulty}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => onToggleSave(exam.id)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                {isSaved ? (
+                  <BookmarkIcon className="h-6 w-6 text-blue-600" />
+                ) : (
+                  <BookmarkBorderIcon className="h-6 w-6 text-gray-600" />
+                )}
+              </button>
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <CloseIcon className="h-6 w-6 text-gray-500" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div className="lg:col-span-2">
+              <div className="rounded-xl overflow-hidden mb-6">
+                <img
+                  src={exam.image}
+                  alt={exam.name}
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+              
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Exam Overview</h3>
+                <p className="text-gray-700 mb-4">{exam.description}</p>
+                
+                {exam.subjects && (
+                  <div className="bg-blue-50 p-4 rounded-xl mb-4">
+                    <h4 className="font-bold text-blue-800 mb-2">Test Subjects:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {exam.subjects.map((subject, index) => (
+                        <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                          {subject}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-green-50 p-4 rounded-xl">
+                  <div className="flex items-center mb-2">
+                    <CalendarMonthIcon className="h-6 w-6 text-green-600 mr-2" />
+                    <span className="font-semibold text-gray-800">Next Exam Date</span>
+                  </div>
+                  <p className="text-2xl font-bold text-green-700">{exam.nextExamDate}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Registration until: {exam.registrationDeadline}
+                  </p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-xl">
+                  <div className="flex items-center mb-2">
+                    <SpeedIcon className="h-6 w-6 text-blue-600 mr-2" />
+                    <span className="font-semibold text-gray-800">Preparation Time</span>
+                  </div>
+                  <p className="text-2xl font-bold text-blue-700">{exam.preparationTime}</p>
+                  <p className="text-sm text-gray-600 mt-1">Recommended study duration</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="bg-gray-50 p-5 rounded-xl">
+                <h4 className="font-bold text-gray-900 mb-4">Exam Details</h4>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Passing Score</p>
+                    <p className="font-semibold text-gray-900">{exam.passingScore}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Exam Fee</p>
+                    <p className="font-semibold text-gray-900">{exam.fee}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Registration Status</p>
+                    <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                      exam.registrationStatus === 'open' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {exam.registrationStatus.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-5 rounded-xl text-white">
+                <h4 className="font-bold mb-4">Recommended For</h4>
+                <ul className="space-y-2">
+                  {exam.recommendedFor.map((item, index) => (
+                    <li key={index} className="flex items-center">
+                      <CheckCircleIcon className="h-4 w-4 mr-2" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <button
+                onClick={() => onEnroll(exam)}
+                className="w-full py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold rounded-xl hover:shadow-lg transition-all duration-300"
+              >
+                Enroll in Preparation Course
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Test Centers</h3>
+              <div className="bg-gray-50 p-5 rounded-xl">
+                <ul className="space-y-3">
+                  {exam.testCenters.map((center, index) => (
+                    <li key={index} className="flex items-start">
+                      <LocationOnIcon className="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{center}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Requirements</h3>
+              <div className="bg-gray-50 p-5 rounded-xl">
+                <ul className="space-y-3">
+                  {exam.requirements.map((requirement, index) => (
+                    <li key={index} className="flex items-start">
+                      <DescriptionIcon className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{requirement}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-yellow-50 p-5 rounded-xl border border-yellow-200">
+            <div className="flex items-start">
+              <ErrorIcon className="h-6 w-6 text-yellow-600 mr-3 mt-0.5 flex-shrink-0" />
+              <div>
+                <h4 className="font-bold text-yellow-800 mb-2">Important Information</h4>
+                <ul className="text-yellow-700 space-y-1">
+                  <li>• Registration closes on {exam.registrationDeadline}</li>
+                  <li>• Late registrations may incur additional fees</li>
+                  <li>• Test results are typically available 4-6 weeks after the exam</li>
+                  <li>• Bring valid identification to the test center</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+});
+
+// Enrollment Modal Component with local state to prevent cursor issues
+const EnrollmentModal = React.memo(({ 
+  isOpen, 
+  onClose, 
+  onSubmit, 
+  initialForm, 
+  exams 
+}) => {
+  const [localForm, setLocalForm] = useState(initialForm);
+  const formRef = useRef(null);
+
+  // Reset form when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalForm(initialForm);
+      // Focus first input after a short delay to ensure modal is fully rendered
+      setTimeout(() => {
+        const firstInput = formRef.current?.querySelector('input, select, textarea');
+        if (firstInput) {
+          firstInput.focus();
+        }
+      }, 100);
+    }
+  }, [isOpen, initialForm]);
+
+  const handleLocalChange = useCallback((field, value) => {
+    setLocalForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  }, []);
+
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    onSubmit(localForm);
+  }, [localForm, onSubmit]);
+
+  if (!isOpen) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-60"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 50 }}
+        transition={{ type: "spring", damping: 25 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Exam Preparation Enrollment</h2>
+              <p className="text-gray-600 mt-1">Join our specialized preparation courses for Chinese exams</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              type="button"
+            >
+              <CloseIcon className="h-6 w-6 text-gray-500" />
+            </button>
+          </div>
+
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  First Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={localForm.firstName}
+                  onChange={(e) => handleLocalChange('firstName', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                  placeholder="John"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Last Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={localForm.lastName}
+                  onChange={(e) => handleLocalChange('lastName', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                  placeholder="Doe"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={localForm.email}
+                  onChange={(e) => handleLocalChange('email', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                  placeholder="john@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={localForm.phone}
+                  onChange={(e) => handleLocalChange('phone', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                  placeholder="+250 783 408 617"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Nationality *
+                </label>
+                <select
+                  required
+                  value={localForm.nationality}
+                  onChange={(e) => handleLocalChange('nationality', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                >
+                  <option value="">Select nationality</option>
+                  <option value="rwandan">Rwandan</option>
+                  <option value="kenyan">Kenyan</option>
+                  <option value="ugandan">Ugandan</option>
+                  <option value="tanzanian">Tanzanian</option>
+                  <option value="nigerian">Nigerian</option>
+                  <option value="ghanaian">Ghanaian</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Current Education Level *
+                </label>
+                <select
+                  required
+                  value={localForm.currentEducation}
+                  onChange={(e) => handleLocalChange('currentEducation', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                >
+                  <option value="">Select level</option>
+                  <option value="high-school">High School</option>
+                  <option value="undergraduate">Undergraduate</option>
+                  <option value="graduate">Graduate</option>
+                  <option value="working-professional">Working Professional</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Target Exam *
+                </label>
+                <select
+                  required
+                  value={localForm.targetExam}
+                  onChange={(e) => handleLocalChange('targetExam', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                >
+                  <option value="">Select exam</option>
+                  {exams.map((exam, index) => (
+                    <option key={index} value={exam.name}>{exam.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Target Level *
+                </label>
+                <select
+                  required
+                  value={localForm.targetLevel}
+                  onChange={(e) => handleLocalChange('targetLevel', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                >
+                  <option value="">Select level</option>
+                  <option value="beginner">Beginner (HSK 1-2)</option>
+                  <option value="intermediate">Intermediate (HSK 3-4)</option>
+                  <option value="advanced">Advanced (HSK 5-6)</option>
+                  <option value="university">University Entrance</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Preferred Study Mode *
+                </label>
+                <select
+                  required
+                  value={localForm.studyMode}
+                  onChange={(e) => handleLocalChange('studyMode', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                >
+                  <option value="">Select mode</option>
+                  {STUDY_MODES.map((mode, index) => (
+                    <option key={index} value={mode}>{mode}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Hours Available Per Week *
+                </label>
+                <select
+                  required
+                  value={localForm.hoursPerWeek}
+                  onChange={(e) => handleLocalChange('hoursPerWeek', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                >
+                  <option value="">Select hours</option>
+                  <option value="5-10">5-10 hours</option>
+                  <option value="10-15">10-15 hours</option>
+                  <option value="15-20">15-20 hours</option>
+                  <option value="20+">20+ hours</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Prior Chinese Language Experience
+              </label>
+              <textarea
+                rows="2"
+                value={localForm.priorExperience}
+                onChange={(e) => handleLocalChange('priorExperience', e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 resize-none"
+                placeholder="Describe any previous Chinese language study or exposure..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Specific Learning Needs or Goals
+              </label>
+              <textarea
+                rows="2"
+                value={localForm.specificNeeds}
+                onChange={(e) => handleLocalChange('specificNeeds', e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 resize-none"
+                placeholder="Any specific areas you want to focus on or target scores..."
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all duration-300"
+            >
+              Submit Enrollment Request
+            </button>
+          </form>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+});
+
+// Quiz Modal Component
+const QuizModal = React.memo(({ 
+  isOpen, 
+  onClose, 
+  questions, 
+  currentQuestion, 
+  testResults, 
+  onAnswer 
+}) => {
+  if (!isOpen || currentQuestion >= questions.length) return null;
+
+  const currentQ = questions[currentQuestion];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-60"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 50 }}
+        transition={{ type: "spring", damping: 25 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Quick Knowledge Quiz</h2>
+              <p className="text-gray-600 mt-1">Question {currentQuestion + 1} of {questions.length}</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <CloseIcon className="h-6 w-6 text-gray-500" />
+            </button>
+          </div>
+
+          <div className="mb-6">
+            <div className="flex items-center mb-4">
+              <QuizIcon className="h-6 w-6 text-blue-600 mr-2" />
+              <h3 className="text-lg font-semibold text-gray-900">{currentQ.question}</h3>
+            </div>
+            
+            <div className="space-y-3">
+              {currentQ.options.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() => onAnswer(index)}
+                  className="w-full p-4 text-left border-2 border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
+                >
+                  <div className="flex items-center">
+                    <div className={`w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center ${
+                      testResults[currentQ.id] !== undefined 
+                        ? index === currentQ.correctAnswer 
+                          ? 'border-green-500 bg-green-100' 
+                          : 'border-gray-300'
+                        : 'border-gray-300'
+                    }`}>
+                      {String.fromCharCode(65 + index)}
+                    </div>
+                    <span className="text-gray-700">{option}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center text-sm text-gray-600">
+            Test your knowledge about Chinese exams and requirements
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+});
+
+// Pagination Component
+const Pagination = React.memo(({ currentPage, totalPages, onPageChange }) => {
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <div className="flex items-center justify-center space-x-2 mt-8">
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`px-3 py-2 rounded-lg ${
+          currentPage === 1
+            ? 'text-gray-400 cursor-not-allowed'
+            : 'text-gray-700 hover:bg-gray-100'
+        }`}
+      >
+        Previous
+      </button>
+      
+      {pageNumbers.map(number => (
+        <button
+          key={number}
+          onClick={() => onPageChange(number)}
+          className={`w-10 h-10 rounded-lg font-semibold ${
+            currentPage === number
+              ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          {number}
+        </button>
+      ))}
+      
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className={`px-3 py-2 rounded-lg ${
+          currentPage === totalPages
+            ? 'text-gray-400 cursor-not-allowed'
+            : 'text-gray-700 hover:bg-gray-100'
+        }`}
+      >
+        Next
+      </button>
+    </div>
+  );
+});
+
+// Main CESP Component
 export const CESP = () => {
   // State Management
   const [exams, setExams] = useState([]);
@@ -72,163 +979,14 @@ export const CESP = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
-
-  // Enrollment form state
-  const [enrollmentForm, setEnrollmentForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    nationality: '',
-    currentEducation: '',
-    targetExam: '',
-    targetLevel: '',
-    preferredDate: '',
-    studyMode: '',
-    hoursPerWeek: '',
-    priorExperience: '',
-    specificNeeds: ''
-  });
-
-  // Exam types
-  const examTypes = [
-    'All Exams',
-    'HSK (Chinese Proficiency)',
-    'HSKK (Speaking Test)',
-    'BCT (Business Chinese)',
-    'YCT (Youth Chinese Test)',
-    'CSCA (China Scholastic Assessment)',
-    'Gaokao (University Entrance)',
-    'Subject-specific Tests'
-  ];
-
-  // Exam levels
-  const examLevels = [
-    'All Levels',
-    'Beginner (HSK 1-2)',
-    'Intermediate (HSK 3-4)',
-    'Advanced (HSK 5-6)',
-    'Business Chinese',
-    'Academic Chinese',
-    'University Entrance'
-  ];
-
-  // Study modes
-  const studyModes = [
-    'Online Self-paced',
-    'Online Live Classes',
-    'In-person Intensive',
-    'Weekend Classes',
-    'One-on-one Tutoring',
-    'Group Study'
-  ];
-
-  // Featured exams
-  const featuredExams = [
-    {
-      id: 1,
-      name: 'HSK (Hanyu Shuiping Kaoshi)',
-      type: 'Chinese Proficiency',
-      levels: ['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5', 'Level 6'],
-      nextExamDate: 'March 16, 2024',
-      registrationDeadline: 'February 28, 2024',
-      registrationStatus: 'open',
-      duration: '2-3 hours',
-      fee: '$30 - $100',
-      difficulty: 'Intermediate',
-      passingScore: '180/300',
-      image: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=800&q=80',
-      featured: true,
-      description: 'The official Chinese proficiency test for non-native speakers. Required for university admissions in China.',
-      requirements: ['Valid passport', 'Recent photo', 'Registration form'],
-      testCenters: ['Beijing', 'Shanghai', 'Guangzhou', 'Online'],
-      preparationTime: '3-6 months',
-      recommendedFor: ['University applicants', 'Job seekers', 'Language learners']
-    },
-    {
-      id: 2,
-      name: 'CSCA (China Scholastic Competency Assessment)',
-      type: 'University Entrance',
-      levels: ['Undergraduate Entry'],
-      nextExamDate: 'May 18, 2024',
-      registrationDeadline: 'April 15, 2024',
-      registrationStatus: 'open',
-      duration: '4 hours',
-      fee: '$150',
-      difficulty: 'Advanced',
-      passingScore: '60%',
-      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
-      featured: true,
-      description: 'Mandatory exam for international students applying to Chinese undergraduate programs. Tests academic readiness.',
-      requirements: ['High school diploma', 'Passport copy', 'Application form'],
-      testCenters: ['Designated centers worldwide'],
-      preparationTime: '6-12 months',
-      recommendedFor: ['Undergraduate applicants to China'],
-      subjects: ['Mathematics', 'Physics', 'Chemistry', 'Chinese', 'English']
-    },
-    {
-      id: 3,
-      name: 'HSKK (Chinese Speaking Test)',
-      type: 'Speaking Proficiency',
-      levels: ['Beginner', 'Intermediate', 'Advanced'],
-      nextExamDate: 'April 20, 2024',
-      registrationDeadline: 'March 30, 2024',
-      registrationStatus: 'open',
-      duration: '30-45 minutes',
-      fee: '$40 - $80',
-      difficulty: 'Varies by level',
-      passingScore: '60/100',
-      image: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=800&q=80',
-      featured: true,
-      description: 'Assesses spoken Chinese ability. Often required with HSK for comprehensive language evaluation.',
-      requirements: ['HSK registration', 'Audio recording equipment'],
-      testCenters: ['Same as HSK centers', 'Online option'],
-      preparationTime: '2-4 months',
-      recommendedFor: ['Scholarship applicants', 'Teaching positions']
-    }
-  ];
-
-  // Sample quiz questions
-  const quizQuestions = [
-    {
-      id: 1,
-      question: 'What is the minimum HSK level required for undergraduate study in China?',
-      options: ['HSK 3', 'HSK 4', 'HSK 5', 'HSK 6'],
-      correctAnswer: 1,
-      explanation: 'Most Chinese universities require HSK 4 (180 points minimum) for undergraduate programs taught in Chinese.'
-    },
-    {
-      id: 2,
-      question: 'How long is the CSCA exam valid?',
-      options: ['1 year', '2 years', '3 years', '4 years'],
-      correctAnswer: 1,
-      explanation: 'CSCA results are valid for 2 years from the exam date.'
-    },
-    {
-      id: 3,
-      question: 'Which section has the highest weight in CSCA?',
-      options: ['Mathematics', 'Physics', 'Chemistry', 'Chinese'],
-      correctAnswer: 0,
-      explanation: 'Mathematics carries 40% weight in the CSCA exam, making it the most important section.'
-    }
-  ];
+  const [enrollmentForm, setEnrollmentForm] = useState(INITIAL_ENROLLMENT_FORM);
 
   // Fetch exams data
-  useEffect(() => {
-    fetchExams();
-  }, []);
-
-  // Apply filters when filters change
-  useEffect(() => {
-    applyFilters();
-  }, [filters, searchQuery, sortBy, exams]);
-
-  const fetchExams = async () => {
+  const fetchExams = useCallback(async () => {
     setLoading(true);
     try {
-      // Sample exam data
       const sampleData = [
-        ...featuredExams,
+        ...FEATURED_EXAMS,
         {
           id: 4,
           name: 'BCT (Business Chinese Test)',
@@ -334,18 +1092,22 @@ export const CESP = () => {
 
       setExams(sampleData);
       setFilteredExams(sampleData);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching exams:', error);
-      setLoading(false);
       toast.error('Failed to load exam data');
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
 
-  const applyFilters = () => {
+  useEffect(() => {
+    fetchExams();
+  }, [fetchExams]);
+
+  // Apply filters
+  const applyFilters = useCallback(() => {
     let filtered = [...exams];
 
-    // Apply search filter
     if (searchQuery) {
       filtered = filtered.filter(exam =>
         exam.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -354,24 +1116,20 @@ export const CESP = () => {
       );
     }
 
-    // Apply exam type filter
     if (filters.examType && filters.examType !== 'All Exams') {
       filtered = filtered.filter(exam => exam.type.includes(filters.examType.split(' ')[0]));
     }
 
-    // Apply level filter
     if (filters.level && filters.level !== 'All Levels') {
       filtered = filtered.filter(exam => 
         exam.levels.some(level => level.toLowerCase().includes(filters.level.toLowerCase().split(' ')[0]))
       );
     }
 
-    // Apply registration status filter
     if (filters.registrationStatus) {
       filtered = filtered.filter(exam => exam.registrationStatus === filters.registrationStatus);
     }
 
-    // Apply sorting
     switch (sortBy) {
       case 'date':
         filtered.sort((a, b) => new Date(a.nextExamDate) - new Date(b.nextExamDate));
@@ -396,33 +1154,39 @@ export const CESP = () => {
 
     setFilteredExams(filtered);
     setCurrentPage(1);
-  };
+  }, [exams, filters, searchQuery, sortBy]);
 
-  // Pagination logic
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
+
+  // Pagination
   const indexOfLastExam = currentPage * examsPerPage;
   const indexOfFirstExam = indexOfLastExam - examsPerPage;
   const currentExams = filteredExams.slice(indexOfFirstExam, indexOfLastExam);
   const totalPages = Math.ceil(filteredExams.length / examsPerPage);
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = useCallback((pageNumber) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  // Save exam to favorites
-  const toggleSaveExam = (examId) => {
-    if (savedExams.includes(examId)) {
-      setSavedExams(savedExams.filter(id => id !== examId));
-      toast.info('Removed from saved exams');
-    } else {
-      setSavedExams([...savedExams, examId]);
-      toast.success('Exam saved to favorites');
-    }
-  };
+  // Toggle save exam
+  const toggleSaveExam = useCallback((examId) => {
+    setSavedExams(prev => {
+      if (prev.includes(examId)) {
+        toast.info('Removed from saved exams');
+        return prev.filter(id => id !== examId);
+      } else {
+        toast.success('Exam saved to favorites');
+        return [...prev, examId];
+      }
+    });
+  }, []);
 
   // Handle quiz answer
-  const handleQuizAnswer = (selectedOption) => {
-    const currentQ = quizQuestions[currentQuestion];
+  const handleQuizAnswer = useCallback((selectedOption) => {
+    const currentQ = QUIZ_QUESTIONS[currentQuestion];
     const isCorrect = selectedOption === currentQ.correctAnswer;
     
     setTestResults(prev => ({
@@ -437,783 +1201,77 @@ export const CESP = () => {
       toast.error('Incorrect. ' + currentQ.explanation);
     }
 
-    if (currentQuestion < quizQuestions.length - 1) {
+    if (currentQuestion < QUIZ_QUESTIONS.length - 1) {
       setTimeout(() => setCurrentQuestion(prev => prev + 1), 1500);
     } else {
       setTimeout(() => {
         setShowQuiz(false);
-        toast.success(`Quiz completed! Score: ${quizScore + (isCorrect ? 1 : 0)}/${quizQuestions.length}`);
+        toast.success(`Quiz completed! Score: ${quizScore + (isCorrect ? 1 : 0)}/${QUIZ_QUESTIONS.length}`);
+        setCurrentQuestion(0);
+        setQuizScore(0);
+        setTestResults({});
       }, 1500);
     }
-  };
+  }, [currentQuestion, quizScore]);
 
-  // Enrollment form handling
-  const handleEnrollmentSubmit = async (e) => {
-    e.preventDefault();
+  // Handle enrollment submission
+  const handleEnrollmentSubmit = useCallback(async (formData) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/exam-enrollment`, {
-        ...enrollmentForm,
+        ...formData,
         timestamp: new Date().toISOString(),
         examType: selectedExam?.name
       });
 
       toast.success('Enrollment submitted successfully! Our consultant will contact you within 24 hours.');
       setEnrollmentModalOpen(false);
-      setEnrollmentForm({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        nationality: '',
-        currentEducation: '',
-        targetExam: '',
-        targetLevel: '',
-        preferredDate: '',
-        studyMode: '',
-        hoursPerWeek: '',
-        priorExperience: '',
-        specificNeeds: ''
-      });
+      setEnrollmentForm(INITIAL_ENROLLMENT_FORM);
     } catch (error) {
       toast.error('Error submitting enrollment. Please try again.');
       console.error('Enrollment error:', error);
     }
-  };
+  }, [selectedExam]);
 
-  // Exam Card Component
-  const ExamCard = ({ exam }) => {
-    const isSaved = savedExams.includes(exam.id);
-    const daysUntilExam = Math.ceil((new Date(exam.nextExamDate) - new Date()) / (1000 * 60 * 60 * 24));
-    const isUpcoming = daysUntilExam <= 60;
+  // Handle exam enrollment
+  const handleExamEnrollment = useCallback((exam) => {
+    setEnrollmentForm(prev => ({
+      ...prev,
+      targetExam: exam.name,
+      targetLevel: exam.levels[0]
+    }));
+    setEnrollmentModalOpen(true);
+  }, []);
 
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300"
-      >
-        <div className="relative h-48 overflow-hidden">
-          <img
-            src={exam.image}
-            alt={exam.name}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute top-4 left-4">
-            <div className={`px-3 py-1 text-white text-xs font-bold rounded-full ${
-              exam.type.includes('Proficiency') ? 'bg-blue-600' : 
-              exam.type.includes('Entrance') ? 'bg-purple-600' : 
-              exam.type.includes('Business') ? 'bg-green-600' : 'bg-orange-600'
-            }`}>
-              {exam.type.split(' ')[0]}
-            </div>
-          </div>
-          <div className="absolute top-4 right-4 flex space-x-2">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleSaveExam(exam.id);
-              }}
-              className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
-            >
-              {isSaved ? (
-                <BookmarkIcon className="h-5 w-5 text-blue-600" />
-              ) : (
-                <BookmarkBorderIcon className="h-5 w-5 text-gray-600" />
-              )}
-            </button>
-            {exam.featured && (
-              <div className="px-2 py-1 bg-yellow-500 text-white text-xs font-bold rounded-full">
-                Featured
-              </div>
-            )}
-          </div>
-          {isUpcoming && (
-            <div className="absolute bottom-4 left-4">
-              <div className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full">
-                {daysUntilExam <= 30 ? 'Register Now!' : 'Upcoming'}
-              </div>
-            </div>
-          )}
-        </div>
+  // Clear filters
+  const handleClearFilters = useCallback(() => {
+    setFilters({
+      examType: '',
+      level: '',
+      date: '',
+      registrationStatus: 'open'
+    });
+    setSearchQuery('');
+    setActiveTab('all');
+  }, []);
 
-        <div className="p-6">
-          <div className="flex items-start justify-between mb-3">
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">{exam.name}</h3>
-              <div className="flex items-center text-gray-600">
-                <AssessmentIcon className="h-4 w-4 mr-1" />
-                <span className="text-sm">{exam.type}</span>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm text-gray-600">Difficulty</div>
-              <div className={`font-semibold ${
-                exam.difficulty === 'Beginner' ? 'text-green-600' :
-                exam.difficulty === 'Intermediate' ? 'text-yellow-600' :
-                exam.difficulty === 'Advanced' ? 'text-orange-600' : 'text-red-600'
-              }`}>
-                {exam.difficulty}
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="bg-blue-50 p-3 rounded-lg">
-              <div className="flex items-center mb-1">
-                <CalendarMonthIcon className="h-4 w-4 text-blue-600 mr-2" />
-                <span className="text-sm font-semibold text-gray-700">Next Exam</span>
-              </div>
-              <p className="text-sm text-gray-600 font-bold">{exam.nextExamDate}</p>
-            </div>
-            <div className="bg-green-50 p-3 rounded-lg">
-              <div className="flex items-center mb-1">
-                <AttachMoneyIcon className="h-4 w-4 text-green-600 mr-2" />
-                <span className="text-sm font-semibold text-gray-700">Fee</span>
-              </div>
-              <p className="text-sm text-gray-600">{exam.fee}</p>
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2">Available Levels</h4>
-            <div className="flex flex-wrap gap-2">
-              {exam.levels.slice(0, 3).map((level, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
-                >
-                  {level}
-                </span>
-              ))}
-              {exam.levels.length > 3 && (
-                <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-                  +{exam.levels.length - 3} more
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div className="text-sm text-gray-600">
-              <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                exam.registrationStatus === 'open' 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-red-100 text-red-800'
-              }`}>
-                Registration {exam.registrationStatus.toUpperCase()}
-              </span>
-            </div>
-            <button
-              onClick={() => setSelectedExam(exam)}
-              className="text-blue-600 font-semibold text-sm flex items-center hover:text-blue-700"
-            >
-              View Details
-              <ArrowForwardIcon className="ml-1 h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-  // Exam Detail Modal
-  const ExamDetailModal = () => {
-    if (!selectedExam) return null;
-
-    const isSaved = savedExams.includes(selectedExam.id);
-    const daysUntilExam = Math.ceil((new Date(selectedExam.nextExamDate) - new Date()) / (1000 * 60 * 60 * 24));
-
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60"
-        onClick={() => setSelectedExam(null)}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0, y: 50 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 50 }}
-          transition={{ type: "spring", damping: 25 }}
-          className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="p-6">
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <div className="flex items-center space-x-2 mb-2">
-                  <div className={`px-3 py-1 text-white text-sm font-bold rounded-full ${
-                    selectedExam.type.includes('Proficiency') ? 'bg-blue-600' : 
-                    selectedExam.type.includes('Entrance') ? 'bg-purple-600' : 
-                    selectedExam.type.includes('Business') ? 'bg-green-600' : 'bg-orange-600'
-                  }`}>
-                    {selectedExam.type}
-                  </div>
-                  {selectedExam.featured && (
-                    <div className="px-3 py-1 bg-yellow-500 text-white text-sm font-bold rounded-full">
-                      Featured Exam
-                    </div>
-                  )}
-                </div>
-                <h2 className="text-2xl font-bold text-gray-900">{selectedExam.name}</h2>
-                <div className="flex items-center mt-2 space-x-4">
-                  <div className="flex items-center">
-                    <TimerIcon className="h-5 w-5 text-gray-500 mr-2" />
-                    <span className="text-gray-600">{selectedExam.duration}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <AssessmentIcon className="h-5 w-5 text-gray-500 mr-2" />
-                    <span className={`font-semibold ${
-                      selectedExam.difficulty === 'Beginner' ? 'text-green-600' :
-                      selectedExam.difficulty === 'Intermediate' ? 'text-yellow-600' :
-                      selectedExam.difficulty === 'Advanced' ? 'text-orange-600' : 'text-red-600'
-                    }`}>
-                      {selectedExam.difficulty}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => toggleSaveExam(selectedExam.id)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  {isSaved ? (
-                    <BookmarkIcon className="h-6 w-6 text-blue-600" />
-                  ) : (
-                    <BookmarkBorderIcon className="h-6 w-6 text-gray-600" />
-                  )}
-                </button>
-                <button
-                  onClick={() => setSelectedExam(null)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <CloseIcon className="h-6 w-6 text-gray-500" />
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <div className="lg:col-span-2">
-                <div className="rounded-xl overflow-hidden mb-6">
-                  <img
-                    src={selectedExam.image}
-                    alt={selectedExam.name}
-                    className="w-full h-64 object-cover"
-                  />
-                </div>
-                
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Exam Overview</h3>
-                  <p className="text-gray-700 mb-4">{selectedExam.description}</p>
-                  
-                  {selectedExam.subjects && (
-                    <div className="bg-blue-50 p-4 rounded-xl mb-4">
-                      <h4 className="font-bold text-blue-800 mb-2">Test Subjects:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedExam.subjects.map((subject, index) => (
-                          <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                            {subject}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-green-50 p-4 rounded-xl">
-                    <div className="flex items-center mb-2">
-                      <CalendarMonthIcon className="h-6 w-6 text-green-600 mr-2" />
-                      <span className="font-semibold text-gray-800">Next Exam Date</span>
-                    </div>
-                    <p className="text-2xl font-bold text-green-700">{selectedExam.nextExamDate}</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Registration until: {selectedExam.registrationDeadline}
-                    </p>
-                  </div>
-                  <div className="bg-blue-50 p-4 rounded-xl">
-                    <div className="flex items-center mb-2">
-                      <SpeedIcon className="h-6 w-6 text-blue-600 mr-2" />
-                      <span className="font-semibold text-gray-800">Preparation Time</span>
-                    </div>
-                    <p className="text-2xl font-bold text-blue-700">{selectedExam.preparationTime}</p>
-                    <p className="text-sm text-gray-600 mt-1">Recommended study duration</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div className="bg-gray-50 p-5 rounded-xl">
-                  <h4 className="font-bold text-gray-900 mb-4">Exam Details</h4>
-                  <div className="space-y-4">
-                    <div>
-                      <p className="text-sm text-gray-600 mb-1">Passing Score</p>
-                      <p className="font-semibold text-gray-900">{selectedExam.passingScore}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 mb-1">Exam Fee</p>
-                      <p className="font-semibold text-gray-900">{selectedExam.fee}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 mb-1">Registration Status</p>
-                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${
-                        selectedExam.registrationStatus === 'open' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {selectedExam.registrationStatus.toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-5 rounded-xl text-white">
-                  <h4 className="font-bold mb-4">Recommended For</h4>
-                  <ul className="space-y-2">
-                    {selectedExam.recommendedFor.map((item, index) => (
-                      <li key={index} className="flex items-center">
-                        <CheckCircleIcon className="h-4 w-4 mr-2" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setEnrollmentForm(prev => ({
-                      ...prev,
-                      targetExam: selectedExam.name,
-                      targetLevel: selectedExam.levels[0]
-                    }));
-                    setEnrollmentModalOpen(true);
-                  }}
-                  className="w-full py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold rounded-xl hover:shadow-lg transition-all duration-300"
-                >
-                  Enroll in Preparation Course
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Test Centers</h3>
-                <div className="bg-gray-50 p-5 rounded-xl">
-                  <ul className="space-y-3">
-                    {selectedExam.testCenters.map((center, index) => (
-                      <li key={index} className="flex items-start">
-                        <LocationOnIcon className="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{center}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Requirements</h3>
-                <div className="bg-gray-50 p-5 rounded-xl">
-                  <ul className="space-y-3">
-                    {selectedExam.requirements.map((requirement, index) => (
-                      <li key={index} className="flex items-start">
-                        <DescriptionIcon className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{requirement}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-yellow-50 p-5 rounded-xl border border-yellow-200">
-              <div className="flex items-start">
-                <ErrorIcon className="h-6 w-6 text-yellow-600 mr-3 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-bold text-yellow-800 mb-2">Important Information</h4>
-                  <ul className="text-yellow-700 space-y-1">
-                    <li>• Registration closes on {selectedExam.registrationDeadline}</li>
-                    <li>• Late registrations may incur additional fees</li>
-                    <li>• Test results are typically available 4-6 weeks after the exam</li>
-                    <li>• Bring valid identification to the test center</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    );
-  };
-
-  // Enrollment Modal
-  const EnrollmentModal = () => {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-60"
-        onClick={() => setEnrollmentModalOpen(false)}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0, y: 50 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 50 }}
-          transition={{ type: "spring", damping: 25 }}
-          className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Exam Preparation Enrollment</h2>
-                <p className="text-gray-600 mt-1">Join our specialized preparation courses for Chinese exams</p>
-              </div>
-              <button
-                onClick={() => setEnrollmentModalOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <CloseIcon className="h-6 w-6 text-gray-500" />
-              </button>
-            </div>
-
-            <form onSubmit={handleEnrollmentSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    First Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={enrollmentForm.firstName}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, firstName: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                    placeholder="John"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Last Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={enrollmentForm.lastName}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, lastName: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                    placeholder="Doe"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={enrollmentForm.email}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, email: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                    placeholder="john@example.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={enrollmentForm.phone}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, phone: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                    placeholder="+250 783 408 617"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Nationality *
-                  </label>
-                  <select
-                    required
-                    value={enrollmentForm.nationality}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, nationality: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                  >
-                    <option value="">Select nationality</option>
-                    <option value="rwandan">Rwandan</option>
-                    <option value="kenyan">Kenyan</option>
-                    <option value="ugandan">Ugandan</option>
-                    <option value="tanzanian">Tanzanian</option>
-                    <option value="nigerian">Nigerian</option>
-                    <option value="ghanaian">Ghanaian</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Current Education Level *
-                  </label>
-                  <select
-                    required
-                    value={enrollmentForm.currentEducation}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, currentEducation: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                  >
-                    <option value="">Select level</option>
-                    <option value="high-school">High School</option>
-                    <option value="undergraduate">Undergraduate</option>
-                    <option value="graduate">Graduate</option>
-                    <option value="working-professional">Working Professional</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Target Exam *
-                  </label>
-                  <select
-                    required
-                    value={enrollmentForm.targetExam}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, targetExam: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                  >
-                    <option value="">Select exam</option>
-                    {exams.map((exam, index) => (
-                      <option key={index} value={exam.name}>{exam.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Target Level *
-                  </label>
-                  <select
-                    required
-                    value={enrollmentForm.targetLevel}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, targetLevel: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                  >
-                    <option value="">Select level</option>
-                    <option value="beginner">Beginner (HSK 1-2)</option>
-                    <option value="intermediate">Intermediate (HSK 3-4)</option>
-                    <option value="advanced">Advanced (HSK 5-6)</option>
-                    <option value="university">University Entrance</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Preferred Study Mode *
-                  </label>
-                  <select
-                    required
-                    value={enrollmentForm.studyMode}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, studyMode: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                  >
-                    <option value="">Select mode</option>
-                    {studyModes.map((mode, index) => (
-                      <option key={index} value={mode}>{mode}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Hours Available Per Week *
-                  </label>
-                  <select
-                    required
-                    value={enrollmentForm.hoursPerWeek}
-                    onChange={(e) => setEnrollmentForm({...enrollmentForm, hoursPerWeek: e.target.value})}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                  >
-                    <option value="">Select hours</option>
-                    <option value="5-10">5-10 hours</option>
-                    <option value="10-15">10-15 hours</option>
-                    <option value="15-20">15-20 hours</option>
-                    <option value="20+">20+ hours</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Prior Chinese Language Experience
-                </label>
-                <textarea
-                  rows="2"
-                  value={enrollmentForm.priorExperience}
-                  onChange={(e) => setEnrollmentForm({...enrollmentForm, priorExperience: e.target.value})}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 resize-none"
-                  placeholder="Describe any previous Chinese language study or exposure..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Specific Learning Needs or Goals
-                </label>
-                <textarea
-                  rows="2"
-                  value={enrollmentForm.specificNeeds}
-                  onChange={(e) => setEnrollmentForm({...enrollmentForm, specificNeeds: e.target.value})}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 resize-none"
-                  placeholder="Any specific areas you want to focus on or target scores..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg transition-all duration-300"
-              >
-                Submit Enrollment Request
-              </button>
-            </form>
-          </div>
-        </motion.div>
-      </motion.div>
-    );
-  };
-
-  // Quiz Component
-  const QuizModal = () => {
-    if (!showQuiz || currentQuestion >= quizQuestions.length) return null;
-
-    const currentQ = quizQuestions[currentQuestion];
-
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-60"
-        onClick={() => setShowQuiz(false)}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0, y: 50 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 50 }}
-          transition={{ type: "spring", damping: 25 }}
-          className="bg-white rounded-2xl shadow-2xl w-full max-w-md"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Quick Knowledge Quiz</h2>
-                <p className="text-gray-600 mt-1">Question {currentQuestion + 1} of {quizQuestions.length}</p>
-              </div>
-              <button
-                onClick={() => setShowQuiz(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <CloseIcon className="h-6 w-6 text-gray-500" />
-              </button>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex items-center mb-4">
-                <QuizIcon className="h-6 w-6 text-blue-600 mr-2" />
-                <h3 className="text-lg font-semibold text-gray-900">{currentQ.question}</h3>
-              </div>
-              
-              <div className="space-y-3">
-                {currentQ.options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleQuizAnswer(index)}
-                    className="w-full p-4 text-left border-2 border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
-                  >
-                    <div className="flex items-center">
-                      <div className={`w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center ${
-                        testResults[currentQ.id] !== undefined 
-                          ? index === currentQ.correctAnswer 
-                            ? 'border-green-500 bg-green-100' 
-                            : 'border-gray-300'
-                          : 'border-gray-300'
-                      }`}>
-                        {String.fromCharCode(65 + index)}
-                      </div>
-                      <span className="text-gray-700">{option}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="text-center text-sm text-gray-600">
-              Test your knowledge about Chinese exams and requirements
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-    );
-  };
-
-  // Pagination Component
-  const Pagination = () => {
-    const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pageNumbers.push(i);
+  // Handle tab change
+  const handleTabChange = useCallback((tab) => {
+    setActiveTab(tab);
+    if (tab === 'HSK Tests') {
+      setFilters(prev => ({...prev, examType: 'HSK (Chinese Proficiency)'}));
+    } else if (tab === 'CSCA Prep') {
+      setFilters(prev => ({...prev, examType: 'CSCA (China Scholastic Assessment)'}));
+    } else if (tab === 'Speaking Tests') {
+      setSearchQuery('Speaking');
+    } else if (tab === 'Business Chinese') {
+      setSearchQuery('Business');
+    } else if (tab === 'Subject Tests') {
+      setFilters(prev => ({...prev, examType: 'Subject-specific Tests'}));
+    } else {
+      setFilters(prev => ({...prev, examType: ''}));
+      setSearchQuery('');
     }
-
-    return (
-      <div className="flex items-center justify-center space-x-2 mt-8">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`px-3 py-2 rounded-lg ${
-            currentPage === 1
-              ? 'text-gray-400 cursor-not-allowed'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Previous
-        </button>
-        
-        {pageNumbers.map(number => (
-          <button
-            key={number}
-            onClick={() => handlePageChange(number)}
-            className={`w-10 h-10 rounded-lg font-semibold ${
-              currentPage === number
-                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            {number}
-          </button>
-        ))}
-        
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`px-3 py-2 rounded-lg ${
-            currentPage === totalPages
-              ? 'text-gray-400 cursor-not-allowed'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          Next
-        </button>
-      </div>
-    );
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 px-4 sm:px-6 lg:px-8">
@@ -1317,10 +1375,10 @@ export const CESP = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">Filter by Exam Type</label>
               <select
                 value={filters.examType}
-                onChange={(e) => setFilters({...filters, examType: e.target.value})}
+                onChange={(e) => setFilters(prev => ({...prev, examType: e.target.value}))}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
               >
-                {examTypes.map((type, index) => (
+                {EXAM_TYPES.map((type, index) => (
                   <option key={index} value={type === 'All Exams' ? '' : type}>
                     {type}
                   </option>
@@ -1348,10 +1406,10 @@ export const CESP = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">Exam Level</label>
               <select
                 value={filters.level}
-                onChange={(e) => setFilters({...filters, level: e.target.value})}
+                onChange={(e) => setFilters(prev => ({...prev, level: e.target.value}))}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
               >
-                {examLevels.map((level, index) => (
+                {EXAM_LEVELS.map((level, index) => (
                   <option key={index} value={level === 'All Levels' ? '' : level}>
                     {level}
                   </option>
@@ -1363,7 +1421,7 @@ export const CESP = () => {
               <label className="block text-sm font-semibold text-gray-700 mb-2">Registration Status</label>
               <select
                 value={filters.registrationStatus}
-                onChange={(e) => setFilters({...filters, registrationStatus: e.target.value})}
+                onChange={(e) => setFilters(prev => ({...prev, registrationStatus: e.target.value}))}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
               >
                 <option value="open">Open Registration</option>
@@ -1374,15 +1432,7 @@ export const CESP = () => {
             
             <div className="flex items-end">
               <button
-                onClick={() => {
-                  setFilters({
-                    examType: '',
-                    level: '',
-                    date: '',
-                    registrationStatus: 'open'
-                  });
-                  setSearchQuery('');
-                }}
+                onClick={handleClearFilters}
                 className="w-full px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200"
               >
                 Clear All Filters
@@ -1402,23 +1452,7 @@ export const CESP = () => {
             {['All Exams', 'HSK Tests', 'CSCA Prep', 'Speaking Tests', 'Business Chinese', 'Subject Tests'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => {
-                  setActiveTab(tab);
-                  if (tab === 'HSK Tests') {
-                    setFilters({...filters, examType: 'HSK (Chinese Proficiency)'});
-                  } else if (tab === 'CSCA Prep') {
-                    setFilters({...filters, examType: 'CSCA (China Scholastic Assessment)'});
-                  } else if (tab === 'Speaking Tests') {
-                    setSearchQuery('Speaking');
-                  } else if (tab === 'Business Chinese') {
-                    setSearchQuery('Business');
-                  } else if (tab === 'Subject Tests') {
-                    setFilters({...filters, examType: 'Subject-specific Tests'});
-                  } else {
-                    setFilters({...filters, examType: ''});
-                    setSearchQuery('');
-                  }
-                }}
+                onClick={() => handleTabChange(tab)}
                 className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                   activeTab === tab
                     ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
@@ -1441,8 +1475,14 @@ export const CESP = () => {
           >
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Exams</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredExams.map((exam) => (
-                <ExamCard key={exam.id} exam={exam} />
+              {FEATURED_EXAMS.map((exam) => (
+                <ExamCard
+                  key={exam.id}
+                  exam={exam}
+                  isSaved={savedExams.includes(exam.id)}
+                  onToggleSave={toggleSaveExam}
+                  onViewDetails={setSelectedExam}
+                />
               ))}
             </div>
           </motion.div>
@@ -1479,11 +1519,21 @@ export const CESP = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {currentExams.map((exam) => (
-                  <ExamCard key={exam.id} exam={exam} />
+                  <ExamCard
+                    key={exam.id}
+                    exam={exam}
+                    isSaved={savedExams.includes(exam.id)}
+                    onToggleSave={toggleSaveExam}
+                    onViewDetails={setSelectedExam}
+                  />
                 ))}
               </div>
 
-              <Pagination />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
             </>
           )}
         </div>
@@ -1640,9 +1690,37 @@ export const CESP = () => {
       </div>
 
       {/* Modals */}
-      {selectedExam && <ExamDetailModal />}
-      {enrollmentModalOpen && <EnrollmentModal />}
-      {showQuiz && <QuizModal />}
+      {selectedExam && (
+        <ExamDetailModal
+          exam={selectedExam}
+          isSaved={savedExams.includes(selectedExam.id)}
+          onToggleSave={toggleSaveExam}
+          onClose={() => setSelectedExam(null)}
+          onEnroll={handleExamEnrollment}
+        />
+      )}
+
+      <EnrollmentModal
+        isOpen={enrollmentModalOpen}
+        onClose={() => setEnrollmentModalOpen(false)}
+        onSubmit={handleEnrollmentSubmit}
+        initialForm={enrollmentForm}
+        exams={exams}
+      />
+
+      <QuizModal
+        isOpen={showQuiz}
+        onClose={() => {
+          setShowQuiz(false);
+          setCurrentQuestion(0);
+          setQuizScore(0);
+          setTestResults({});
+        }}
+        questions={QUIZ_QUESTIONS}
+        currentQuestion={currentQuestion}
+        testResults={testResults}
+        onAnswer={handleQuizAnswer}
+      />
     </div>
   );
 };
