@@ -1,3 +1,4 @@
+
 // /* eslint-disable react-hooks/rules-of-hooks */
 // /* eslint-disable react-hooks/set-state-in-effect */
 // /* eslint-disable react-refresh/only-export-components */
@@ -58,6 +59,7 @@
 // import { AirportBookingManagement } from "./components/dashboard/admin/components/management/airport/AirportBookingManagement";
 // import { AdmissionManagement } from "./components/dashboard/admin/components/management/admission/AdmissionApplicationManagement";
 // import { CSCEManagement } from "./components/dashboard/admin/components/management/csce/CSCEManagement";
+// import { UserDashboard } from "./components/dashboard/users/UserDashboard";
 
 // // DARK MODE CONTEXT
 // const ThemeContext = createContext();
@@ -134,8 +136,39 @@
 //   return isAuthenticated ? children : <Navigate to="/" />;
 // }
 
+// // Route configuration
+// const publicRoutes = [
+//   { path: "/", name: "Home", element: <Home />, icon: HomeIcon },
+//   { path: "/about", name: "About", element: <About />, icon: InfoIcon },
+//   { path: "/team", name: "Team", element: <Team />, icon: InfoIcon },
+//   { path: "/support", name: "FAQ Support", element: <FAQ />, icon: ArticleIcon },
+//   { path: "/blog", name: "Blog", element: <Blogs />, icon: ArticleIcon },
+//   { path: "/services", name: "Services", element: <Services />, icon: BuildIcon },
+//   { path: "/admission", name: "Admission Services", element: <Admission />, icon: BuildIcon },
+//   { path: "/scholarship", name: "Scholarship Services", element: <Scholarship />, icon: BuildIcon },
+//   { path: "/csca", name: "CESP Services", element: <CESP />, icon: BuildIcon },
+//   { path: "/visa", name: "VISA Services", element: <VISA />, icon: BuildIcon },
+//   { path: "/accomodation", name: "Accommodation Services", element: <Accommodation />, icon: BuildIcon },
+//   { path: "/airport", name: "Airport Services", element: <AirportServices />, icon: BuildIcon },
+//   { path: "*", name: "Not Found", element: <NotFound />, icon: ErrorIcon },
+// ];
+
+// const privateRoutes = [
+//   { path: "/dashboard", name: "Admin Dashboard", element: <Dashboard />, icon: DashboardIcon },
+//   { path: "/user/management", name: "User Management", element: <UserManagement />, icon: DashboardIcon },
+//   { path: "/contact/management", name: "Contact Management", element: <ContactManagement />, icon: DashboardIcon },
+//   { path: "/schoolarship/management", name: "Scholarship Management", element: <ScholarshipManagement />, icon: DashboardIcon },
+//   { path: "/accomodation/booking/management", name: "Accommodation Booking Management", element: <AccomodationBookingManagement />, icon: DashboardIcon },
+//   { path: "/accomodation/create/management", name: "Create Accommodation", element: <CreateAccommodation />, icon: DashboardIcon },
+//   { path: "/airport/booking/management", name: "Airport Booking Management", element: <AirportBookingManagement />, icon: DashboardIcon },
+//   { path: "/admission/management", name: "Admission Management", element: <AdmissionManagement />, icon: DashboardIcon },
+//   { path: "/csce/exams/management", name: "CSCE Exams Management", element: <CSCEManagement />, icon: DashboardIcon },
+//   // user
+//     { path: "/user/dashboard", name: "User Dashboard", element: <UserDashboard />, icon: DashboardIcon },
+// ];
+
 // // ENHANCED PAGE LOADER COMPONENT WITH PAGE-SPECIFIC MESSAGES AND ROUTE NAME DISPLAY
-// const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null }) => {
+// const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeType = "public" }) => {
 //   // Map page names to display names and colors
 //   const pageConfig = {
 //     home: { displayName: "Home", color: "from-blue-500 to-purple-500" },
@@ -195,7 +228,7 @@
 
 //   return (
 //     <motion.div
-//       className="fixed inset-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 z-50 flex flex-col items-center justify-center px-4"
+//       className="fixed inset-0 bg-gradient-to-br from-blue-800 to-indigo-500 dark:from-gray-900 dark:to-gray-800 z-50 flex flex-col items-center justify-center px-4"
 //       initial={{ opacity: 0 }}
 //       animate={{ opacity: 1 }}
 //       exit={{ opacity: 0 }}
@@ -238,7 +271,7 @@
 
 //       <div className="text-center mb-4 sm:mb-6 md:mb-8 max-w-md">
 //         <motion.h2
-//           className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2"
+//           className="text-2xl sm:text-3xl text-white font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2"
 //           initial={{ opacity: 0, y: 20 }}
 //           animate={{ opacity: 1, y: 0 }}
 //           transition={{ delay: 0.2 }}
@@ -246,25 +279,47 @@
 //           Loading {config.displayName}
 //         </motion.h2>
 
-//         {/* Display route name if available */}
-//         {routeName && (
+//         {/* Display route name and type */}
+//         <div className="space-y-2 mb-3">
 //           <motion.div
-//             className="mb-3 px-4 py-2 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700"
+//             className="px-4 py-2 bg-white/50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700"
 //             initial={{ opacity: 0, scale: 0.9 }}
 //             animate={{ opacity: 1, scale: 1 }}
 //             transition={{ delay: 0.3 }}
 //           >
-//             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+//             <p className="text-sm font-medium text-gray-100 dark:text-gray-300">
 //               Route:{" "}
-//               <span className="font-bold text-blue-600 dark:text-blue-400">
+//               <span className="font-bold text-white">
 //                 {routeName}
 //               </span>
 //             </p>
 //           </motion.div>
-//         )}
+          
+//           <motion.div
+//             className={`px-4 py-2 rounded-lg border ${
+//               routeType === "private" 
+//                 ? "bg-red-50/50 dark:bg-red-900/20 border-red-200 dark:border-red-700"
+//                 : "bg-green-50/50 dark:bg-green-900/20 border-green-200 dark:border-green-700"
+//             }`}
+//             initial={{ opacity: 0, scale: 0.9 }}
+//             animate={{ opacity: 1, scale: 1 }}
+//             transition={{ delay: 0.4 }}
+//           >
+//             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+//               Type:{" "}
+//               <span className={`font-bold ${
+//                 routeType === "private" 
+//                   ? "text-red-600 dark:text-red-400"
+//                   : "text-green-600 dark:text-green-400"
+//               }`}>
+//                 {routeType.toUpperCase()} ROUTE
+//               </span>
+//             </p>
+//           </motion.div>
+//         </div>
 
 //         <motion.p
-//           className="text-gray-600 dark:text-gray-300 text-sm sm:text-base md:text-lg"
+//           className="text-gray-100 dark:text-gray-300 text-sm sm:text-base md:text-lg"
 //           initial={{ opacity: 0 }}
 //           animate={{ opacity: 1 }}
 //           transition={{ delay: 0.4 }}
@@ -283,6 +338,39 @@
 //       </div>
 //     </motion.div>
 //   );
+// };
+
+// // Helper function to get page info and route type
+// const getPageInfoHelper = (pathname) => {
+//   // Check public routes
+//   const publicRoute = publicRoutes.find(route => route.path === pathname);
+//   if (publicRoute) {
+//     return { 
+//       name: publicRoute.name.toLowerCase().split(' ')[0], 
+//       icon: publicRoute.icon,
+//       routeType: "public",
+//       fullName: publicRoute.name
+//     };
+//   }
+  
+//   // Check private routes
+//   const privateRoute = privateRoutes.find(route => route.path === pathname);
+//   if (privateRoute) {
+//     return { 
+//       name: privateRoute.name.toLowerCase().split(' ')[0], 
+//       icon: privateRoute.icon,
+//       routeType: "private",
+//       fullName: privateRoute.name
+//     };
+//   }
+  
+//   // Default for 404
+//   return { 
+//     name: "404", 
+//     icon: ErrorIcon,
+//     routeType: "public",
+//     fullName: "Not Found"
+//   };
 // };
 
 // // RESPONSIVE DARK MODE TOGGLE BUTTON
@@ -404,20 +492,15 @@
 //   const location = useLocation();
 //   const { theme } = useTheme();
 
-//   const menuItems = [
-//     { path: "/", label: "Home", icon: HomeIcon },
-//     { path: "/about", label: "About", icon: InfoIcon },
-//     { path: "/team", label: "Team", icon: InfoIcon },
-//     { path: "/blog", label: "Blog", icon: ArticleIcon },
-//     { path: "/support", label: "Support", icon: ArticleIcon },
-//     { path: "/services", label: "Services", icon: BuildIcon },
-//     { path: "/admission", label: "Admission", icon: BuildIcon },
-//     { path: "/scholarship", label: "Scholarship", icon: BuildIcon },
-//     { path: "/csca", label: "CESP", icon: BuildIcon },
-//     { path: "/visa", label: "VISA", icon: BuildIcon },
-//     { path: "/accomodation", label: "Accommodation", icon: BuildIcon },
-//     { path: "/airport", label: "Airport Services", icon: BuildIcon },
-//   ];
+//   // Combine public routes for mobile menu (excluding wildcard route)
+//   const mobileMenuItems = publicRoutes
+//     .filter(route => route.path !== "*")
+//     .map(route => ({
+//       path: route.path,
+//       label: route.name,
+//       icon: route.icon,
+//       type: "public"
+//     }));
 
 //   return (
 //     <AnimatePresence>
@@ -427,7 +510,7 @@
 //           animate={{ opacity: 1, x: 0 }}
 //           exit={{ opacity: 0, x: "100%" }}
 //           transition={{ type: "spring", damping: 25 }}
-//           className="fixed inset-0 z-40 bg-white dark:bg-gray-900 md:hidden"
+//           className="fixed inset-0 z-40 bg-gradient-to-br from-blue-800 to-indigo-500 dark:bg-gray-900 md:hidden"
 //         >
 //           <div className="flex flex-col h-full p-6">
 //             <div className="flex justify-between items-center mb-8">
@@ -441,7 +524,7 @@
 //             </div>
 
 //             <div className="flex-1 space-y-4">
-//               {menuItems.map((item) => {
+//               {mobileMenuItems.map((item) => {
 //                 const Icon = item.icon;
 //                 const isActive = location.pathname === item.path;
 
@@ -459,6 +542,13 @@
 //                   >
 //                     <Icon />
 //                     <span className="text-lg">{item.label}</span>
+//                     <span className={`text-xs px-2 py-1 rounded ${
+//                       item.type === "private" 
+//                         ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+//                         : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+//                     }`}>
+//                       {item.type.toUpperCase()}
+//                     </span>
 //                   </motion.a>
 //                 );
 //               })}
@@ -487,78 +577,6 @@
 //   );
 // }
 
-// // TEXT MARKING COMPONENT FOR TRANSITIONS
-// function MarkedText({ children, delay = 0 }) {
-//   const { theme } = useTheme();
-
-//   return (
-//     <motion.span
-//       initial={{
-//         backgroundSize: "0% 100%",
-//         backgroundImage:
-//           theme === "light"
-//             ? "linear-gradient(to right, transparent 50%, #93c5fd 50%)"
-//             : "linear-gradient(to right, transparent 50%, #1e40af 50%)",
-//       }}
-//       whileInView={{
-//         backgroundSize: "100% 100%",
-//       }}
-//       viewport={{ once: true }}
-//       transition={{
-//         duration: 0.8,
-//         delay: delay,
-//         ease: "easeInOut",
-//       }}
-//       className="bg-no-repeat bg-left-bottom px-1"
-//       style={{
-//         backgroundImage:
-//           theme === "light"
-//             ? "linear-gradient(to right, transparent 50%, #93c5fd 50%)"
-//             : "linear-gradient(to right, transparent 50%, #1e40af 50%)",
-//         backgroundSize: "200% 100%",
-//         transition: "background-position 0.8s ease-in-out",
-//       }}
-//     >
-//       {children}
-//     </motion.span>
-//   );
-// }
-
-// // Helper function to get page info WITHOUT setting state
-// const getPageInfoHelper = (pathname) => {
-//   switch (pathname) {
-//     case "/":
-//       return { name: "home", icon: HomeIcon };
-//     case "/about":
-//       return { name: "about", icon: InfoIcon };
-//     case "/team":
-//       return { name: "team", icon: InfoIcon };
-//     case "/blog":
-//       return { name: "blog", icon: ArticleIcon };
-//     case "/blogs":
-//       return { name: "blog", icon: InfoIcon };
-//     case "/support":
-//       return { name: "support", icon: ArticleIcon };
-//     case "/services":
-//       return { name: "services", icon: BuildIcon };
-//     case "/dashboard":
-//       return { name: "dashboard", icon: DashboardIcon };
-//     case "/admission":
-//       return { name: "admission", icon: BuildIcon };
-//     case "/scholarship":
-//       return { name: "scholarship", icon: BuildIcon };
-//     case "/csca":
-//       return { name: "cesp", icon: BuildIcon };
-//     case "/visa":
-//       return { name: "visa", icon: BuildIcon };
-//     case "/accomodation":
-//       return { name: "accommodation", icon: BuildIcon };
-//     case "/airport":
-//       return { name: "airport", icon: BuildIcon };
-//     default:
-//       return { name: "404", icon: ErrorIcon };
-//   }
-// };
 
 // // MAIN APP
 // export default function App() {
@@ -623,11 +641,13 @@
 //       const ip = await axios.get("https://api.ipify.org?format=json");
 
 //       await axios.post(
-//         "https://jsonplaceholder.typicode.com/posts",
+//         "https://ruziganodejs.onrender.com",
 //         {
 //           ip: ip.data.ip,
 //           page: window.location.pathname,
-//           route: location.pathname, // Use location.pathname directly
+//           route: location.pathname,
+//           routeName: currentPageInfo.fullName,
+//           routeType: currentPageInfo.routeType,
 //           timestamp: new Date().toISOString(),
 //         },
 //         {
@@ -639,7 +659,7 @@
 //     } catch (err) {
 //       console.warn("View tracking failed (non-critical):", err.message);
 //     }
-//   }, [location.pathname]);
+//   }, [location.pathname, currentPageInfo.fullName, currentPageInfo.routeType]);
 
 //   // Initial app loading effect
 //   useEffect(() => {
@@ -655,14 +675,15 @@
 //         className={`min-h-screen transition-colors duration-300 ${
 //           theme === "dark"
 //             ? "dark bg-gray-900 text-white"
-//             : "bg-gray-50 text-gray-900"
+//             : "bg-gradient-to-br from-blue-800 to-indigo-500 text-black"
 //         }`}
 //       >
 //         {/* Initial App Loading */}
 //         {loading ? (
 //           <PageLoader
 //             pageName={currentPageInfo.name}
-//             routeName={location.pathname}
+//             routeName={currentPageInfo.fullName}
+//             routeType={currentPageInfo.routeType}
 //             icon={currentPageInfo.icon}
 //           />
 //         ) : (
@@ -671,7 +692,8 @@
 //             {pageLoading && (
 //               <PageLoader
 //                 pageName={currentPageInfo.name}
-//                 routeName={location.pathname}
+//                 routeName={currentPageInfo.fullName}
+//                 routeType={currentPageInfo.routeType}
 //                 icon={currentPageInfo.icon}
 //               />
 //             )}
@@ -679,7 +701,7 @@
 //             {/* Mobile Menu Button - Only on small screens */}
 //             <button
 //               onClick={() => setMobileMenuOpen(true)}
-//               className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-lg md:hidden"
+//               className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-gradient-to-br from-blue-800 to-indigo-500 dark:bg-gray-800 shadow-lg md:hidden"
 //               aria-label="Open menu"
 //             >
 //               <MenuIcon />
@@ -693,209 +715,39 @@
 
 //             <Navbar />
 
+
 //             {/* Main Content with Responsive Container */}
-//             <main className="pt-16 md:pt-20">
+//             <main>
 //               <ResponsiveContainer>
 //                 <AnimatePresence mode="wait">
 //                   <Routes location={location} key={location.pathname}>
-//                     <Route
-//                       path="/"
-//                       element={
-//                         <PageTransition>
-//                           <Home />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/about"
-//                       element={
-//                         <PageTransition>
-//                           <About />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/team"
-//                       element={
-//                         <PageTransition>
-//                           <Team />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/support"
-//                       element={
-//                         <PageTransition>
-//                           <FAQ />
-//                         </PageTransition>
-//                       }
-//                     />
-
-//                     <Route
-//                       path="/admission"
-//                       element={
-//                         <PageTransition>
-//                           <Admission />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/scholarship"
-//                       element={
-//                         <PageTransition>
-//                           <Scholarship />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/csca"
-//                       element={
-//                         <PageTransition>
-//                           <CESP />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/visa"
-//                       element={
-//                         <PageTransition>
-//                           <VISA />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/accomodation"
-//                       element={
-//                         <PageTransition>
-//                           <Accommodation />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/airport"
-//                       element={
-//                         <PageTransition>
-//                           <AirportServices />
-//                         </PageTransition>
-//                       }
-//                     />
-
-//                     <Route
-//                       path="/blog"
-//                       element={
-//                         <PageTransition>
-//                           <Blogs />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/services"
-//                       element={
-//                         <PageTransition>
-//                           <Services />
-//                         </PageTransition>
-//                       }
-//                     />
-
-//                     {/* PRIVATE ROUTE EXAMPLE */}
-//                     <Route
-//                       // path="/dashboard"
-//                       element={
-//                         <PrivateRoute>
+//                     {/* Public Routes */}
+//                     {publicRoutes.map((route) => (
+//                       <Route
+//                         key={route.path}
+//                         path={route.path}
+//                         element={
 //                           <PageTransition>
-//                             <div className="p-4 sm:p-6 md:p-8 lg:p-10 text-center">
-//                               <ResponsiveText size="xl" weight="bold">
-//                                 Dashboard -{" "}
-//                                 <MarkedText>Private Area</MarkedText>
-//                               </ResponsiveText>
-//                             </div>
+//                             {route.element}
 //                           </PageTransition>
-//                         </PrivateRoute>
-//                       }
-//                     />
-//                     {/* ********************************* */}
-//                     <Route
-//                       path="/user/management"
-//                       element={
-//                         <PageTransition>
-//                           <UserManagement />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/contact/management"
-//                       element={
-//                         <PageTransition>
-//                           <ContactManagement />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/dashboard"
-//                       element={
-//                         <PageTransition>
-//                           <Dashboard />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/schoolarship/management"
-//                       element={
-//                         <PageTransition>
-//                           <ScholarshipManagement />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/accomodation/booking/management"
-//                       element={
-//                         <PageTransition>
-//                           <AccomodationBookingManagement />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/accomodation/create/management"
-//                       element={
-//                         <PageTransition>
-//                           <CreateAccommodation />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/airport/booking/management"
-//                       element={
-//                         <PageTransition>
-//                           <AirportBookingManagement />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/admission/management"
-//                       element={
-//                         <PageTransition>
-//                           <AdmissionManagement />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     <Route
-//                       path="/csce/exams/management"
-//                       element={
-//                         <PageTransition>
-//                           <CSCEManagement />
-//                         </PageTransition>
-//                       }
-//                     />
-//                     {/* *********************************** */}
+//                         }
+//                       />
+//                     ))}
 
-//                     <Route
-//                       path="*"
-//                       element={
-//                         <PageTransition>
-//                           <NotFound />
-//                         </PageTransition>
-//                       }
-//                     />
+//                     {/* Private Routes */}
+//                     {privateRoutes.map((route) => (
+//                       <Route
+//                         key={route.path}
+//                         path={route.path}
+//                         element={
+//                           <PrivateRoute>
+//                             <PageTransition>
+//                               {route.element}
+//                             </PageTransition>
+//                           </PrivateRoute>
+//                         }
+//                       />
+//                     ))}
 //                   </Routes>
 //                 </AnimatePresence>
 //               </ResponsiveContainer>
@@ -912,6 +764,7 @@
 //     </ThemeContext.Provider>
 //   );
 // }
+
 
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/set-state-in-effect */
@@ -936,6 +789,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import "./App.css";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { Navbar } from "./components/navbar/Navbar";
 import { Home } from "./pages/home/Home";
 import { About } from "./pages/about/About";
@@ -978,6 +832,10 @@ import { UserDashboard } from "./components/dashboard/users/UserDashboard";
 // DARK MODE CONTEXT
 const ThemeContext = createContext();
 export const useTheme = () => useContext(ThemeContext);
+
+// AUTH CONTEXT for managing authentication state
+const AuthContext = createContext();
+export const useAuth = () => useContext(AuthContext);
 
 // RESPONSIVE CONTAINER COMPONENT
 const ResponsiveContainer = ({ children, className = "" }) => {
@@ -1044,11 +902,34 @@ const PageTransition = ({ children }) => {
   );
 };
 
-// PRIVATE ROUTE COMPONENT
-function PrivateRoute({ children }) {
-  const isAuthenticated = false; // Replace with real auth logic
-  return isAuthenticated ? children : <Navigate to="/" />;
-}
+// ENHANCED PRIVATE ROUTE COMPONENT WITH ROLE-BASED ACCESS
+const PrivateRoute = ({ children, requiredRole = null }) => {
+  const { user } = useAuth();
+  
+  // If user is not authenticated, redirect to home
+  if (!user || !user.token) {
+    return <Navigate to="/" replace />;
+  }
+  
+  // If role is required but user doesn't have it, redirect to appropriate dashboard
+  if (requiredRole && user.role !== requiredRole) {
+    // Redirect to appropriate dashboard based on user's actual role
+    switch(user.role?.toLowerCase()) {
+      case "admin":
+        return <Navigate to="/dashboard" replace />;
+      case "agent":
+      case "administrator":
+        return <Navigate to="/agent/dashboard" replace />;
+      case "user":
+      case "student":
+        return <Navigate to="/user/dashboard" replace />;
+      default:
+        return <Navigate to="/user/dashboard" replace />;
+    }
+  }
+  
+  return children;
+};
 
 // Route configuration
 const publicRoutes = [
@@ -1067,18 +948,102 @@ const publicRoutes = [
   { path: "*", name: "Not Found", element: <NotFound />, icon: ErrorIcon },
 ];
 
-const privateRoutes = [
-  { path: "/dashboard", name: "Admin Dashboard", element: <Dashboard />, icon: DashboardIcon },
-  { path: "/user/management", name: "User Management", element: <UserManagement />, icon: DashboardIcon },
-  { path: "/contact/management", name: "Contact Management", element: <ContactManagement />, icon: DashboardIcon },
-  { path: "/schoolarship/management", name: "Scholarship Management", element: <ScholarshipManagement />, icon: DashboardIcon },
-  { path: "/accomodation/booking/management", name: "Accommodation Booking Management", element: <AccomodationBookingManagement />, icon: DashboardIcon },
-  { path: "/accomodation/create/management", name: "Create Accommodation", element: <CreateAccommodation />, icon: DashboardIcon },
-  { path: "/airport/booking/management", name: "Airport Booking Management", element: <AirportBookingManagement />, icon: DashboardIcon },
-  { path: "/admission/management", name: "Admission Management", element: <AdmissionManagement />, icon: DashboardIcon },
-  { path: "/csce/exams/management", name: "CSCE Exams Management", element: <CSCEManagement />, icon: DashboardIcon },
-  // user
-    { path: "/user/dashboard", name: "User Dashboard", element: <UserDashboard />, icon: DashboardIcon },
+// Dashboard route configurations
+const dashboardRoutes = [
+  // Admin dashboard routes
+  { 
+    path: "/dashboard", 
+    name: "Admin Dashboard", 
+    element: <Dashboard />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/user/management", 
+    name: "User Management", 
+    element: <UserManagement />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/contact/management", 
+    name: "Contact Management", 
+    element: <ContactManagement />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/schoolarship/management", 
+    name: "Scholarship Management", 
+    element: <ScholarshipManagement />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/accomodation/booking/management", 
+    name: "Accommodation Booking Management", 
+    element: <AccomodationBookingManagement />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/accomodation/create/management", 
+    name: "Create Accommodation", 
+    element: <CreateAccommodation />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/airport/booking/management", 
+    name: "Airport Booking Management", 
+    element: <AirportBookingManagement />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/admission/management", 
+    name: "Admission Management", 
+    element: <AdmissionManagement />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/csce/exams/management", 
+    name: "CSCE Exams Management", 
+    element: <CSCEManagement />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  
+  // Agent dashboard routes
+  
+  // { 
+  //   path: "/agent/dashboard", 
+  //   name: "Agent Dashboard", 
+  //   element: <AgentDashboard />, 
+  //   icon: DashboardIcon,
+  //   requiredRole: "agent",
+  //   type: "agent"
+  // },
+  
+  // User dashboard routes
+  { 
+    path: "/user/dashboard", 
+    name: "User Dashboard", 
+    element: <UserDashboard />, 
+    icon: DashboardIcon,
+    requiredRole: "user",
+    type: "user"
+  },
 ];
 
 // ENHANCED PAGE LOADER COMPONENT WITH PAGE-SPECIFIC MESSAGES AND ROUTE NAME DISPLAY
@@ -1119,6 +1084,11 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
     dashboard: {
       displayName: "Dashboard",
       color: "from-purple-500 to-blue-500",
+      subColors: {
+        admin: "from-purple-600 to-red-600",
+        agent: "from-green-600 to-blue-600",
+        user: "from-blue-600 to-cyan-600"
+      }
     },
     404: { displayName: "Not Found", color: "from-gray-500 to-gray-700" },
     default: { displayName: "Page", color: "from-blue-500 to-purple-500" },
@@ -1138,6 +1108,14 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
         normalizedPageName.includes(key) || pageName.toLowerCase().includes(key)
     );
     config = matchedKey ? pageConfig[matchedKey] : pageConfig["default"];
+  }
+
+  // For dashboard routes, use specific colors based on dashboard type
+  let gradientColor = config.color;
+  if (routeType.includes("dashboard") && config.subColors) {
+    const dashType = routeType.includes("admin") ? "admin" : 
+                     routeType.includes("agent") ? "agent" : "user";
+    gradientColor = config.subColors[dashType] || config.color;
   }
 
   return (
@@ -1171,11 +1149,11 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
             }}
           >
             <Icon
-              className={`bg-gradient-to-r ${config.color} bg-clip-text text-transparent`}
+              className={`bg-gradient-to-r ${gradientColor} bg-clip-text text-transparent`}
             />
           </motion.div>
         ) : (
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+          <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r ${gradientColor} flex items-center justify-center`}>
             <span className="text-white text-xl sm:text-2xl font-bold">
               {config.displayName.charAt(0)}
             </span>
@@ -1211,7 +1189,7 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
           
           <motion.div
             className={`px-4 py-2 rounded-lg border ${
-              routeType === "private" 
+              routeType.includes("private") || routeType.includes("dashboard")
                 ? "bg-red-50/50 dark:bg-red-900/20 border-red-200 dark:border-red-700"
                 : "bg-green-50/50 dark:bg-green-900/20 border-green-200 dark:border-green-700"
             }`}
@@ -1222,11 +1200,11 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Type:{" "}
               <span className={`font-bold ${
-                routeType === "private" 
+                routeType.includes("private") || routeType.includes("dashboard")
                   ? "text-red-600 dark:text-red-400"
                   : "text-green-600 dark:text-green-400"
               }`}>
-                {routeType.toUpperCase()} ROUTE
+                {routeType.toUpperCase()}
               </span>
             </p>
           </motion.div>
@@ -1244,7 +1222,7 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
 
       <div className="w-48 sm:w-64 h-1.5 sm:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
         <motion.div
-          className={`h-full bg-gradient-to-r ${config.color}`}
+          className={`h-full bg-gradient-to-r ${gradientColor}`}
           initial={{ width: "0%" }}
           animate={{ width: "100%" }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -1267,14 +1245,14 @@ const getPageInfoHelper = (pathname) => {
     };
   }
   
-  // Check private routes
-  const privateRoute = privateRoutes.find(route => route.path === pathname);
-  if (privateRoute) {
+  // Check dashboard routes
+  const dashboardRoute = dashboardRoutes.find(route => route.path === pathname);
+  if (dashboardRoute) {
     return { 
-      name: privateRoute.name.toLowerCase().split(' ')[0], 
-      icon: privateRoute.icon,
-      routeType: "private",
-      fullName: privateRoute.name
+      name: dashboardRoute.name.toLowerCase().split(' ')[0], 
+      icon: dashboardRoute.icon,
+      routeType: `${dashboardRoute.type} dashboard`,
+      fullName: dashboardRoute.name
     };
   }
   
@@ -1292,9 +1270,9 @@ function DarkModeToggle() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <div
+    <motion.div
       onClick={toggleTheme}
-      className="fixed top-18 right-6 z-50 bg-gradient-to-r from-blue-300 to-indigo-300  sm:p-2 md:p-2 rounded-full shadow-xl"
+      className="fixed top-18 right-6 z-50 bg-gradient-to-r from-blue-300 to-indigo-300 p-2 sm:p-2 md:p-2 rounded-full shadow-xl cursor-pointer"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       initial={{ scale: 0, opacity: 0 }}
@@ -1327,7 +1305,7 @@ function DarkModeToggle() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
@@ -1393,8 +1371,9 @@ function BackToTop() {
           }}
           whileTap={{ scale: 0.95 }}
           onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg"
         >
-          <ArrowUpwardIcon className="sm:text-base md:text-medium" />
+          <ArrowUpwardIcon className="w-5 h-5 sm:w-6 sm:h-6" />
         </motion.button>
       )}
     </AnimatePresence>
@@ -1402,7 +1381,7 @@ function BackToTop() {
 }
 
 // RESPONSIVE MOBILE MENU (For Small Screens)
-function MobileMenu({ isOpen, onClose }) {
+function MobileMenu({ isOpen, onClose, user }) {
   const location = useLocation();
   const { theme } = useTheme();
 
@@ -1416,6 +1395,43 @@ function MobileMenu({ isOpen, onClose }) {
       type: "public"
     }));
 
+  // Add dashboard links if user is authenticated
+  if (user && user.token) {
+    let dashboardItem;
+    switch(user.role?.toLowerCase()) {
+      case "admin":
+        dashboardItem = { 
+          path: "/dashboard", 
+          label: "Admin Dashboard", 
+          icon: DashboardIcon,
+          type: "private"
+        };
+        break;
+      // case "agent":
+      // case "administrator":
+      //   dashboardItem = { 
+      //     path: "/agent/dashboard", 
+      //     label: "Agent Dashboard", 
+      //     icon: DashboardIcon,
+      //     type: "private"
+      //   };
+      //   break;
+      case "user":
+      case "student":
+        dashboardItem = { 
+          path: "/user/dashboard", 
+          label: "My Dashboard", 
+          icon: DashboardIcon,
+          type: "private"
+        };
+        break;
+    }
+    
+    if (dashboardItem) {
+      mobileMenuItems.unshift(dashboardItem);
+    }
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -1428,10 +1444,10 @@ function MobileMenu({ isOpen, onClose }) {
         >
           <div className="flex flex-col h-full p-6">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold dark:text-white">Menu</h2>
+              <h2 className="text-2xl font-bold text-white">Menu</h2>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-white"
               >
                 <CloseIcon />
               </button>
@@ -1448,8 +1464,8 @@ function MobileMenu({ isOpen, onClose }) {
                     href={item.path}
                     className={`flex items-center space-x-3 p-4 rounded-xl transition-all ${
                       isActive
-                        ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                        : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                        ? "bg-white/25 shadow-lg backdrop-blur-sm text-white"
+                        : "hover:bg-white/15 text-gray-200 hover:text-white"
                     }`}
                     whileHover={{ x: 5 }}
                     onClick={onClose}
@@ -1458,8 +1474,8 @@ function MobileMenu({ isOpen, onClose }) {
                     <span className="text-lg">{item.label}</span>
                     <span className={`text-xs px-2 py-1 rounded ${
                       item.type === "private" 
-                        ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                        : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        ? "bg-red-500/20 text-red-200 border border-red-500/30"
+                        : "bg-green-500/20 text-green-200 border border-green-500/30"
                     }`}>
                       {item.type.toUpperCase()}
                     </span>
@@ -1468,9 +1484,25 @@ function MobileMenu({ isOpen, onClose }) {
               })}
             </div>
 
-            <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600 dark:text-gray-300">
+            <div className="pt-6 border-t border-white/20">
+              {user && user.token ? (
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
+                      <span className="text-white font-bold">
+                        {user.name?.charAt(0) || "U"}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-white font-medium">{user.name}</p>
+                      <p className="text-sm text-gray-300 capitalize">{user.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              
+              <div className="flex items-center justify-between mt-4">
+                <span className="text-gray-300">
                   Switch Theme
                 </span>
                 <button
@@ -1478,7 +1510,7 @@ function MobileMenu({ isOpen, onClose }) {
                     const { toggleTheme } = useContext(ThemeContext);
                     toggleTheme?.();
                   }}
-                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="p-2 rounded-lg hover:bg-white/10 text-white"
                 >
                   {theme === "light" ? <DarkModeIcon /> : <LightModeIcon />}
                 </button>
@@ -1490,7 +1522,6 @@ function MobileMenu({ isOpen, onClose }) {
     </AnimatePresence>
   );
 }
-
 
 // MAIN APP
 export default function App() {
@@ -1507,7 +1538,36 @@ export default function App() {
     return savedTheme || "light";
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = Cookies.get("user");
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (error) {
+      console.error("Error parsing user cookie:", error);
+      return null;
+    }
+  });
+  
   const location = useLocation();
+
+  // Update user state when cookies change
+  useEffect(() => {
+    const interval = setInterval(() => {
+      try {
+        const savedUser = Cookies.get("user");
+        const currentUser = savedUser ? JSON.parse(savedUser) : null;
+        
+        // Only update if user data has actually changed
+        if (JSON.stringify(currentUser) !== JSON.stringify(user)) {
+          setUser(currentUser);
+        }
+      } catch (error) {
+        console.error("Error parsing user cookie:", error);
+      }
+    }, 1000); // Check every second
+
+    return () => clearInterval(interval);
+  }, [user]);
 
   // Get current page info using useMemo to prevent unnecessary recalculations
   const currentPageInfo = useMemo(() => {
@@ -1521,6 +1581,19 @@ export default function App() {
       return newTheme;
     });
   };
+
+  // Auth context value
+  const authContextValue = useMemo(() => ({
+    user,
+    setUser: (newUser) => {
+      setUser(newUser);
+      if (newUser) {
+        Cookies.set("user", JSON.stringify(newUser), { expires: 7 });
+      } else {
+        Cookies.remove("user");
+      }
+    }
+  }), [user]);
 
   // Apply theme class to document root for Tailwind
   useEffect(() => {
@@ -1555,7 +1628,7 @@ export default function App() {
       const ip = await axios.get("https://api.ipify.org?format=json");
 
       await axios.post(
-        "https://ruziganodejs.onrender.com",
+        "https://ruziganodejs.onrender.com/views/track",
         {
           ip: ip.data.ip,
           page: window.location.pathname,
@@ -1585,96 +1658,98 @@ export default function App() {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div
-        className={`min-h-screen transition-colors duration-300 ${
-          theme === "dark"
-            ? "dark bg-gray-900 text-white"
-            : "bg-gradient-to-br from-blue-800 to-indigo-500 text-black"
-        }`}
-      >
-        {/* Initial App Loading */}
-        {loading ? (
-          <PageLoader
-            pageName={currentPageInfo.name}
-            routeName={currentPageInfo.fullName}
-            routeType={currentPageInfo.routeType}
-            icon={currentPageInfo.icon}
-          />
-        ) : (
-          <>
-            {/* Page Transition Loading */}
-            {pageLoading && (
-              <PageLoader
-                pageName={currentPageInfo.name}
-                routeName={currentPageInfo.fullName}
-                routeType={currentPageInfo.routeType}
-                icon={currentPageInfo.icon}
-              />
-            )}
-
-            {/* Mobile Menu Button - Only on small screens */}
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-gradient-to-br from-blue-800 to-indigo-500 dark:bg-gray-800 shadow-lg md:hidden"
-              aria-label="Open menu"
-            >
-              <MenuIcon />
-            </button>
-
-            {/* Mobile Menu */}
-            <MobileMenu
-              isOpen={mobileMenuOpen}
-              onClose={() => setMobileMenuOpen(false)}
+      <AuthContext.Provider value={authContextValue}>
+        <div
+          className={`min-h-screen transition-colors duration-300 ${
+            theme === "dark"
+              ? "dark bg-gray-900 text-white"
+              : "bg-gradient-to-br from-blue-50 to-indigo-50 text-gray-900"
+          }`}
+        >
+          {/* Initial App Loading */}
+          {loading ? (
+            <PageLoader
+              pageName={currentPageInfo.name}
+              routeName={currentPageInfo.fullName}
+              routeType={currentPageInfo.routeType}
+              icon={currentPageInfo.icon}
             />
+          ) : (
+            <>
+              {/* Page Transition Loading */}
+              {pageLoading && (
+                <PageLoader
+                  pageName={currentPageInfo.name}
+                  routeName={currentPageInfo.fullName}
+                  routeType={currentPageInfo.routeType}
+                  icon={currentPageInfo.icon}
+                />
+              )}
 
-            <Navbar />
+              {/* Mobile Menu Button - Only on small screens */}
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg md:hidden"
+                aria-label="Open menu"
+              >
+                <MenuIcon />
+              </button>
 
+              {/* Mobile Menu */}
+              <MobileMenu
+                isOpen={mobileMenuOpen}
+                onClose={() => setMobileMenuOpen(false)}
+                user={user}
+              />
 
-            {/* Main Content with Responsive Container */}
-            <main>
-              <ResponsiveContainer>
-                <AnimatePresence mode="wait">
-                  <Routes location={location} key={location.pathname}>
-                    {/* Public Routes */}
-                    {publicRoutes.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={
-                          <PageTransition>
-                            {route.element}
-                          </PageTransition>
-                        }
-                      />
-                    ))}
+              <Navbar />
 
-                    {/* Private Routes */}
-                    {privateRoutes.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={
-                          <PrivateRoute>
+              {/* Main Content with Responsive Container */}
+              <main className="pt-16">
+                <ResponsiveContainer>
+                  <AnimatePresence mode="wait">
+                    <Routes location={location} key={location.pathname}>
+                      {/* Public Routes */}
+                      {publicRoutes.map((route) => (
+                        <Route
+                          key={route.path}
+                          path={route.path}
+                          element={
                             <PageTransition>
                               {route.element}
                             </PageTransition>
-                          </PrivateRoute>
-                        }
-                      />
-                    ))}
-                  </Routes>
-                </AnimatePresence>
-              </ResponsiveContainer>
-            </main>
+                          }
+                        />
+                      ))}
 
-            {/* FLOATING ACTION BUTTONS - Positioned at bottom corners */}
-            <DarkModeToggle />
-            <BackToTop />
+                      {/* Dashboard Routes with role-based access control */}
+                      {dashboardRoutes.map((route) => (
+                        <Route
+                          key={route.path}
+                          path={route.path}
+                          element={
+                            <PrivateRoute requiredRole={route.requiredRole}>
+                              <PageTransition>
+                                {route.element}
+                              </PageTransition>
+                            </PrivateRoute>
+                          }
+                        />
+                      ))}
+                    </Routes>
+                  </AnimatePresence>
+                </ResponsiveContainer>
+              </main>
 
-            <Footer />
-          </>
-        )}
-      </div>
+              {/* FLOATING ACTION BUTTONS - Positioned at bottom corners */}
+              <DarkModeToggle />
+              <BackToTop />
+
+              <Footer />
+            </>
+          )}
+        </div>
+      </AuthContext.Provider>
     </ThemeContext.Provider>
   );
 }
