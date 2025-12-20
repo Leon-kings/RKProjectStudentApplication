@@ -290,7 +290,7 @@ export const Testimonials = () => {
                   </div>
                   <button
                     onClick={() => setSelectedTestimonial(null)}
-                    className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                    className="p-2 bg-gradient-to-r from-red-400 to-red-700 rounded-full transition-colors"
                   >
                     <CloseIcon className="h-6 w-6" />
                   </button>
@@ -343,14 +343,14 @@ export const Testimonials = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-blue-800 to-indigo-500">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-100 mb-4">
             Student Testimonials
           </h1>
-          <p className="text-gray-600 text-lg sm:text-xl max-w-3xl mx-auto">
+          <p className="text-gray-50 text-lg sm:text-xl max-w-3xl mx-auto">
             Hear directly from students who have studied in Asia
           </p>
         </div>

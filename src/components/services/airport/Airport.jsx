@@ -4248,7 +4248,7 @@ export const AirportServices = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 text-white py-8 px-4 sm:px-6 lg:px-8">
       <ToastContainer position="top-right" autoClose={3000} />
       
       <div className="max-w-7xl mx-auto">
@@ -4259,10 +4259,10 @@ export const AirportServices = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
             Airport Services & Support
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-100 max-w-3xl mx-auto">
             Stress-free airport experiences with meet & greet, transfers, and comprehensive travel support
           </p>
         </motion.div>
@@ -4334,7 +4334,7 @@ export const AirportServices = () => {
           className="bg-white rounded-xl shadow-lg p-6 mb-8"
         >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Search Services</label>
               <div className="relative">
                 <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -4348,7 +4348,7 @@ export const AirportServices = () => {
               </div>
             </div>
             
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Filter by Country</label>
               <select
                 name="country"
@@ -4364,7 +4364,7 @@ export const AirportServices = () => {
               </select>
             </div>
             
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Sort By</label>
               <select
                 value={sortBy}
@@ -4379,7 +4379,7 @@ export const AirportServices = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Airport</label>
               <select
                 name="airport"
@@ -4395,7 +4395,7 @@ export const AirportServices = () => {
               </select>
             </div>
             
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Service Type</label>
               <select
                 name="serviceType"
@@ -4411,7 +4411,7 @@ export const AirportServices = () => {
               </select>
             </div>
             
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Language</label>
               <select
                 name="language"
@@ -4527,7 +4527,7 @@ export const AirportServices = () => {
           ) : (
             <>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-green-700">
                   {filteredServices.length} Airport Services Available
                 </h2>
                 <div className="flex items-center space-x-4">

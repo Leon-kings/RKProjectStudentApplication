@@ -51,16 +51,41 @@ export const Services = () => {
   // RECAPPLY Introduction
   const recapplyInfo = {
     title: "RECAPPLY SERVICES",
-    description: "Comprehensive international education services from application to arrival and beyond",
+    description:
+      "Comprehensive international education services from application to arrival and beyond",
     mission: "to guide every student confidently from application to arrival",
     focusCountries: [
-      { name: "China", flag: "🇨🇳", description: "CSCA Specialization" },
-      { name: "Canada", flag: "🇨🇦", description: "Top Destination" },
-      { name: "Germany", flag: "🇩🇪", description: "Tuition-Free Options" },
-      { name: "USA", flag: "🇺🇸", description: "Scholarship Opportunities" },
-      { name: "Poland", flag: "🇵🇱", description: "European Education" },
-      { name: "Turkey", flag: "🇹🇷", description: "Quality & Affordable" }
-    ]
+      {
+        name: "China",
+        flag: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzaD9OMaQnNRIknoxXl2VbvUXoCeoaY_vJGw&s",
+        description: "CSCA Specialization",
+      },
+      {
+        name: "Canada",
+        flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/1200px-Flag_of_Canada_%28Pantone%29.svg.png",
+        description: "Top Destination",
+      },
+      {
+        name: "Germany",
+        flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/1280px-Flag_of_Germany.svg.png",
+        description: "Tuition-Free Options",
+      },
+      {
+        name: "USA",
+        flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png",
+        description: "Scholarship Opportunities",
+      },
+      {
+        name: "Poland",
+        flag: "https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/330px-Flag_of_Poland.svg.png",
+        description: "European Education",
+      },
+      {
+        name: "Turkey",
+        flag: "https://flagemoji.com/wp-content/uploads/2020/02/Flag_of_Turkey.svg",
+        description: "Quality & Affordable",
+      },
+    ],
   };
 
   const serviceCategories = [
@@ -75,7 +100,8 @@ export const Services = () => {
           id: 1,
           title: "University Admissions",
           icon: SchoolIcon,
-          description: "End-to-end university application support for global universities",
+          description:
+            "End-to-end university application support for global universities",
           details:
             "We guide you through selecting the right university, preparing application documents, and securing admission letters from prestigious institutions worldwide with special expertise in China admissions and CSCA requirements.",
           features: [
@@ -88,7 +114,7 @@ export const Services = () => {
             "Document verification and authentication",
             "Interview preparation sessions",
             "Follow-up with admission offices",
-            "Multiple university applications"
+            "Multiple university applications",
           ],
           countries: [
             "China (CSCA Specialization)",
@@ -100,18 +126,19 @@ export const Services = () => {
             "UK",
             "Australia",
             "Malaysia",
-            "Singapore"
+            "Singapore",
           ],
           processingTime: "2-8 weeks",
           successRate: "98%",
           price: "Starting from $299",
-          specialNote: "Free initial consultation and profile assessment"
+          specialNote: "Free initial consultation and profile assessment",
         },
         {
           id: 2,
           title: "CSCA Exam Preparation",
           icon: BookIcon,
-          description: "Specialized China Scholastic Competency Assessment preparation",
+          description:
+            "Specialized China Scholastic Competency Assessment preparation",
           details:
             "Complete support for students applying to Chinese universities requiring the CSCA exam. Our comprehensive preparation program includes study materials, mock tests, and expert guidance.",
           features: [
@@ -124,18 +151,19 @@ export const Services = () => {
             "Progress tracking and feedback",
             "Scholarship documentation support",
             "University-specific preparation",
-            "24/7 tutor support"
+            "24/7 tutor support",
           ],
           subjects: ["Mathematics", "Physics", "Chemistry", "Chinese Language"],
           successRate: "95%",
           price: "Starting from $399",
-          specialNote: "Includes access to exclusive study materials"
+          specialNote: "Includes access to exclusive study materials",
         },
         {
           id: 3,
           title: "Document Preparation",
           icon: AssignmentIcon,
-          description: "Professional academic document preparation and translation",
+          description:
+            "Professional academic document preparation and translation",
           details:
             "High-quality document preparation including SOP, Study Plan, CV, Motivation Letter, and all required visa documents with certified translation services.",
           features: [
@@ -148,12 +176,12 @@ export const Services = () => {
             "Diploma and certificate translation",
             "Notarization and certification",
             "University-specific formatting",
-            "Unlimited revisions"
+            "Unlimited revisions",
           ],
           processingTime: "5-10 business days",
           price: "Starting from $149/document",
           languages: ["English", "Chinese", "French", "German", "Spanish"],
-          specialNote: "Certified translation services available"
+          specialNote: "Certified translation services available",
         },
       ],
     },
@@ -168,7 +196,8 @@ export const Services = () => {
           id: 4,
           title: "Scholarship Guidance",
           icon: LocalAtmIcon,
-          description: "Comprehensive scholarship search and application support",
+          description:
+            "Comprehensive scholarship search and application support",
           details:
             "Expert guidance in identifying and securing scholarship opportunities including fully funded scholarships, partial scholarships, tuition waivers, and government subsidies.",
           features: [
@@ -181,7 +210,7 @@ export const Services = () => {
             "Multiple scholarship applications",
             "Post-application follow-up",
             "Financial planning assistance",
-            "Success rate tracking"
+            "Success rate tracking",
           ],
           scholarshipTypes: [
             "Fully Funded Scholarships",
@@ -189,17 +218,18 @@ export const Services = () => {
             "Tuition Waivers",
             "Government Subsidies",
             "University Scholarships",
-            "Private Scholarships"
+            "Private Scholarships",
           ],
           successRate: "85%",
           price: "Starting from $199",
-          specialNote: "Free scholarship matching service"
+          specialNote: "Free scholarship matching service",
         },
         {
           id: 5,
           title: "Financial Aid Support",
           icon: PaymentIcon,
-          description: "Complete financial planning and aid application support",
+          description:
+            "Complete financial planning and aid application support",
           details:
             "Assistance with financial documentation, bank statements, sponsor letters, and all financial requirements for university and visa applications.",
           features: [
@@ -212,11 +242,11 @@ export const Services = () => {
             "Bank verification support",
             "Financial guarantee letters",
             "Cost of living estimates",
-            "Payment plan setup"
+            "Payment plan setup",
           ],
           processingTime: "3-7 business days",
           price: "Starting from $129",
-          specialNote: "Includes financial planning consultation"
+          specialNote: "Includes financial planning consultation",
         },
         {
           id: 6,
@@ -235,11 +265,11 @@ export const Services = () => {
             "Compliance checking",
             "Submission guidance",
             "Follow-up support",
-            "Success tracking"
+            "Success tracking",
           ],
           successRate: "80%",
           price: "Starting from $349",
-          specialNote: "Specialized for research students"
+          specialNote: "Specialized for research students",
         },
       ],
     },
@@ -267,7 +297,7 @@ export const Services = () => {
             "Health insurance guidance",
             "Application tracking",
             "Emergency processing",
-            "Multi-entry visa assistance"
+            "Multi-entry visa assistance",
           ],
           countries: [
             "China (X1/X2 Visa)",
@@ -275,12 +305,12 @@ export const Services = () => {
             "USA (F-1 Visa)",
             "Germany (Student Visa)",
             "UK (Student Route)",
-            "Australia (Student Visa)"
+            "Australia (Student Visa)",
           ],
           processingTime: "2-8 weeks",
           successRate: "98%",
           price: "Starting from $249",
-          specialNote: "Includes mock interview sessions"
+          specialNote: "Includes mock interview sessions",
         },
         {
           id: 8,
@@ -299,11 +329,11 @@ export const Services = () => {
             "Document preparation",
             "Application timeline planning",
             "Compliance guidance",
-            "Future planning"
+            "Future planning",
           ],
           countries: ["Canada", "Germany", "Australia", "UK", "New Zealand"],
           price: "Starting from $199",
-          specialNote: "Free initial immigration consultation"
+          specialNote: "Free initial immigration consultation",
         },
       ],
     },
@@ -331,12 +361,12 @@ export const Services = () => {
             "Banking and finance setup",
             "Emergency contact setup",
             "Language preparation resources",
-            "Country-specific orientation"
+            "Country-specific orientation",
           ],
           orientationDuration: "3-5 hours",
           languages: ["English", "French", "Chinese", "German"],
           price: "Starting from $99",
-          specialNote: "Includes digital orientation package"
+          specialNote: "Includes digital orientation package",
         },
         {
           id: 10,
@@ -355,17 +385,17 @@ export const Services = () => {
             "Neighborhood orientation",
             "Safety assessment",
             "Roommate matching",
-            "Move-in coordination"
+            "Move-in coordination",
           ],
           accommodationTypes: [
             "University Dorms",
             "Shared Apartments",
             "Private Studios",
             "Homestays",
-            "Student Residences"
+            "Student Residences",
           ],
           price: "Starting from $149",
-          specialNote: "Free accommodation search service"
+          specialNote: "Free accommodation search service",
         },
         {
           id: 11,
@@ -384,12 +414,12 @@ export const Services = () => {
             "Travel insurance setup",
             "Luggage shipping assistance",
             "Emergency travel support",
-            "Multi-city transfers"
+            "Multi-city transfers",
           ],
           serviceHours: "24/7",
           vehicleTypes: ["Standard", "Premium", "Group", "VIP"],
           price: "Starting from $45",
-          specialNote: "Includes welcome orientation"
+          specialNote: "Includes welcome orientation",
         },
         {
           id: 12,
@@ -408,12 +438,12 @@ export const Services = () => {
             "Career counseling",
             "Social integration events",
             "Alumni network access",
-            "Regular progress reviews"
+            "Regular progress reviews",
           ],
           supportHours: "24/7",
           languages: ["English", "Chinese", "French", "German", "Spanish"],
           price: "Monthly from $79",
-          specialNote: "Free first month of support"
+          specialNote: "Free first month of support",
         },
       ],
     },
@@ -426,7 +456,8 @@ export const Services = () => {
     whatsapp: "+250783408617",
     chinaPhone: "+86 186 5833 2879",
     office: "Kigali – Kicukiro Centre, Sangwa Plaza, 1st Floor, R6 Door",
-    workingHours: "Monday - Friday: 8:00 AM - 6:00 PM | Saturday: 9:00 AM - 2:00 PM"
+    workingHours:
+      "Monday - Friday: 8:00 AM - 6:00 PM | Saturday: 9:00 AM - 2:00 PM",
   };
 
   const handleBookingSubmit = (e) => {
@@ -511,7 +542,9 @@ export const Services = () => {
                 </span>
               </div>
               {service.specialNote && (
-                <p className="text-xs text-blue-600 mt-2">{service.specialNote}</p>
+                <p className="text-xs text-blue-600 mt-2">
+                  {service.specialNote}
+                </p>
               )}
             </div>
           )}
@@ -694,7 +727,8 @@ export const Services = () => {
                       Book This Service with RECAPPLY
                     </h3>
                     <p className="text-gray-300">
-                      Complete the form below and our RECAPPLY team will contact you within 24 hours
+                      Complete the form below and our RECAPPLY team will contact
+                      you within 24 hours
                     </p>
                   </div>
 
@@ -857,7 +891,9 @@ export const Services = () => {
                             Academic Background
                           </label>
                           <select className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
-                            <option value="">Select highest qualification</option>
+                            <option value="">
+                              Select highest qualification
+                            </option>
                             <option value="highschool">High School</option>
                             <option value="bachelor">Bachelor's Degree</option>
                             <option value="master">Master's Degree</option>
@@ -915,7 +951,9 @@ export const Services = () => {
                         <PhoneIcon className="h-4 w-4 mr-2" />
                         <div>
                           <div>Rwanda: {contactInfo.phone}</div>
-                          <div className="text-xs text-gray-500">China: {contactInfo.chinaPhone}</div>
+                          <div className="text-xs text-gray-500">
+                            China: {contactInfo.chinaPhone}
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center">
@@ -942,7 +980,7 @@ export const Services = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 md:py-16 px-3 xs:px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 py-12 md:py-16 px-3 xs:px-4 sm:px-6 lg:px-8">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -963,31 +1001,23 @@ export const Services = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 md:mb-16 relative"
         >
-          <div className="mb-6">
-            <span className="inline-block px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full text-sm font-bold mb-4">
-              RECAPPLY SERVICES
-            </span>
-          </div>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ staggerChildren: 0.1 }}
-            className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 md:mb-6"
+            className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold text-gray-100 mb-4 md:mb-6"
           >
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              Premium International Education Services
-            </span>
+            Premium International Education Services
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-lg xs:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8 leading-relaxed"
+            className="text-lg xs:text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto mb-8 leading-relaxed"
           >
-            Complete support package from application to arrival with special expertise in 
-            <span className="font-bold text-blue-600"> China CSCA preparation</span> and global admissions
+            Complete support package from application to arrival with special
+            expertise in China CSCA preparation and global admissions
           </motion.p>
 
           {/* Focus Countries */}
@@ -997,7 +1027,9 @@ export const Services = () => {
             transition={{ delay: 0.8 }}
             className="mt-8"
           >
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Our Specialized Countries:</h3>
+            <h3 className="text-lg font-bold text-green-700 mb-4">
+              Our Specialized Countries:
+            </h3>
             <div className="flex flex-wrap justify-center gap-3 xs:gap-4">
               {recapplyInfo.focusCountries.map((country, index) => (
                 <motion.div
@@ -1007,10 +1039,18 @@ export const Services = () => {
                   transition={{ delay: 0.9 + index * 0.1, type: "spring" }}
                   className="flex items-center px-4 py-2 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300"
                 >
-                  <span className="text-2xl mr-2">{country.flag}</span>
+                  <img
+                    src={country.flag}
+                    alt={country.name}
+                    className="h-6 w-6 mr-2"
+                  />
                   <div className="text-center">
-                    <div className="font-semibold text-gray-800">{country.name}</div>
-                    <div className="text-xs text-blue-600">{country.description}</div>
+                    <div className="font-semibold text-gray-800">
+                      {country.name}
+                    </div>
+                    <div className="text-xs text-blue-600">
+                      {country.description}
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -1095,64 +1135,6 @@ export const Services = () => {
               ))
             )}
         </motion.div>
-
-        {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="mt-12 md:mt-20 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 xs:gap-6"
-        >
-          {[
-            {
-              value: "13,863+",
-              label: "Students Helped",
-              color: "from-blue-600 to-cyan-600",
-              icon: GroupsIcon
-            },
-            {
-              value: "98%",
-              label: "Success Rate",
-              color: "from-green-600 to-emerald-600",
-              icon: CheckCircleIcon
-            },
-            {
-              value: "500+",
-              label: "Partner Universities",
-              color: "from-purple-600 to-pink-600",
-              icon: SchoolIcon
-            },
-            {
-              value: "10+",
-              label: "Years Experience",
-              color: "from-orange-600 to-red-600",
-              icon: AccessTimeIcon
-            },
-          ].map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={index}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 1 + index * 0.1, type: "spring" }}
-                className="bg-white p-4 xs:p-6 rounded-xl xs:rounded-2xl shadow-lg text-center"
-              >
-                <div className="flex justify-center mb-3">
-                  <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.color}`}>
-                    <Icon className="h-6 w-6 xs:h-8 xs:w-8 text-white" />
-                  </div>
-                </div>
-                <div className={`text-2xl xs:text-3xl md:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-1 xs:mb-2`}>
-                  {stat.value}
-                </div>
-                <div className="text-sm xs:text-base text-gray-600 font-semibold">{stat.label}</div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-
       </div>
 
       <BookingModal />

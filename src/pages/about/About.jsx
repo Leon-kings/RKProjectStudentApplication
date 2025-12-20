@@ -532,7 +532,7 @@
 //                   </h4>
 //                 </div>
 
-//                 <p className="text-gray-600 mb-6 text-lg">
+//                 <p className="text-white mb-6 text-lg">
 //                   {modalContent.data.description}
 //                 </p>
 
@@ -755,7 +755,7 @@
 //                       <h5 className="font-bold text-gray-800">
 //                         Complete Study Abroad Guide 2024
 //                       </h5>
-//                       <p className="text-gray-600">
+//                       <p className="text-white">
 //                         PDF Document • 50 pages • 15MB
 //                       </p>
 //                     </div>
@@ -984,7 +984,7 @@
 //                 initial={{ opacity: 0, y: 20 }}
 //                 animate={{ opacity: 1, y: 0 }}
 //                 transition={{ delay: 0.4 }}
-//                 className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto"
+//                 className="text-lg md:text-xl text-white max-w-4xl mx-auto"
 //               >
 //                 {recapplyInfo.description} We support students from Africa and beyond to secure admissions, scholarships, and visas to top universities worldwide.
 //               </motion.p>
@@ -1021,7 +1021,7 @@
 //                 WHAT WE DO
 //               </span>
 //             </h2>
-//             <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+//             <p className="text-white text-lg md:text-xl max-w-3xl mx-auto">
 //               Comprehensive services designed for your international education success
 //             </p>
 //           </motion.div>
@@ -1052,7 +1052,7 @@
 //                     {service.title}
 //                   </h3>
 
-//                   <p className="text-gray-600 mb-6 leading-relaxed">
+//                   <p className="text-white mb-6 leading-relaxed">
 //                     {service.description}
 //                   </p>
 //                 </div>
@@ -1132,7 +1132,7 @@
 //                 WHY STUDENTS CHOOSE RECAPPLY
 //               </span>
 //             </h2>
-//             <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+//             <p className="text-white text-lg md:text-xl max-w-3xl mx-auto">
 //               Clear, honest, and transparent service with professional support
 //             </p>
 //           </motion.div>
@@ -1171,7 +1171,7 @@
 //                     {feature.title}
 //                   </h3>
 
-//                   <p className="text-gray-600 mb-6 leading-relaxed">
+//                   <p className="text-white mb-6 leading-relaxed">
 //                     {feature.description}
 //                   </p>
 
@@ -1190,7 +1190,7 @@
 //                         {feature.details.map((detail, idx) => (
 //                           <li
 //                             key={idx}
-//                             className="flex items-center text-sm text-gray-600"
+//                             className="flex items-center text-sm text-white"
 //                           >
 //                             <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
 //                             {detail}
@@ -1233,7 +1233,7 @@
 //                 COUNTRIES WE SPECIALIZE IN
 //               </span>
 //             </h2>
-//             <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+//             <p className="text-white text-lg md:text-xl max-w-3xl mx-auto">
 //               Top destinations including {recapplyInfo.countries.join(", ")} and many others
 //             </p>
 //           </motion.div>
@@ -1325,13 +1325,13 @@
 //                     <LocationOn className="w-6 h-6 text-purple-600 mr-4 mt-1" />
 //                     <div>
 //                       <p className="font-semibold text-gray-700 mb-1">Office Location</p>
-//                       <p className="text-gray-600">{contactInfo.office}</p>
+//                       <p className="text-white">{contactInfo.office}</p>
 //                     </div>
 //                   </div>
                   
 //                   <div className="mt-6">
 //                     <h4 className="font-semibold text-gray-700 mb-3">Why Choose RECAPPLY?</h4>
-//                     <ul className="space-y-2 text-gray-600">
+//                     <ul className="space-y-2 text-white">
 //                       <li className="flex items-center">
 //                         <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
 //                         High admission & visa success rate
@@ -1944,7 +1944,7 @@ export const About = () => {
               Successfully Submitted!
             </h3>
             
-            <p className="text-gray-600 mb-6">
+            <p className="text-white mb-6">
               Thank you for your interest in RECAPPLY. We have received your information and will contact you within 24 hours.
             </p>
             
@@ -1999,7 +1999,7 @@ export const About = () => {
               Submission Failed
             </h3>
             
-            <p className="text-gray-600 mb-6">
+            <p className="text-white mb-6">
               There was an issue submitting your form. Please try again or contact us directly.
             </p>
             
@@ -2100,7 +2100,7 @@ export const About = () => {
                   </h4>
                 </div>
 
-                <p className="text-gray-600 mb-6 text-lg">
+                <p className="text-white mb-6 text-lg">
                   {modalContent.data.description}
                 </p>
 
@@ -2379,7 +2379,7 @@ export const About = () => {
                       <h5 className="font-bold text-gray-800">
                         Complete Study Abroad Guide 2024
                       </h5>
-                      <p className="text-gray-600">
+                      <p className="text-white">
                         PDF Document • 50 pages • 15MB
                       </p>
                     </div>
@@ -2439,10 +2439,10 @@ export const About = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 text-white dark:from-gray-700 dark:to-gray-900">
       {/* Hero Section - RECAPPLY Focus */}
       <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+        <div className="absolute inset-0bg-gradient-to-br from-blue-800 to-indigo-500 text-white dark:from-gray-700 dark:to-gray-900" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3')] bg-cover bg-center opacity-5" />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
@@ -2459,7 +2459,7 @@ export const About = () => {
                 transition={{ delay: 0.2 }}
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
               >
-                <span className="text-gray-900">{recapplyInfo.title}</span>
+                <span className="text-white">{recapplyInfo.title}</span>
               </motion.h1>
 
               <motion.div
@@ -2468,7 +2468,7 @@ export const About = () => {
                 transition={{ delay: 0.3 }}
                 className="h-16 mb-8"
               >
-                <p className="text-2xl md:text-3xl lg:text-4xl font-semibold text-gray-800">
+                <p className="text-2xl md:text-3xl lg:text-4xl font-semibold text-white">
                   {animatedText}
                   <span className="animate-pulse">|</span>
                 </p>
@@ -2478,7 +2478,7 @@ export const About = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto"
+                className="text-lg md:text-xl text-white max-w-4xl mx-auto"
               >
                 {recapplyInfo.description} We support students from Africa and beyond to secure admissions, scholarships, and visas to top universities worldwide.
               </motion.p>
@@ -2502,7 +2502,7 @@ export const About = () => {
       </section>
 
       {/* RECAPPLY Services Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-blue-800 to-indigo-500 text-white dark:from-gray-700 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2515,7 +2515,7 @@ export const About = () => {
                 WHAT WE DO
               </span>
             </h2>
-            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+            <p className="text-white text-lg md:text-xl max-w-3xl mx-auto">
               Comprehensive services designed for your international education success
             </p>
           </motion.div>
@@ -2532,7 +2532,7 @@ export const About = () => {
                 className="relative bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden border border-gray-100"
               >
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 hover:opacity-5 transition-opacity`}
+                  className={`absolute text-gray-800 inset-0 bg-gradient-to-br ${service.color} opacity-0 hover:opacity-5 transition-opacity`}
                 />
 
                 <div className="p-6 md:p-8 relative z-10">
@@ -2546,7 +2546,7 @@ export const About = () => {
                     {service.title}
                   </h3>
 
-                  <p className="text-gray-600 mb-6 leading-relaxed">
+                  <p className="text-gray-800 mb-6 leading-relaxed">
                     {service.description}
                   </p>
                 </div>
@@ -2557,7 +2557,7 @@ export const About = () => {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-blue-900 via-blue-800 to-purple-900">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-blue-800 to-indigo-500 text-white dark:from-gray-700 dark:to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2594,11 +2594,11 @@ export const About = () => {
                     <div className="w-8 h-8 text-white">{stat.icon}</div>
                   </div>
 
-                  <div className="text-4xl md:text-5xl font-bold text-white mb-2">
+                  <div className="text-4xl md:text-4xl font-bold text-white mb-2">
                     {stat.value}
                   </div>
 
-                  <div className="text-lg font-semibold text-white mb-2">
+                  <div className=" font-semibold text-white mb-2">
                     {stat.label}
                   </div>
 
@@ -2613,7 +2613,7 @@ export const About = () => {
       </section>
 
       {/* Why Choose RECAPPLY Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2622,11 +2622,11 @@ export const About = () => {
             className="text-center mb-12 md:mb-16"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-white">
                 WHY STUDENTS CHOOSE RECAPPLY
               </span>
             </h2>
-            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+            <p className="text-white text-lg md:text-xl max-w-3xl mx-auto">
               Clear, honest, and transparent service with professional support
             </p>
           </motion.div>
@@ -2665,7 +2665,7 @@ export const About = () => {
                     {feature.title}
                   </h3>
 
-                  <p className="text-gray-600 mb-6 leading-relaxed">
+                  <p className="text-gray-700 mb-6 leading-relaxed">
                     {feature.description}
                   </p>
 
@@ -2684,7 +2684,7 @@ export const About = () => {
                         {feature.details.map((detail, idx) => (
                           <li
                             key={idx}
-                            className="flex items-center text-sm text-gray-600"
+                            className="flex items-center text-sm text-gray-700"
                           >
                             <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                             {detail}
@@ -2714,7 +2714,7 @@ export const About = () => {
       </section>
 
       {/* Countries We Specialize In */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-16 md:py-24 shadow-lg">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2723,11 +2723,11 @@ export const About = () => {
             className="text-center mb-12 md:mb-16"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-white">
                 COUNTRIES WE SPECIALIZE IN
               </span>
             </h2>
-            <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+            <p className="text-white text-lg md:text-xl max-w-3xl mx-auto">
               Top destinations including {recapplyInfo.countries.join(", ")} and many others
             </p>
           </motion.div>
@@ -2768,7 +2768,7 @@ export const About = () => {
       </section>
 
       {/* Contact RECAPPLY Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-blue-50 to-purple-50">
+      <section className="py-16 md:py-24 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -2819,26 +2819,26 @@ export const About = () => {
                     <LocationOn className="w-6 h-6 text-purple-600 mr-4 mt-1" />
                     <div>
                       <p className="font-semibold text-gray-700 mb-1">Office Location</p>
-                      <p className="text-gray-600">{contactInfo.office}</p>
+                      <p className="text-black">{contactInfo.office}</p>
                     </div>
                   </div>
                   
                   <div className="mt-6">
                     <h4 className="font-semibold text-gray-700 mb-3">Why Choose RECAPPLY?</h4>
-                    <ul className="space-y-2 text-gray-600">
-                      <li className="flex items-center">
+                    <ul className="space-y-2 text-black">
+                      <li className="flex text-black items-center">
                         <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
                         High admission & visa success rate
                       </li>
-                      <li className="flex items-center">
+                      <li className="flex text-black items-center">
                         <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
                         Clear, honest, and transparent service
                       </li>
-                      <li className="flex items-center">
+                      <li className="flex text-black items-center">
                         <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
                         Professional academic and visa documentation
                       </li>
-                      <li className="flex items-center">
+                      <li className="flex text-black items-center">
                         <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
                         Specialized expertise for China CSCA requirements
                       </li>
@@ -2879,7 +2879,7 @@ export const About = () => {
       </section>
 
       {/* Action Buttons Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600">
+      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-400">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">

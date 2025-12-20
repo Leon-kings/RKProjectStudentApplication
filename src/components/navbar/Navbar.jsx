@@ -59,8 +59,6 @@ import {
   FlightTakeoff as FlightIcon,
   Hotel as HotelIcon,
   Flag as FlagIcon,
-  Language,
-  School,
 } from "@mui/icons-material";
 import logo from "../../assets/images/REC LTD- REC APPLY.png";
 
@@ -75,12 +73,11 @@ export const Navbar = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState(null);
-  const [registerError, setRegisterError] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [modalTitle, setModalTitle] = useState("");
+  const [modalType, setModalType] = useState("success");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -102,7 +99,7 @@ export const Navbar = () => {
   });
 
   // API Base URL
-  const API_URL = "http://localhost:5000/api";
+  const API_URL = "https://ruziganodejs.onrender.com";
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -126,6 +123,13 @@ export const Navbar = () => {
     email: "",
     subject: "",
     message: "",
+  });
+
+  // Form validation errors
+  const [errors, setErrors] = useState({
+    login: {},
+    register: {},
+    contact: {},
   });
 
   // Main navigation routes with RECAPPLY focus
@@ -206,12 +210,29 @@ export const Navbar = () => {
     {
       type: "support",
       label: "Support",
-
       gradient: "from-teal-600 to-green-600",
       description: "Get help & assistance",
       action: () => navigate("/support"),
     },
   ];
+
+  // Role-based dashboard routes
+  const getRoleBasedDashboard = (role) => {
+    switch (role?.toLowerCase()) {
+      case "admin":
+        return "/dashboard";
+      case "administrator":
+        return "/agent/dashboard";
+      case "agent":
+        return "/agent/dashboard";
+      case "user":
+        return "/user/dashboard";
+      case "student":
+        return "/user/dashboard";
+      default:
+        return "/user/dashboard";
+    }
+  };
 
   // Enhanced gradient presets for RECAPPLY
   const gradientPresets = {
@@ -254,6 +275,7 @@ export const Navbar = () => {
 
   // Show success modal
   const showSuccessMessage = (title, message) => {
+    setModalType("success");
     setModalTitle(title);
     setModalMessage(message);
     setShowSuccessModal(true);
@@ -261,16 +283,100 @@ export const Navbar = () => {
 
   // Show error modal
   const showErrorMessage = (title, message) => {
+    setModalType("error");
     setModalTitle(title);
     setModalMessage(message);
     setShowErrorModal(true);
   };
 
+  // Validate login form
+  const validateLogin = () => {
+    const newErrors = {};
+
+    if (!loginData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(loginData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!loginData.password) {
+      newErrors.password = "Password is required";
+    } else if (loginData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors({ ...errors, login: newErrors });
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Validate register form
+  const validateRegister = () => {
+    const newErrors = {};
+
+    if (!registerData.name) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!registerData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(registerData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!registerData.password) {
+      newErrors.password = "Password is required";
+    } else if (registerData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!registerData.confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (registerData.password !== registerData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors({ ...errors, register: newErrors });
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Validate contact form
+  const validateContact = () => {
+    const newErrors = {};
+
+    if (!contactData.name) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!contactData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(contactData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!contactData.subject) {
+      newErrors.subject = "Subject is required";
+    }
+
+    if (!contactData.message) {
+      newErrors.message = "Message is required";
+    } else if (contactData.message.length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    setErrors({ ...errors, contact: newErrors });
+    return Object.keys(newErrors).length === 0;
+  };
+
   // Handle login API call
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (!validateLogin()) {
+      showErrorMessage("Validation Error", "Please fix the errors in the form");
+      return;
+    }
+
     setIsLoading(true);
-    setLoginError(null);
 
     try {
       const response = await axios.post(`${API_URL}/auth/login`, {
@@ -278,7 +384,10 @@ export const Navbar = () => {
         password: loginData.password,
       });
 
-      if (response.data.success) {
+      if (
+        response.data.success ||
+        response.data.message === "Login successful"
+      ) {
         const userData = {
           ...response.data.user,
           token: response.data.token,
@@ -297,18 +406,22 @@ export const Navbar = () => {
           setShowSuccessModal(false);
           setIsAuthModalOpen(false);
           setLoginData({ email: "", password: "" });
+          setErrors({ ...errors, login: {} });
 
-          if (response.data.user.role === "admin") {
-            navigate("/dashboard");
-          } else {
-            navigate("/");
-          }
+          // Role-based navigation
+          const userRole = response.data.user.role?.toLowerCase();
+          const dashboardPath = getRoleBasedDashboard(userRole);
+
+          navigate(dashboardPath);
         }, 2000);
+      } else {
+        showErrorMessage("Login Failed", "Invalid email or password");
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "Login failed. Please try again.";
-      setLoginError(errorMessage);
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Login failed. Please check your credentials and try again.";
       showErrorMessage("Login Failed", errorMessage);
     } finally {
       setIsLoading(false);
@@ -318,17 +431,13 @@ export const Navbar = () => {
   // Handle register API call
   const handleRegister = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setRegisterError(null);
 
-    if (registerData.password !== registerData.confirmPassword) {
-      showErrorMessage(
-        "Registration Failed",
-        "Passwords do not match. Please try again."
-      );
-      setIsLoading(false);
+    if (!validateRegister()) {
+      showErrorMessage("Validation Error", "Please fix the errors in the form");
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const response = await axios.post(`${API_URL}/auth/register`, {
@@ -353,7 +462,10 @@ export const Navbar = () => {
               password: registerData.password,
             });
 
-            if (loginResponse.data.success) {
+            if (
+              loginResponse.data.success ||
+              loginResponse.data.message === "Login successful"
+            ) {
               const userData = {
                 ...loginResponse.data.user,
                 token: loginResponse.data.token,
@@ -372,7 +484,12 @@ export const Navbar = () => {
 
               setTimeout(() => {
                 setShowSuccessModal(false);
-                navigate("/");
+
+                // Role-based navigation after auto login
+                const userRole = loginResponse.data.user.role?.toLowerCase();
+                const dashboardPath = getRoleBasedDashboard(userRole);
+
+                navigate(dashboardPath);
               }, 2000);
             }
           } catch (loginError) {
@@ -382,6 +499,7 @@ export const Navbar = () => {
               email: registerData.email,
               password: "",
             });
+            showErrorMessage("Auto Login Failed", "Please login manually");
           }
         }, 2000);
 
@@ -393,12 +511,12 @@ export const Navbar = () => {
           phone: "",
           role: "user",
         });
+        setErrors({ ...errors, register: {} });
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
         "Registration failed. Please try again.";
-      setRegisterError(errorMessage);
       showErrorMessage("Registration Failed", errorMessage);
     } finally {
       setIsLoading(false);
@@ -408,6 +526,12 @@ export const Navbar = () => {
   // Handle contact form submission
   const handleContactSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateContact()) {
+      showErrorMessage("Validation Error", "Please fix the errors in the form");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -427,6 +551,7 @@ export const Navbar = () => {
             subject: "",
             message: "",
           });
+          setErrors({ ...errors, contact: {} });
           setShowSuccessModal(false);
         }, 2000);
       }
@@ -467,8 +592,7 @@ export const Navbar = () => {
   const openAuthModal = (type) => {
     setAuthType(type);
     setIsAuthModalOpen(true);
-    setLoginError(null);
-    setRegisterError(null);
+    setErrors({ ...errors, login: {}, register: {} });
   };
 
   // Loading animation variants
@@ -627,7 +751,7 @@ export const Navbar = () => {
             whileTap={{ scale: 0.95 }}
             onClick={() => {
               setIsProfileModalOpen(false);
-              navigate("/dashboard");
+              navigate(getRoleBasedDashboard(user?.role));
             }}
             className="flex flex-col items-center justify-center p-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:shadow-lg transition-all"
           >
@@ -647,8 +771,8 @@ export const Navbar = () => {
     </motion.div>
   );
 
-  // Success Modal Component
-  const SuccessModal = () => (
+  // Generic Modal Component
+  const NotificationModal = ({ type, title, message }) => (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -659,48 +783,37 @@ export const Navbar = () => {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.1, type: "spring" }}
-        className="w-20 h-20 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${
+          type === "success"
+            ? "bg-gradient-to-r from-green-100 to-emerald-100"
+            : "bg-gradient-to-r from-red-100 to-rose-100"
+        }`}
       >
-        <CheckCircleIcon className="w-12 h-12 text-green-600" />
+        {type === "success" ? (
+          <CheckCircleIcon className="w-12 h-12 text-green-600" />
+        ) : (
+          <ErrorIcon className="w-12 h-12 text-red-600" />
+        )}
       </motion.div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-3">{modalTitle}</h3>
-      <p className="text-gray-600 mb-6">{modalMessage}</p>
+      <h3 className="text-2xl font-bold text-gray-800 mb-3">{title}</h3>
+      <p className="text-gray-600 mb-6">{message}</p>
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => setShowSuccessModal(false)}
-        className="px-8 py-3 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+        onClick={() => {
+          if (type === "success") {
+            setShowSuccessModal(false);
+          } else {
+            setShowErrorModal(false);
+          }
+        }}
+        className={`px-8 py-3 text-white rounded-xl font-semibold hover:shadow-lg transition-all ${
+          type === "success"
+            ? "bg-gradient-to-r from-emerald-600 to-green-600"
+            : "bg-gradient-to-r from-red-600 to-rose-600"
+        }`}
       >
         Continue
-      </motion.button>
-    </motion.div>
-  );
-
-  // Error Modal Component
-  const ErrorModal = () => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm mx-auto text-center"
-    >
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.1, type: "spring" }}
-        className="w-20 h-20 bg-gradient-to-r from-red-100 to-rose-100 rounded-full flex items-center justify-center mx-auto mb-6"
-      >
-        <ErrorIcon className="w-12 h-12 text-red-600" />
-      </motion.div>
-      <h3 className="text-2xl font-bold text-gray-800 mb-3">{modalTitle}</h3>
-      <p className="text-gray-600 mb-6">{modalMessage}</p>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setShowErrorModal(false)}
-        className="px-8 py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
-      >
-        Try Again
       </motion.button>
     </motion.div>
   );
@@ -901,9 +1014,10 @@ export const Navbar = () => {
                       className="relative"
                     >
                       <Link
-                        to={"/dashboard"}
+                        to={getRoleBasedDashboard(user?.role)}
                         className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-300 ${
-                          location.pathname === "/dashboard"
+                          location.pathname ===
+                          getRoleBasedDashboard(user?.role)
                             ? "bg-white/25 shadow-lg backdrop-blur-sm"
                             : "bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-lg"
                         }`}
@@ -1037,6 +1151,7 @@ export const Navbar = () => {
                       className="w-full flex items-center justify-between p-3 bg-white/10 rounded-xl hover:bg-white/20 transition-all backdrop-blur-sm"
                     >
                       <div className="flex items-center space-x-3">
+                        <ServicesIcon className="w-5 h-5" />
                         <span className="font-medium">Services</span>
                       </div>
                       <ExpandMoreIcon
@@ -1116,21 +1231,20 @@ export const Navbar = () => {
                     </motion.div>
                   ))}
 
-                  {/* Contact & WhatsApp Buttons */}
-                  <div className="grid grid-cols-2 gap-2">
-                    <motion.button
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      onClick={() => {
-                        setIsContactModalOpen(true);
-                        setIsMenuOpen(false);
-                      }}
-                      className="flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl hover:shadow-lg transition-all"
-                    >
-                      <span className="font-medium">Contact</span>
-                    </motion.button>
-                  </div>
+                  {/* Contact Button */}
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    onClick={() => {
+                      setIsContactModalOpen(true);
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl hover:shadow-lg transition-all"
+                  >
+                    <ContactIcon className="w-5 h-5" />
+                    <span className="font-medium">Contact</span>
+                  </motion.button>
 
                   {/* Account Section */}
                   <div className="pt-4 border-t border-white/20">
@@ -1141,12 +1255,13 @@ export const Navbar = () => {
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -20 }}
                           onClick={() => {
-                            navigate("/dashboard");
+                            navigate(getRoleBasedDashboard(user?.role));
                             setIsMenuOpen(false);
                           }}
                           className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl hover:shadow-lg transition-all"
                         >
                           <DashboardIcon className="w-5 h-5" />
+                          <span className="font-medium">Dashboard</span>
                         </motion.button>
 
                         <motion.button
@@ -1171,6 +1286,17 @@ export const Navbar = () => {
                             </p>
                           </div>
                         </motion.button>
+
+                        <motion.button
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          onClick={handleLogout}
+                          className="w-full flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-red-600 to-rose-600 rounded-xl hover:shadow-lg transition-all"
+                        >
+                          <LogoutIcon className="w-5 h-5" />
+                          <span className="font-medium">Logout</span>
+                        </motion.button>
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 gap-2">
@@ -1184,6 +1310,7 @@ export const Navbar = () => {
                           }}
                           className="flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl hover:shadow-lg transition-all"
                         >
+                          <LoginIcon className="w-5 h-5" />
                           <span className="font-medium">Login</span>
                         </motion.button>
 
@@ -1197,6 +1324,7 @@ export const Navbar = () => {
                           }}
                           className="flex items-center justify-center space-x-2 p-3 bg-gradient-to-r from-emerald-600 to-green-600 rounded-xl hover:shadow-lg transition-all"
                         >
+                          <PersonAddIcon className="w-5 h-5" />
                           <span className="font-medium">Register</span>
                         </motion.button>
                       </div>
@@ -1310,10 +1438,18 @@ export const Navbar = () => {
                             name: e.target.value,
                           })
                         }
-                        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                        className={`w-full p-4 border-2 ${
+                          errors.contact.name
+                            ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                            : "border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        } rounded-xl focus:outline-none transition-all`}
                         placeholder="Your name"
-                        required
                       />
+                      {errors.contact.name && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.contact.name}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -1330,10 +1466,18 @@ export const Navbar = () => {
                             email: e.target.value,
                           })
                         }
-                        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                        className={`w-full p-4 border-2 ${
+                          errors.contact.email
+                            ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                            : "border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        } rounded-xl focus:outline-none transition-all`}
                         placeholder="your@email.com"
-                        required
                       />
+                      {errors.contact.email && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.contact.email}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -1349,8 +1493,11 @@ export const Navbar = () => {
                             subject: e.target.value,
                           })
                         }
-                        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                        required
+                        className={`w-full p-4 border-2 ${
+                          errors.contact.subject
+                            ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                            : "border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        } rounded-xl focus:outline-none transition-all`}
                       >
                         <option value="">Select Subject</option>
                         <option value="Admissions Inquiry">
@@ -1365,6 +1512,11 @@ export const Navbar = () => {
                         <option value="Visa Assistance">Visa Processing</option>
                         <option value="Other">Other Inquiry</option>
                       </select>
+                      {errors.contact.subject && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.contact.subject}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -1380,11 +1532,19 @@ export const Navbar = () => {
                             message: e.target.value,
                           })
                         }
-                        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all resize-none"
+                        className={`w-full p-4 border-2 ${
+                          errors.contact.message
+                            ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                            : "border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        } rounded-xl focus:outline-none transition-all resize-none`}
                         rows="12"
                         placeholder="Tell us about your study abroad plans..."
-                        required
                       />
+                      {errors.contact.message && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.contact.message}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -1480,7 +1640,6 @@ export const Navbar = () => {
 
                 {/* Form Content */}
                 <div className="overflow-y-auto max-h-[calc(90vh-180px)]">
-                  {/* Form Content */}
                   <div className="p-6">
                     {authType === "login" ? (
                       <form onSubmit={handleLogin} className="space-y-5">
@@ -1498,11 +1657,19 @@ export const Navbar = () => {
                                 email: e.target.value,
                               })
                             }
-                            className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                            className={`w-full p-4 border-2 ${
+                              errors.login.email
+                                ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                                : "border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                            } rounded-xl focus:outline-none transition-all`}
                             placeholder="you@example.com"
-                            required
                             disabled={isLoading}
                           />
+                          {errors.login.email && (
+                            <p className="text-red-500 text-sm mt-1">
+                              {errors.login.email}
+                            </p>
+                          )}
                         </div>
 
                         <div className="space-y-2">
@@ -1520,9 +1687,12 @@ export const Navbar = () => {
                                   password: e.target.value,
                                 })
                               }
-                              className="w-full p-4 pr-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+                              className={`w-full p-4 pr-12 border-2 ${
+                                errors.login.password
+                                  ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                                  : "border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                              } rounded-xl focus:outline-none transition-all`}
                               placeholder="Enter password"
-                              required
                               disabled={isLoading}
                             />
                             <button
@@ -1537,6 +1707,11 @@ export const Navbar = () => {
                               )}
                             </button>
                           </div>
+                          {errors.login.password && (
+                            <p className="text-red-500 text-sm mt-1">
+                              {errors.login.password}
+                            </p>
+                          )}
                         </div>
 
                         <motion.button
@@ -1581,11 +1756,19 @@ export const Navbar = () => {
                                 name: e.target.value,
                               })
                             }
-                            className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+                            className={`w-full p-4 border-2 ${
+                              errors.register.name
+                                ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                                : "border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200"
+                            } rounded-xl focus:outline-none transition-all`}
                             placeholder="John Doe"
-                            required
                             disabled={isLoading}
                           />
+                          {errors.register.name && (
+                            <p className="text-red-500 text-sm mt-1">
+                              {errors.register.name}
+                            </p>
+                          )}
                         </div>
 
                         <div className="space-y-2">
@@ -1602,11 +1785,19 @@ export const Navbar = () => {
                                 email: e.target.value,
                               })
                             }
-                            className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+                            className={`w-full p-4 border-2 ${
+                              errors.register.email
+                                ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                                : "border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200"
+                            } rounded-xl focus:outline-none transition-all`}
                             placeholder="you@example.com"
-                            required
                             disabled={isLoading}
                           />
+                          {errors.register.email && (
+                            <p className="text-red-500 text-sm mt-1">
+                              {errors.register.email}
+                            </p>
+                          )}
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -1625,9 +1816,12 @@ export const Navbar = () => {
                                     password: e.target.value,
                                   })
                                 }
-                                className="w-full p-4 pr-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+                                className={`w-full p-4 pr-12 border-2 ${
+                                  errors.register.password
+                                    ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                                    : "border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200"
+                                } rounded-xl focus:outline-none transition-all`}
                                 placeholder="Password"
-                                required
                                 disabled={isLoading}
                               />
                               <button
@@ -1642,6 +1836,11 @@ export const Navbar = () => {
                                 )}
                               </button>
                             </div>
+                            {errors.register.password && (
+                              <p className="text-red-500 text-sm mt-1">
+                                {errors.register.password}
+                              </p>
+                            )}
                           </div>
 
                           <div className="space-y-2">
@@ -1659,9 +1858,12 @@ export const Navbar = () => {
                                     confirmPassword: e.target.value,
                                   })
                                 }
-                                className="w-full p-4 pr-12 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all"
+                                className={`w-full p-4 pr-12 border-2 ${
+                                  errors.register.confirmPassword
+                                    ? "border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                                    : "border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-200"
+                                } rounded-xl focus:outline-none transition-all`}
                                 placeholder="Confirm"
-                                required
                                 disabled={isLoading}
                               />
                               <button
@@ -1678,6 +1880,11 @@ export const Navbar = () => {
                                 )}
                               </button>
                             </div>
+                            {errors.register.confirmPassword && (
+                              <p className="text-red-500 text-sm mt-1">
+                                {errors.register.confirmPassword}
+                              </p>
+                            )}
                           </div>
                         </div>
 
@@ -1741,8 +1948,7 @@ export const Navbar = () => {
                             setAuthType(
                               authType === "login" ? "register" : "login"
                             );
-                            setLoginError(null);
-                            setRegisterError(null);
+                            setErrors({ ...errors, login: {}, register: {} });
                           }}
                           className="font-semibold text-blue-600 hover:text-blue-700 hover:underline"
                         >
@@ -1804,7 +2010,11 @@ export const Navbar = () => {
               exit="exit"
               className="fixed inset-0 flex items-center justify-center p-4 z-[60]"
             >
-              <SuccessModal />
+              <NotificationModal
+                type="success"
+                title={modalTitle}
+                message={modalMessage}
+              />
             </motion.div>
           </>
         )}
@@ -1830,7 +2040,11 @@ export const Navbar = () => {
               exit="exit"
               className="fixed inset-0 flex items-center justify-center p-4 z-[60]"
             >
-              <ErrorModal />
+              <NotificationModal
+                type="error"
+                title={modalTitle}
+                message={modalMessage}
+              />
             </motion.div>
           </>
         )}
