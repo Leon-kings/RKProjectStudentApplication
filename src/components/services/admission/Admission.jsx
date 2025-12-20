@@ -3135,7 +3135,7 @@ export const Admission = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 text-white py-8 px-4 sm:px-6 lg:px-8">
       <ToastContainer position="top-right" autoClose={3000} />
       
       <div className="max-w-7xl mx-auto">
@@ -3146,10 +3146,10 @@ export const Admission = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
             University Admissions
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-100 max-w-3xl mx-auto">
             Find and apply to top universities worldwide with expert guidance from RECAPPLY
           </p>
           
@@ -3209,7 +3209,7 @@ export const Admission = () => {
                   placeholder="Search by name, country, or program..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                  className="w-full text-black pl-10 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
                 />
               </div>
             </div>
@@ -3219,7 +3219,7 @@ export const Admission = () => {
               <select
                 value={filters.country}
                 onChange={(e) => setFilters({...filters, country: e.target.value})}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                className="w-full text-black px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
               >
                 {countries.map((country, index) => (
                   <option key={index} value={country === 'All Countries' ? '' : country}>
@@ -3234,7 +3234,7 @@ export const Admission = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                className="w-full text-black px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
               >
                 <option value="ranking">Ranking</option>
                 <option value="tuition-low">Tuition: Low to High</option>
@@ -3250,7 +3250,7 @@ export const Admission = () => {
               <select
                 value={filters.programType}
                 onChange={(e) => setFilters({...filters, programType: e.target.value})}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                className="w-full text-black px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
               >
                 {programTypes.map((program, index) => (
                   <option key={index} value={program === 'All Programs' ? '' : program}>
@@ -3265,7 +3265,7 @@ export const Admission = () => {
               <select
                 value={filters.language}
                 onChange={(e) => setFilters({...filters, language: e.target.value})}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                className="w-full text-black px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
               >
                 {languages.map((language, index) => (
                   <option key={index} value={language === 'All Languages' ? '' : language}>
@@ -3330,7 +3330,7 @@ export const Admission = () => {
           ) : (
             <>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-green-500">
                   Found {filteredUniversities.length} Universities
                 </h2>
                 <div className="flex space-x-3">

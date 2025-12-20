@@ -189,7 +189,7 @@ export const FAQ = () => {
   };
 
   return (
-    <section className="py-10 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-gray-50 to-purple-50">
+    <section className="py-10 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-br from-blue-800 to-indigo-500">
       <div className="container mx-auto px-3 xs:px-4 sm:px-5 md:px-6 lg:px-8 xl:px-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -201,7 +201,7 @@ export const FAQ = () => {
           <div className="inline-block mb-3 sm:mb-4">
             <div className="flex items-center justify-center mb-2 sm:mb-3">
               <QuestionAnswer className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 text-blue-600 mr-2 sm:mr-3" />
-              <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl text-white font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Frequently Asked Questions
               </h2>
             </div>
@@ -213,7 +213,7 @@ export const FAQ = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-gray-600 text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto mt-4 sm:mt-6"
+            className="text-gray-100 text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto mt-4 sm:mt-6"
           >
             Get answers to common questions about studying in Asia. Can't find what you're looking for? Ask our experts directly!
           </motion.p>
@@ -247,7 +247,7 @@ export const FAQ = () => {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors"
+                  className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 p-1 bg-gradient-to-br from-red-800 to-red-500 rounded-full transition-colors"
                 >
                   <Close className="h-4 w-4 text-gray-400" />
                 </button>
@@ -358,7 +358,7 @@ export const FAQ = () => {
                           transition={{ duration: 0.3 }}
                           className="mt-4 pt-4 border-t border-gray-100"
                         >
-                          <p className="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed">
+                          <p className="text-gray-800 text-sm sm:text-base md:text-lg leading-relaxed">
                             {faq.answer}
                           </p>
                           <div className="mt-4 flex justify-end">
@@ -370,7 +370,7 @@ export const FAQ = () => {
                               }}
                               className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center space-x-1"
                             >
-                              <span>Need more help?</span>
+                              <span className="text-blue-600 font-bold">Need more help?</span>
                               <Send className="h-4 w-4" />
                             </button>
                           </div>
@@ -389,7 +389,7 @@ export const FAQ = () => {
                   viewport={{ once: true }}
                   className="flex flex-col sm:flex-row items-center justify-between mt-8 sm:mt-10 md:mt-12 space-y-4 sm:space-y-0"
                 >
-                  <div className="text-sm sm:text-base text-gray-600">
+                  <div className="text-sm sm:text-base text-gray-100">
                     Showing {start + 1} - {Math.min(start + perPage, filteredFaqs.length)} of {filteredFaqs.length} questions
                   </div>
                   

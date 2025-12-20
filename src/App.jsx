@@ -973,6 +973,7 @@ import { CreateAccommodation } from "./components/dashboard/admin/components/man
 import { AirportBookingManagement } from "./components/dashboard/admin/components/management/airport/AirportBookingManagement";
 import { AdmissionManagement } from "./components/dashboard/admin/components/management/admission/AdmissionApplicationManagement";
 import { CSCEManagement } from "./components/dashboard/admin/components/management/csce/CSCEManagement";
+import { UserDashboard } from "./components/dashboard/users/UserDashboard";
 
 // DARK MODE CONTEXT
 const ThemeContext = createContext();
@@ -1076,6 +1077,8 @@ const privateRoutes = [
   { path: "/airport/booking/management", name: "Airport Booking Management", element: <AirportBookingManagement />, icon: DashboardIcon },
   { path: "/admission/management", name: "Admission Management", element: <AdmissionManagement />, icon: DashboardIcon },
   { path: "/csce/exams/management", name: "CSCE Exams Management", element: <CSCEManagement />, icon: DashboardIcon },
+  // user
+    { path: "/user/dashboard", name: "User Dashboard", element: <UserDashboard />, icon: DashboardIcon },
 ];
 
 // ENHANCED PAGE LOADER COMPONENT WITH PAGE-SPECIFIC MESSAGES AND ROUTE NAME DISPLAY
@@ -1139,7 +1142,7 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
 
   return (
     <motion.div
-      className="fixed inset-0 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 z-50 flex flex-col items-center justify-center px-4"
+      className="fixed inset-0 bg-gradient-to-br from-blue-800 to-indigo-500 dark:from-gray-900 dark:to-gray-800 z-50 flex flex-col items-center justify-center px-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -1182,7 +1185,7 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
 
       <div className="text-center mb-4 sm:mb-6 md:mb-8 max-w-md">
         <motion.h2
-          className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2"
+          className="text-2xl sm:text-3xl text-white font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -1198,9 +1201,9 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
           >
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <p className="text-sm font-medium text-gray-100 dark:text-gray-300">
               Route:{" "}
-              <span className="font-bold text-blue-600 dark:text-blue-400">
+              <span className="font-bold text-white">
                 {routeName}
               </span>
             </p>
@@ -1230,7 +1233,7 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
         </div>
 
         <motion.p
-          className="text-gray-600 dark:text-gray-300 text-sm sm:text-base md:text-lg"
+          className="text-gray-100 dark:text-gray-300 text-sm sm:text-base md:text-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -1421,7 +1424,7 @@ function MobileMenu({ isOpen, onClose }) {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: "100%" }}
           transition={{ type: "spring", damping: 25 }}
-          className="fixed inset-0 z-40 bg-white dark:bg-gray-900 md:hidden"
+          className="fixed inset-0 z-40 bg-gradient-to-br from-blue-800 to-indigo-500 dark:bg-gray-900 md:hidden"
         >
           <div className="flex flex-col h-full p-6">
             <div className="flex justify-between items-center mb-8">
@@ -1488,42 +1491,6 @@ function MobileMenu({ isOpen, onClose }) {
   );
 }
 
-// TEXT MARKING COMPONENT FOR TRANSITIONS
-function MarkedText({ children, delay = 0 }) {
-  const { theme } = useTheme();
-
-  return (
-    <motion.span
-      initial={{
-        backgroundSize: "0% 100%",
-        backgroundImage:
-          theme === "light"
-            ? "linear-gradient(to right, transparent 50%, #93c5fd 50%)"
-            : "linear-gradient(to right, transparent 50%, #1e40af 50%)",
-      }}
-      whileInView={{
-        backgroundSize: "100% 100%",
-      }}
-      viewport={{ once: true }}
-      transition={{
-        duration: 0.8,
-        delay: delay,
-        ease: "easeInOut",
-      }}
-      className="bg-no-repeat bg-left-bottom px-1"
-      style={{
-        backgroundImage:
-          theme === "light"
-            ? "linear-gradient(to right, transparent 50%, #93c5fd 50%)"
-            : "linear-gradient(to right, transparent 50%, #1e40af 50%)",
-        backgroundSize: "200% 100%",
-        transition: "background-position 0.8s ease-in-out",
-      }}
-    >
-      {children}
-    </motion.span>
-  );
-}
 
 // MAIN APP
 export default function App() {
@@ -1588,7 +1555,7 @@ export default function App() {
       const ip = await axios.get("https://api.ipify.org?format=json");
 
       await axios.post(
-        "https://jsonplaceholder.typicode.com/posts",
+        "https://ruziganodejs.onrender.com",
         {
           ip: ip.data.ip,
           page: window.location.pathname,
@@ -1622,7 +1589,7 @@ export default function App() {
         className={`min-h-screen transition-colors duration-300 ${
           theme === "dark"
             ? "dark bg-gray-900 text-white"
-            : "bg-gray-50 text-gray-900"
+            : "bg-gradient-to-br from-blue-800 to-indigo-500 text-black"
         }`}
       >
         {/* Initial App Loading */}
@@ -1648,7 +1615,7 @@ export default function App() {
             {/* Mobile Menu Button - Only on small screens */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-white dark:bg-gray-800 shadow-lg md:hidden"
+              className="fixed top-4 left-4 z-30 p-2 rounded-lg bg-gradient-to-br from-blue-800 to-indigo-500 dark:bg-gray-800 shadow-lg md:hidden"
               aria-label="Open menu"
             >
               <MenuIcon />

@@ -1274,7 +1274,7 @@ export const CESP = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 text-white py-8 px-4 sm:px-6 lg:px-8">
       <ToastContainer position="top-right" autoClose={3000} />
       
       <div className="max-w-7xl mx-auto">
@@ -1285,10 +1285,10 @@ export const CESP = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
             China Exams Specialist Program
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-100 max-w-3xl mx-auto">
             Expert preparation for HSK, CSCA, and all Chinese language proficiency and university entrance exams
           </p>
         </motion.div>
@@ -1357,7 +1357,7 @@ export const CESP = () => {
           className="bg-white rounded-xl shadow-lg p-6 mb-8"
         >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Search Exams</label>
               <div className="relative">
                 <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -1371,7 +1371,7 @@ export const CESP = () => {
               </div>
             </div>
             
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Filter by Exam Type</label>
               <select
                 value={filters.examType}
@@ -1386,7 +1386,7 @@ export const CESP = () => {
               </select>
             </div>
             
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Sort By</label>
               <select
                 value={sortBy}
@@ -1402,7 +1402,7 @@ export const CESP = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Exam Level</label>
               <select
                 value={filters.level}
@@ -1417,7 +1417,7 @@ export const CESP = () => {
               </select>
             </div>
             
-            <div>
+            <div className='text-black'>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Registration Status</label>
               <select
                 value={filters.registrationStatus}
@@ -1504,7 +1504,7 @@ export const CESP = () => {
           ) : (
             <>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-green-700">
                   {filteredExams.length} Exams Available
                 </h2>
                 <div className="flex items-center space-x-4">
@@ -1538,61 +1538,6 @@ export const CESP = () => {
           )}
         </div>
 
-        {/* Study Materials Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          id="materials"
-          className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 mb-12"
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Free Study Materials</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'HSK Vocabulary Lists',
-                description: 'Complete word lists for HSK 1-6 with example sentences',
-                icon: TranslateIcon,
-                format: 'PDF',
-                size: '2.4 MB'
-              },
-              {
-                title: 'CSCA Practice Tests',
-                description: 'Full-length mock tests with answer keys',
-                icon: ArticleIcon,
-                format: 'PDF + Audio',
-                size: '15.2 MB'
-              },
-              {
-                title: 'Grammar Guides',
-                description: 'Comprehensive Chinese grammar explanations',
-                icon: MenuBookIcon,
-                format: 'PDF',
-                size: '3.8 MB'
-              },
-              {
-                title: 'Speaking Practice',
-                description: 'Audio files for pronunciation and conversation',
-                icon: PlayCircleIcon,
-                format: 'MP3',
-                size: '45.6 MB'
-              }
-            ].map((material, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm">
-                <material.icon className="h-8 w-8 text-blue-600 mb-4" />
-                <h3 className="font-bold text-gray-900 mb-2">{material.title}</h3>
-                <p className="text-gray-600 text-sm mb-3">{material.description}</p>
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span>{material.format}</span>
-                  <span>{material.size}</span>
-                </div>
-                <button className="w-full mt-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                  Download
-                </button>
-              </div>
-            ))}
-          </div>
-        </motion.div>
 
         {/* Why Choose Our Program */}
         <motion.div

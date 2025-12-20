@@ -632,7 +632,7 @@ export const Hero = () => {
         description:
           "Get comprehensive admission guidance, scholarship assistance, and visa support for top universities worldwide with RECAPPLY's expert team guiding you every step of the way.",
         image:
-          "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+          "https://westminster.ac.th/wp-content/uploads/2025/02/Frame-1000007644.png",
         hoverContent: {
           title: "500+ Partner Universities",
           description: "Access to top-ranked institutions across the globe",
@@ -718,7 +718,7 @@ export const Hero = () => {
         description:
           "Access exclusive scholarships, grants, and financial aid packages tailored for African students with RECAPPLY's specialized guidance.",
         image:
-          "https://images.unsplash.com/photo-1576495199011-ebd36d1d32f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+          "https://daadscholarship.com/wp-content/uploads/2025/11/Fully-Funded-Scholarships-2026-Worldwide-Openings.jpg",
         hoverContent: {
           title: "Financial Support Programs",
           description:
@@ -795,7 +795,7 @@ export const Hero = () => {
         description:
           "Complete CSCA exam preparation with expert guidance, study materials, and coaching for successful admission to top Chinese universities.",
         image:
-          "https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+          "https://www.china-admissions.com/wp-content/uploads/2024/12/Westlake-Uni-campus.png",
         hoverContent: {
           title: "CSCA Specialization",
           description:
@@ -1230,7 +1230,7 @@ export const Hero = () => {
 
   return (
     <>
-      <section className="relative min-h-screen bg-gray-900 overflow-hidden">
+      <section className="relative min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 overflow-hidden">
         <div className="container mx-auto px-4 py-8 lg:py-16">
           <AnimatePresence mode="wait">
             <motion.div

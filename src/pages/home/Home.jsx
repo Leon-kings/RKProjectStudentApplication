@@ -9,7 +9,7 @@ import { Team } from "../teams/Team";
 
 export const Home = () => {
   return (
-    <div className="w-full">
+    <div className="w-full bg-gradient-to-br from-blue-800 to-indigo-500">
       <Hero />
       <About />
       <Services />
