@@ -186,11 +186,11 @@ export const NotFound = () => {
             </div>
           </div>
 
-          <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-4 sm:mb-6 dark:text-gray-200 px-2">
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-4 sm:mb-6 text-red-400 px-2">
             Page Not Found
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6 sm:mb-8 max-w-xl md:max-w-2xl mx-auto px-3">
+          <p className="text-base sm:text-lg md:text-xl text-gray-100 dark:text-gray-400 mb-6 sm:mb-8 max-w-xl md:max-w-2xl mx-auto px-3">
             Oops! The page you're looking for seems to have wandered off into
             the digital void.
           </p>
