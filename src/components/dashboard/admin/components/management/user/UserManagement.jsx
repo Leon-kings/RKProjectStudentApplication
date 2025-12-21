@@ -35,7 +35,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 // API Configuration
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://ruziganodejs.onrender.com';
 
 // ===============================
 // SEPARATE USER FORM MODAL COMPONENT
@@ -119,7 +119,7 @@ const UserFormModal = React.memo(({
         }
 
         response = await axios.put(
-          `${API_BASE_URL}/users/${selectedUser._id}`,
+          `${API_BASE_URL}/auth/${selectedUser._id}`,
           updateData,
           {
             headers: {
@@ -130,7 +130,7 @@ const UserFormModal = React.memo(({
         );
       } else {
         response = await axios.post(
-          `${API_BASE_URL}/users`,
+          `${API_BASE_URL}/auth`,
           formData,
           {
             headers: {
@@ -428,12 +428,7 @@ export const UserManagement = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/users`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await axios.get(`${API_BASE_URL}/auth`);
 
       if (response.data.success) {
         const usersData = response.data.data;
@@ -660,7 +655,7 @@ export const UserManagement = () => {
     modalCallbackRef.current = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.delete(`${API_BASE_URL}/users/${userId}`, {
+        const response = await axios.delete(`${API_BASE_URL}/auth/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'

@@ -828,6 +828,7 @@ import { AirportBookingManagement } from "./components/dashboard/admin/component
 import { AdmissionManagement } from "./components/dashboard/admin/components/management/admission/AdmissionApplicationManagement";
 import { CSCEManagement } from "./components/dashboard/admin/components/management/csce/CSCEManagement";
 import { UserDashboard } from "./components/dashboard/users/UserDashboard";
+import { TestimonyManagement } from "./components/dashboard/admin/components/management/testimony/TestimonyManagement";
 
 // DARK MODE CONTEXT
 const ThemeContext = createContext();
@@ -848,40 +849,6 @@ const ResponsiveContainer = ({ children, className = "" }) => {
   );
 };
 
-// RESPONSIVE TEXT COMPONENT
-const ResponsiveText = ({
-  children,
-  as: Component = "p",
-  size = "base",
-  weight = "normal",
-  className = "",
-}) => {
-  const sizeClasses = {
-    xs: "text-xs sm:text-sm",
-    sm: "text-sm sm:text-base",
-    base: "text-base sm:text-lg",
-    lg: "text-lg sm:text-xl md:text-2xl",
-    xl: "text-xl sm:text-2xl md:text-3xl lg:text-4xl",
-    "2xl": "text-2xl sm:text-3xl md:text-4xl lg:text-5xl",
-    "3xl": "text-3xl sm:text-4xl md:text-5xl lg:text-6xl",
-  };
-
-  const weightClasses = {
-    light: "font-light",
-    normal: "font-normal",
-    medium: "font-medium",
-    semibold: "font-semibold",
-    bold: "font-bold",
-  };
-
-  return (
-    <Component
-      className={`${sizeClasses[size]} ${weightClasses[weight]} ${className}`}
-    >
-      {children}
-    </Component>
-  );
-};
 
 // PAGE TRANSITION COMPONENT - APPLIES TO EVERY PAGE
 const PageTransition = ({ children }) => {
@@ -998,6 +965,22 @@ const dashboardRoutes = [
     icon: DashboardIcon,
     requiredRole: "admin",
     type: "admin"
+  },
+    { 
+    path: "/accomodation/create/management", 
+    name: "Create Accommodation", 
+    element: <CreateAccommodation />, 
+    icon: DashboardIcon,
+    requiredRole: "admin",
+    type: "admin"
+  },
+  { 
+    path: "/testimony/management", 
+    name: "Testimony Management", 
+    element: <TestimonyManagement />, 
+    icon: DashboardIcon,
+    // requiredRole: "admin",
+    // type: "admin"
   },
   { 
     path: "/airport/booking/management", 
@@ -1220,7 +1203,7 @@ const PageLoader = ({ pageName = "", routeName = "", icon: Icon = null, routeTyp
         </motion.p>
       </div>
 
-      <div className="w-48 sm:w-64 h-1.5 sm:h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div className="w-48 sm:w-64 h-1.5 sm:h-2  rounded-full overflow-hidden">
         <motion.div
           className={`h-full bg-gradient-to-r ${gradientColor}`}
           initial={{ width: "0%" }}
@@ -1309,76 +1292,7 @@ function DarkModeToggle() {
   );
 }
 
-// SINGLE RESPONSIVE BACK TO TOP BUTTON
-function BackToTop() {
-  const [visible, setVisible] = useState(false);
-  const [isNearBottom, setIsNearBottom] = useState(false);
-  const { theme } = useTheme();
 
-  useEffect(() => {
-    const checkScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-
-      // Calculate scroll position in percentage
-      const scrollPercentage =
-        (scrollTop / (documentHeight - windowHeight)) * 100;
-
-      // Only show when:
-      // 1. Scrolled past 50% of viewport height (not immediately)
-      // 2. Not at the very top
-      // 3. Not near the bottom (hide when 90% scrolled)
-      const shouldBeVisible =
-        scrollTop > windowHeight * 0.5 && // Show after 50% of viewport
-        scrollTop > 100 && // Not at very top
-        scrollPercentage < 90; // Hide when near bottom
-
-      const nearBottom = scrollPercentage > 80; // Consider near bottom after 80%
-
-      setVisible(shouldBeVisible);
-      setIsNearBottom(nearBottom);
-    };
-
-    // Add scroll listener
-    window.addEventListener("scroll", checkScroll, { passive: true });
-
-    // Initial check
-    checkScroll();
-
-    return () => {
-      window.removeEventListener("scroll", checkScroll);
-    };
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  return (
-    <AnimatePresence>
-      {visible && !isNearBottom && (
-        <motion.button
-          initial={{ scale: 0, opacity: 0, y: 20 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0, opacity: 0, y: 20 }}
-          whileHover={{
-            scale: 1.1,
-            backgroundColor: theme === "light" ? "#3b82f6" : "#60a5fa",
-          }}
-          whileTap={{ scale: 0.95 }}
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg"
-        >
-          <ArrowUpwardIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-        </motion.button>
-      )}
-    </AnimatePresence>
-  );
-}
 
 // RESPONSIVE MOBILE MENU (For Small Screens)
 function MobileMenu({ isOpen, onClose, user }) {
@@ -1459,7 +1373,7 @@ function MobileMenu({ isOpen, onClose, user }) {
                 const isActive = location.pathname === item.path;
 
                 return (
-                  <motion.a
+                  <motion.Link
                     key={item.path}
                     href={item.path}
                     className={`flex items-center space-x-3 p-4 rounded-xl transition-all ${
@@ -1479,7 +1393,7 @@ function MobileMenu({ isOpen, onClose, user }) {
                     }`}>
                       {item.type.toUpperCase()}
                     </span>
-                  </motion.a>
+                  </motion.Link>
                 );
               })}
             </div>
@@ -1636,11 +1550,6 @@ export default function App() {
           routeName: currentPageInfo.fullName,
           routeType: currentPageInfo.routeType,
           timestamp: new Date().toISOString(),
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
         }
       );
     } catch (err) {
@@ -1662,8 +1571,8 @@ export default function App() {
         <div
           className={`min-h-screen transition-colors duration-300 ${
             theme === "dark"
-              ? "dark bg-gray-900 text-white"
-              : "bg-gradient-to-br from-blue-50 to-indigo-50 text-gray-900"
+              ? "dark bg-gradient-to-t from-blue-800 to-indigo-500 text-white"
+              : "bg-gradient-to-t from-blue-800 to-indigo-500 text-gray-900"
           }`}
         >
           {/* Initial App Loading */}
@@ -1705,7 +1614,7 @@ export default function App() {
               <Navbar />
 
               {/* Main Content with Responsive Container */}
-              <main className="pt-16">
+              <main className="pt-16 bg-gradient-to-r from-blue-800 to-indigo-800">
                 <ResponsiveContainer>
                   <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
@@ -1743,7 +1652,6 @@ export default function App() {
 
               {/* FLOATING ACTION BUTTONS - Positioned at bottom corners */}
               <DarkModeToggle />
-              <BackToTop />
 
               <Footer />
             </>
