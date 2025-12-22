@@ -13,8 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
 body {
   margin: 0;
   display: flex;
@@ -41,23 +39,25 @@ button {
     color: #ffffff;
     background-color: #213547;
   }
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     color: white;
     min-height: 100vh;
 
     line-height: 1.6;
-}
+  }
 
   button {
     background-color: #6e80f1;
     color: #1a1a1a;
+    font-weight: 700;
     font-family: Georgia, "Times New Roman", Times, serif;
   }
   .button {
     background-color: #c7cdf1;
     color: #1a1a1a;
+    font-weight: 700;
     font-family: Georgia, "Times New Roman", Times, serif;
   }
 }

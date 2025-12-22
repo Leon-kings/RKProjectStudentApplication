@@ -9,6 +9,7 @@ import React, {
   useRef,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from '../../assets/images/graduation-diploma-black-hat-icon-download-png-735811696934873jz8ydemel1.png'
 import {
   ChevronLeft,
   ChevronRight,
@@ -632,7 +633,7 @@ export const Hero = () => {
         description:
           "Get comprehensive admission guidance, scholarship assistance, and visa support for top universities worldwide with RECAPPLY's expert team guiding you every step of the way.",
         image:
-          "https://westminster.ac.th/wp-content/uploads/2025/02/Frame-1000007644.png",
+          "https://www.epicureantravelerblog.com/wp-content/uploads/2023/09/study-abroad.jpg",
         hoverContent: {
           title: "500+ Partner Universities",
           description: "Access to top-ranked institutions across the globe",
@@ -718,7 +719,7 @@ export const Hero = () => {
         description:
           "Access exclusive scholarships, grants, and financial aid packages tailored for African students with RECAPPLY's specialized guidance.",
         image:
-          "https://daadscholarship.com/wp-content/uploads/2025/11/Fully-Funded-Scholarships-2026-Worldwide-Openings.jpg",
+          "https://apuedge.com/wp-content/uploads/2020/08/scholarships-Loux.jpeg",
         hoverContent: {
           title: "Financial Support Programs",
           description:
@@ -795,7 +796,7 @@ export const Hero = () => {
         description:
           "Complete CSCA exam preparation with expert guidance, study materials, and coaching for successful admission to top Chinese universities.",
         image:
-          "https://www.china-admissions.com/wp-content/uploads/2024/12/Westlake-Uni-campus.png",
+          "https://www.china-admissions.com/wp-content/uploads/2025/09/CSCA-Guidebook-thumbnail.png",
         hoverContent: {
           title: "CSCA Specialization",
           description:
@@ -1112,53 +1113,53 @@ export const Hero = () => {
     switch (scheme) {
       case "blue":
         return {
-          bg: "bg-blue-600",
-          gradient: "from-blue-600 to-purple-600",
+          bg: "bg-blue-400",
+          gradient: "from-blue-400 to-purple-400",
           light: "bg-blue-400/20",
           text: "text-blue-50",
           border: "border-blue-400",
           hoverBg: "bg-blue-300",
-          modalHeader: "bg-gradient-to-r from-blue-600 to-purple-600",
+          modalHeader: "bg-gradient-to-r from-blue-400 to-purple-400",
         };
       case "purple":
         return {
-          bg: "bg-purple-600",
-          gradient: "from-purple-600 to-indigo-600",
+          bg: "bg-purple-400",
+          gradient: "from-purple-400 to-indigo-400",
           light: "bg-purple-400/20",
           text: "text-purple-50",
           border: "border-purple-400",
           hoverBg: "bg-purple-300",
-          modalHeader: "bg-gradient-to-r from-purple-600 to-indigo-600",
+          modalHeader: "bg-gradient-to-r from-purple-400 to-indigo-400",
         };
       case "red":
         return {
-          bg: "bg-red-600",
-          gradient: "from-red-600 to-orange-600",
+          bg: "bg-red-400",
+          gradient: "from-red-400 to-orange-400",
           light: "bg-red-400/20",
           text: "text-red-50",
           border: "border-red-400",
           hoverBg: "bg-red-300",
-          modalHeader: "bg-gradient-to-r from-red-600 to-orange-600",
+          modalHeader: "bg-gradient-to-r from-red-400 to-orange-400",
         };
       case "green":
         return {
-          bg: "bg-emerald-600",
-          gradient: "from-emerald-600 to-green-600",
+          bg: "bg-emerald-400",
+          gradient: "from-emerald-400 to-green-400",
           light: "bg-emerald-400/20",
           text: "text-emerald-50",
           border: "border-emerald-400",
           hoverBg: "bg-emerald-300",
-          modalHeader: "bg-gradient-to-r from-emerald-600 to-green-600",
+          modalHeader: "bg-gradient-to-r from-emerald-400 to-green-400",
         };
       default:
         return {
-          bg: "bg-blue-600",
-          gradient: "from-blue-600 to-purple-600",
+          bg: "bg-blue-400",
+          gradient: "from-blue-400 to-purple-400",
           light: "bg-blue-400/20",
           text: "text-blue-50",
           border: "border-blue-400",
           hoverBg: "bg-blue-600",
-          modalHeader: "bg-gradient-to-r from-blue-600 to-purple-600",
+          modalHeader: "bg-gradient-to-r from-blue-400 to-purple-400",
         };
     }
   }, []);
@@ -1231,7 +1232,7 @@ export const Hero = () => {
   return (
     <>
       <section className="relative min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 overflow-hidden">
-        <div className="container mx-auto px-4 py-8 lg:py-16">
+        <div className="container mx-auto px-4 py-8 ">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlideData.id}
@@ -1241,14 +1242,14 @@ export const Hero = () => {
               exit="exit"
               className="w-full"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 min-h-[600px]">
+              <div className="grid grid-cols-1 lg:grid-cols-2 text-gray-800 gap-6 lg:gap-8 min-h-[600px]">
                 {/* Left Column - Featured Content */}
                 <div className="relative rounded-3xl overflow-hidden group">
                   {/* Background Image with Overlay */}
                   <div className="absolute inset-0">
                     <img
                       src={currentSlideData.image}
-                      alt={currentSlideData.title}
+                      alt=''
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div
@@ -1264,10 +1265,10 @@ export const Hero = () => {
                     <motion.div variants={contentVariants} className="max-w-lg">
                       {/* RECAPPLY Badge */}
                       <div className="inline-flex items-center space-x-2 mb-4">
-                        <div className="px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-sm border border-white/20">
+                        <div className="px-4 py-1.5 rounded-full">
                           <span className="text-sm font-semibold text-white flex items-center">
-                            <RocketLaunch className="w-4 h-4 mr-2" />
-                            RECAPPLY
+                            <img src={logo} className="w-14 h-14 rounded-full" />
+                          
                           </span>
                         </div>
                         <div
@@ -1337,10 +1338,10 @@ export const Hero = () => {
                     <div className="h-full flex flex-col">
                       {/* Title and Description */}
                       <div className="mb-8">
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                        <h3 className="text-2xl md:text-3xl font-bold text-blue-400 mb-4">
                           {currentSlideData.hoverContent.title}
                         </h3>
-                        <p className="text-gray-200 text-lg">
+                        <p className="text-gray-600 text-lg">
                           {currentSlideData.hoverContent.description}
                         </p>
                       </div>
@@ -1349,8 +1350,8 @@ export const Hero = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 flex-grow">
                         {/* Features Section */}
                         <div>
-                          <h4 className="text-lg font-semibold text-white mb-6 flex items-center pb-3 border-b border-white/20">
-                            <CheckCircle className="w-5 h-5 mr-2" />
+                          <h4 className="text-lg font-semibold text-blue-600 mb-6 flex items-center pb-3 border-b border-white/20">
+                            <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
                             Key Features
                           </h4>
                           <ul className="space-y-4">
@@ -1373,8 +1374,8 @@ export const Hero = () => {
 
                         {/* Stats Section */}
                         <div>
-                          <h4 className="text-lg font-semibold text-white mb-6 flex items-center pb-3 border-b border-white/20">
-                            <TrendingUp className="w-5 h-5 mr-2" />
+                          <h4 className="text-lg font-semibold text-blue-600 mb-6 flex items-center pb-3 border-b border-white/20">
+                            <TrendingUp className="w-5 h-5 text-green-600 mr-2" />
                             Performance Metrics
                           </h4>
                           <div className="grid grid-cols-1 gap-6">
@@ -1422,7 +1423,7 @@ export const Hero = () => {
                         <div className="flex items-center justify-between text-gray-300">
                           <div className="flex items-center">
                             <Info className="w-4 h-4 mr-2" />
-                            <span className="text-sm">
+                            <span className="text-sm text-gray-600">
                               Click for detailed information
                             </span>
                           </div>
