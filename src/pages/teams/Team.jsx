@@ -964,12 +964,12 @@ export const Team = () => {
                 team for more information
               </p>
 
-              <div className="flex flex-col xs:flex-row gap-3 xs:gap-4 justify-center">
+              <div className="flex flex-col  gap-3 xs:gap-4 justify-center">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={openContactModal}
-                  className="bg-white text-blue-900 w-xl px-6 xs:px-8 py-3 xs:py-4 rounded-lg xs:rounded-xl font-semibold hover:shadow-xl transition-all"
+                  className="bg-white text-blue-900 px-6 xs:px-8 py-3 xs:py-4 rounded-lg xs:rounded-xl font-semibold hover:shadow-xl transition-all"
                 >
                   Contact Our Team
                 </motion.button>

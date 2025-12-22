@@ -39,6 +39,7 @@ import DocumentIcon from '@mui/icons-material/Description';
 import ExamIcon from '@mui/icons-material/Quiz';
 import DepartureIcon from '@mui/icons-material/FlightTakeoff';
 import PartnershipIcon from '@mui/icons-material/Handshake';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   const [email, setEmail] = useState('');
@@ -566,15 +567,15 @@ export const Footer = () => {
                   {socialLinks.map((social, index) => {
                     const Icon = social.icon;
                     return (
-                      <a
+                      <Link
                         key={index}
-                        href={social.link}
+                        to={social.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`p-2 bg-gray-800 rounded-lg ${social.color} transition-all duration-300 hover:text-white transform hover:-translate-y-1`}
                       >
                         <Icon className="h-5 w-5" />
-                      </a>
+                      </Link>
                     );
                   })}
                 </div>
