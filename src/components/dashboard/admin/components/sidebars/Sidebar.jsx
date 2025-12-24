@@ -949,13 +949,6 @@ export const Sidebar = ({ onToggleNotifications }) => {
       path: "/about",
       badge: "+",
     },
-    {
-      id: "notifications",
-      label: "Notifications",
-      icon: <NotificationsIcon />,
-      path: "/settings/notifications",
-      badge: "+",
-    },
   ];
 
   // Toggle sidebar collapse

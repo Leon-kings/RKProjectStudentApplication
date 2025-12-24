@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Material UI Icons
 import {
@@ -35,7 +35,8 @@ import {
   Check,
   Error,
   Warning,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
+import { Sidebar } from "../../sidebars/Sidebar";
 
 export const TestimonyManagement = () => {
   // State Management
@@ -43,17 +44,17 @@ export const TestimonyManagement = () => {
   const [filteredTestimonials, setFilteredTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8);
-  
+
   // Filters
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [verifiedFilter, setVerifiedFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('newest');
-  
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [verifiedFilter, setVerifiedFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+
   // Modals
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -61,32 +62,34 @@ export const TestimonyManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  
+  const [showNotificationsModal, setShowNotificationsModal] = useState(false);
   // Modal States
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalMessage, setModalMessage] = useState('');
-  const [modalType, setModalType] = useState('success'); // 'success', 'error', 'warning'
-  
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalType, setModalType] = useState("success"); // 'success', 'error', 'warning'
+  const toggleNotificationsModal = () => {
+    setShowNotificationsModal(!showNotificationsModal);
+  };
+
   // Selected testimonial
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const [editFormData, setEditFormData] = useState(null);
   const [newTestimonial, setNewTestimonial] = useState({
-    name: '',
-    country: '',
-    university: '',
-    program: '',
+    name: "",
+    country: "",
+    university: "",
+    program: "",
     rating: 5,
-    duration: '',
-    content: '',
-    email: '',
+    duration: "",
+    content: "",
+    email: "",
     verified: false,
-  
   });
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
+  const [imagePreview, setImagePreview] = useState("");
 
   // API Base URL
-  const API_URL = 'https://ruziganodejs.onrender.com';
+  const API_URL = "https://ruziganodejs.onrender.com";
 
   // Fetch testimonials
   const fetchTestimonials = async () => {
@@ -94,20 +97,21 @@ export const TestimonyManagement = () => {
       setLoading(true);
       const response = await axios.get(`${API_URL}/testimonials`, {
         params: {
-          status: 'all', // Get all testimonials including pending
+          status: "all", // Get all testimonials including pending
           sort: sortBy,
           search: searchTerm,
-        }
+        },
       });
-      
+
       if (response.data.success) {
         setTestimonials(response.data.data);
         filterTestimonials(response.data.data);
       }
     } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Failed to load testimonials';
+      const errorMsg =
+        err.response?.data?.message || "Failed to load testimonials";
       setError(errorMsg);
-      showModal('error', 'Load Failed', errorMsg);
+      showModal("error", "Load Failed", errorMsg);
     } finally {
       setLoading(false);
     }
@@ -118,8 +122,8 @@ export const TestimonyManagement = () => {
     setModalType(type);
     setModalTitle(title);
     setModalMessage(message);
-    
-    if (type === 'success') {
+
+    if (type === "success") {
       setIsSuccessModalOpen(true);
     } else {
       setIsErrorModalOpen(true);
@@ -141,14 +145,14 @@ export const TestimonyManagement = () => {
     let filtered = [...data];
 
     // Status filter
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(item => item.status === statusFilter);
+    if (statusFilter !== "all") {
+      filtered = filtered.filter((item) => item.status === statusFilter);
     }
 
     // Verified filter
-    if (verifiedFilter !== 'all') {
-      filtered = filtered.filter(item => 
-        verifiedFilter === 'verified' ? item.verified : !item.verified
+    if (verifiedFilter !== "all") {
+      filtered = filtered.filter((item) =>
+        verifiedFilter === "verified" ? item.verified : !item.verified
       );
     }
 
@@ -170,7 +174,10 @@ export const TestimonyManagement = () => {
   const totalPages = Math.ceil(filteredTestimonials.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredTestimonials.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredTestimonials.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // Navigation
   const nextPage = () => {
@@ -233,17 +240,23 @@ export const TestimonyManagement = () => {
   const handleUpdate = async () => {
     try {
       const formData = new FormData();
-      
+
       // Add all fields to formData
-      Object.keys(editFormData).forEach(key => {
-        if (key !== 'image' && key !== '_id' && key !== '__v' && key !== 'createdAt' && key !== 'updatedAt') {
+      Object.keys(editFormData).forEach((key) => {
+        if (
+          key !== "image" &&
+          key !== "_id" &&
+          key !== "__v" &&
+          key !== "createdAt" &&
+          key !== "updatedAt"
+        ) {
           formData.append(key, editFormData[key]);
         }
       });
 
       // Add image if new one selected
       if (imageFile) {
-        formData.append('image', imageFile);
+        formData.append("image", imageFile);
       }
 
       const response = await axios.put(
@@ -251,20 +264,28 @@ export const TestimonyManagement = () => {
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       if (response.data.success) {
-        showModal('success', 'Update Successful', 'Testimonial has been updated successfully!');
+        showModal(
+          "success",
+          "Update Successful",
+          "Testimonial has been updated successfully!"
+        );
         fetchTestimonials();
         setIsEditModalOpen(false);
         setImageFile(null);
-        setImagePreview('');
+        setImagePreview("");
       }
     } catch (err) {
-      showModal('error', 'Update Failed', err.response?.data?.message || 'Failed to update testimonial');
+      showModal(
+        "error",
+        "Update Failed",
+        err.response?.data?.message || "Failed to update testimonial"
+      );
     }
   };
 
@@ -276,28 +297,42 @@ export const TestimonyManagement = () => {
       );
 
       if (response.data.success) {
-        showModal('success', 'Delete Successful', 'Testimonial has been deleted successfully!');
+        showModal(
+          "success",
+          "Delete Successful",
+          "Testimonial has been deleted successfully!"
+        );
         fetchTestimonials();
         setIsDeleteModalOpen(false);
       }
     } catch (err) {
-      showModal('error', 'Delete Failed', err.response?.data?.message || 'Failed to delete testimonial');
+      showModal(
+        "error",
+        "Delete Failed",
+        err.response?.data?.message || "Failed to delete testimonial"
+      );
     }
   };
 
   // Approve testimonial
   const handleApprove = async (id) => {
     try {
-      const response = await axios.put(
-        `${API_URL}/testimonials/${id}/approve`
-      );
+      const response = await axios.put(`${API_URL}/testimonials/${id}/approve`);
 
       if (response.data.success) {
-        showModal('success', 'Approval Successful', 'Testimonial has been approved successfully!');
+        showModal(
+          "success",
+          "Approval Successful",
+          "Testimonial has been approved successfully!"
+        );
         fetchTestimonials();
       }
     } catch (err) {
-      showModal('error', 'Approval Failed', err.response?.data?.message || 'Failed to approve testimonial');
+      showModal(
+        "error",
+        "Approval Failed",
+        err.response?.data?.message || "Failed to approve testimonial"
+      );
     }
   };
 
@@ -305,53 +340,56 @@ export const TestimonyManagement = () => {
   const handleCreate = async () => {
     try {
       const formData = new FormData();
-      
+
       // Add all fields to formData
-      Object.keys(newTestimonial).forEach(key => {
+      Object.keys(newTestimonial).forEach((key) => {
         formData.append(key, newTestimonial[key]);
       });
 
       // Add image
       if (imageFile) {
-        formData.append('image', imageFile);
+        formData.append("image", imageFile);
       }
 
-      const response = await axios.post(
-        `${API_URL}/testimonials`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      const response = await axios.post(`${API_URL}/testimonials`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.data.success) {
-        showModal('success', 'Create Successful', 'Testimonial has been created successfully!');
+        showModal(
+          "success",
+          "Create Successful",
+          "Testimonial has been created successfully!"
+        );
         fetchTestimonials();
         setIsAddModalOpen(false);
         resetNewTestimonialForm();
         setImageFile(null);
-        setImagePreview('');
+        setImagePreview("");
       }
     } catch (err) {
-      showModal('error', 'Create Failed', err.response?.data?.message || 'Failed to create testimonial');
+      showModal(
+        "error",
+        "Create Failed",
+        err.response?.data?.message || "Failed to create testimonial"
+      );
     }
   };
 
   // Reset new testimonial form
   const resetNewTestimonialForm = () => {
     setNewTestimonial({
-      name: '',
-      country: '',
-      university: '',
-      program: '',
+      name: "",
+      country: "",
+      university: "",
+      program: "",
       rating: 5,
-      duration: '',
-      content: '',
-      email: '',
+      duration: "",
+      content: "",
+      email: "",
       verified: false,
-    
     });
   };
 
@@ -371,11 +409,11 @@ export const TestimonyManagement = () => {
   // Status badge
   const getStatusBadge = (status) => {
     const badges = {
-      approved: 'bg-green-100 text-green-800',
-      pending: 'bg-yellow-100 text-yellow-800',
-      rejected: 'bg-red-100 text-red-800',
+      approved: "bg-green-100 text-green-800",
+      pending: "bg-yellow-100 text-yellow-800",
+      rejected: "bg-red-100 text-red-800",
     };
-    return badges[status] || 'bg-gray-100 text-gray-800';
+    return badges[status] || "bg-gray-100 text-gray-800";
   };
 
   // Loading skeleton
@@ -403,428 +441,455 @@ export const TestimonyManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-800 to-indigo-500 text-white p-3 sm:p-4 md:p-6">
-      <ToastContainer position="top-right" autoClose={3000} />
-      
-      {/* Header */}
-      <div className="mb-6 sm:mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-100">
-              Testimonials Management
-            </h1>
-            <p className="text-gray-600 mt-2">
-              Total: {filteredTestimonials.length} testimonials
-            </p>
-          </div>
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Add className="mr-2" />
-            Add New Testimonial
-          </button>
-        </div>
+    <div className="min-h-screen flex bg-gradient-to-br from-blue-800 to-indigo-500 text-white p-3 sm:p-4 md:p-6">
+      <Sidebar onToggleNotifications={toggleNotificationsModal} />
+      <div className="w-full p-2">
+        <ToastContainer position="top-right" autoClose={3000} />
 
-        {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-            {/* Search */}
-            <div className="lg:col-span-2">
-              <div className="relative text-black">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search by name, university, program..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+        {/* Header */}
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-100">
+                Testimonials Management
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Total: {filteredTestimonials.length} testimonials
+              </p>
             </div>
-
-            {/* Status Filter */}
-            <div className='text-black'>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Status</option>
-                <option value="approved">Approved</option>
-                <option value="pending">Pending</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </div>
-
-            {/* Sort */}
-            <div className='text-black'>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="highest-rating">Highest Rating</option>
-                <option value="lowest-rating">Lowest Rating</option>
-              </select>
-            </div>
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Add className="mr-2" />
+              Add New Testimonial
+            </button>
           </div>
 
-          {/* Additional Filters */}
-          <div className="mt-4 flex flex-wrap gap-4">
-            <button
-              onClick={() => setVerifiedFilter('all')}
-              className={`px-4 py-2 rounded-lg ${verifiedFilter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setVerifiedFilter('verified')}
-              className={`px-4 py-2 rounded-lg flex items-center ${verifiedFilter === 'verified' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'}`}
-            >
-              <VerifiedUser className="mr-2" />
-              Verified
-            </button>
-            <button
-              onClick={() => setVerifiedFilter('unverified')}
-              className={`px-4 py-2 rounded-lg ${verifiedFilter === 'unverified' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-700'}`}
-            >
-              Unverified
-            </button>
-            <button
-              onClick={fetchTestimonials}
-              className="ml-auto px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center"
-            >
-              <Refresh className="mr-2" />
-              Refresh
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Testimonials Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        {currentItems.map((testimonial) => (
-          <div
-            key={testimonial._id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
-          >
-            {/* Card Header */}
-            <div className="p-4 sm:p-6 border-b">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center space-x-3">
-                  <img
-                    src={testimonial.image?.url }
-                    alt=''
-                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-white shadow"
+          {/* Filters and Search */}
+          <div className="bg-white rounded-lg shadow p-4 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+              {/* Search */}
+              <div className="lg:col-span-2">
+                <div className="relative text-black">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search by name, university, program..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
-                  <div>
-                    <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                      {testimonial.name}
-                    </h3>
-                    <p className="text-gray-600 text-xs sm:text-sm flex items-center">
-                      <LocationOn className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                      {testimonial.country}
-                    </p>
-                  </div>
-                </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(testimonial.status)}`}>
-                  {testimonial.status}
-                </span>
-              </div>
-            </div>
-
-            {/* Card Content */}
-            <div className="p-4 sm:p-6">
-              <div className="mb-4">
-                <div className="flex items-center mb-2">
-                  <div className="flex">
-                    {renderStars(testimonial.rating)}
-                  </div>
-                  <span className="ml-2 font-bold text-gray-700">
-                    {testimonial.rating.toFixed(1)}
-                  </span>
-                </div>
-                <p className="text-gray-600 text-sm line-clamp-2 mb-3">
-                  {testimonial.content}
-                </p>
-                <div className="space-y-1">
-                  <p className="text-gray-700 text-sm flex items-center">
-                    <School className="w-4 h-4 mr-2" />
-                    {testimonial.university}
-                  </p>
-                  <p className="text-gray-700 text-sm flex items-center">
-                    <CalendarToday className="w-4 h-4 mr-2" />
-                    {testimonial.duration}
-                  </p>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => handleView(testimonial)}
-                  className="flex-1 min-w-[80px] px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm flex items-center justify-center"
+              {/* Status Filter */}
+              <div className="text-black">
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <Visibility className="mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">View</span>
-                </button>
-                <button
-                  onClick={() => handleEdit(testimonial)}
-                  className="flex-1 min-w-[80px] px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 text-sm flex items-center justify-center"
+                  <option value="all">All Status</option>
+                  <option value="approved">Approved</option>
+                  <option value="pending">Pending</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+
+              {/* Sort */}
+              <div className="text-black">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <Edit className="mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">Edit</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedTestimonial(testimonial);
-                    setIsDeleteModalOpen(true);
-                  }}
-                  className="flex-1 min-w-[80px] px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm flex items-center justify-center"
-                >
-                  <Delete className="mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">Delete</span>
-                </button>
-                {testimonial.status === 'pending' && (
-                  <button
-                    onClick={() => handleApprove(testimonial._id)}
-                    className="w-full mt-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm flex items-center justify-center"
-                  >
-                    <CheckCircle className="mr-2" />
-                    Approve
-                  </button>
-                )}
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="highest-rating">Highest Rating</option>
+                  <option value="lowest-rating">Lowest Rating</option>
+                </select>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Empty State */}
-      {currentItems.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 mb-4">
-            <FilterList className="w-16 h-16 mx-auto" />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-100 mb-2">
-            No testimonials found
-          </h3>
-          <p className="text-gray-200">
-            Try adjusting your filters or add a new testimonial
-          </p>
-        </div>
-      )}
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-gray-600 text-sm">
-            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredTestimonials.length)} of {filteredTestimonials.length} entries
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className="px-3 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            >
-              <ArrowBack />
-            </button>
-            
-            {/* Page Numbers */}
-            <div className="flex space-x-1">
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNum;
-                if (totalPages <= 5) {
-                  pageNum = i + 1;
-                } else if (currentPage <= 3) {
-                  pageNum = i + 1;
-                } else if (currentPage >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
-                } else {
-                  pageNum = currentPage - 2 + i;
-                }
-                
-                return (
-                  <button
-                    key={pageNum}
-                    onClick={() => goToPage(pageNum)}
-                    className={`w-10 h-10 rounded-lg ${currentPage === pageNum ? 'bg-blue-600 text-white' : 'border hover:bg-gray-50'}`}
-                  >
-                    {pageNum}
-                  </button>
-                );
-              })}
-              
-              {totalPages > 5 && currentPage < totalPages - 2 && (
-                <>
-                  <span className="px-2 py-2">...</span>
-                  <button
-                    onClick={() => goToPage(totalPages)}
-                    className={`w-10 h-10 rounded-lg border hover:bg-gray-50`}
-                  >
-                    {totalPages}
-                  </button>
-                </>
-              )}
-            </div>
-            
-            <button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-              className="px-3 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-            >
-              <ArrowForward />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* View Modal */}
-      {isViewModalOpen && selectedTestimonial && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-                Testimonial Details
-              </h2>
+            {/* Additional Filters */}
+            <div className="mt-4 flex flex-wrap gap-4">
               <button
-                onClick={() => setIsViewModalOpen(false)}
-                className="p-2 bg-gradient-to-t from-red-500 to-red-700 rounded-full"
+                onClick={() => setVerifiedFilter("all")}
+                className={`px-4 py-2 rounded-lg ${
+                  verifiedFilter === "all"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-700"
+                }`}
               >
-                <CloseIcon />
+                All
+              </button>
+              <button
+                onClick={() => setVerifiedFilter("verified")}
+                className={`px-4 py-2 rounded-lg flex items-center ${
+                  verifiedFilter === "verified"
+                    ? "bg-green-600 text-white"
+                    : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                <VerifiedUser className="mr-2" />
+                Verified
+              </button>
+              <button
+                onClick={() => setVerifiedFilter("unverified")}
+                className={`px-4 py-2 rounded-lg ${
+                  verifiedFilter === "unverified"
+                    ? "bg-yellow-600 text-white"
+                    : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                Unverified
+              </button>
+              <button
+                onClick={fetchTestimonials}
+                className="ml-auto px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center"
+              >
+                <Refresh className="mr-2" />
+                Refresh
               </button>
             </div>
-            
-            <div className="p-4 sm:p-6">
-              {/* Student Info */}
-              <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
-                <img
-                  src={selectedTestimonial.image?.url }
-                  alt=''
-                  className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
-                />
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {selectedTestimonial.name}
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <p className="text-gray-600 flex items-center">
-                      <Email className="w-4 h-4 mr-2" />
-                      {selectedTestimonial.email}
-                    </p>
-                    <p className="text-gray-600 flex items-center">
-                      <LocationOn className="w-4 h-4 mr-2" />
-                      {selectedTestimonial.country}
-                    </p>
-                    <p className="text-gray-600 flex items-center">
-                      <School className="w-4 h-4 mr-2" />
-                      {selectedTestimonial.university}
-                    </p>
-                    <p className="text-gray-600 flex items-center">
-                      <CalendarToday className="w-4 h-4 mr-2" />
-                      {selectedTestimonial.duration}
-                    </p>
+          </div>
+        </div>
+
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          {currentItems.map((testimonial) => (
+            <div
+              key={testimonial._id}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+            >
+              {/* Card Header */}
+              <div className="p-4 sm:p-6 border-b">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center space-x-3">
+                    <img
+                      src={testimonial.image?.url}
+                      alt=""
+                      className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-white shadow"
+                    />
+                    <div>
+                      <h3 className="font-bold text-gray-800 text-sm sm:text-base">
+                        {testimonial.name}
+                      </h3>
+                      <p className="text-gray-600 text-xs sm:text-sm flex items-center">
+                        <LocationOn className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                        {testimonial.country}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </div>
-              
-              {/* Rating */}
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex">
-                    {renderStars(selectedTestimonial.rating)}
-                  </div>
-                  <span className="text-lg font-bold text-gray-800">
-                    {selectedTestimonial.rating.toFixed(1)}/5.0
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadge(
+                      testimonial.status
+                    )}`}
+                  >
+                    {testimonial.status}
                   </span>
                 </div>
               </div>
-              
-              {/* Full Content */}
-              <div>
-                <h4 className="font-bold text-gray-800 mb-3">Full Testimonial</h4>
-                <p className="text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg">
-                  {selectedTestimonial.content}
-                </p>
+
+              {/* Card Content */}
+              <div className="p-4 sm:p-6">
+                <div className="mb-4">
+                  <div className="flex items-center mb-2">
+                    <div className="flex">
+                      {renderStars(testimonial.rating)}
+                    </div>
+                    <span className="ml-2 font-bold text-gray-700">
+                      {testimonial.rating.toFixed(1)}
+                    </span>
+                  </div>
+                  <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                    {testimonial.content}
+                  </p>
+                  <div className="space-y-1">
+                    <p className="text-gray-700 text-sm flex items-center">
+                      <School className="w-4 h-4 mr-2" />
+                      {testimonial.university}
+                    </p>
+                    <p className="text-gray-700 text-sm flex items-center">
+                      <CalendarToday className="w-4 h-4 mr-2" />
+                      {testimonial.duration}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => handleView(testimonial)}
+                    className="flex-1 min-w-[80px] px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm flex items-center justify-center"
+                  >
+                    <Visibility className="mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">View</span>
+                  </button>
+                  <button
+                    onClick={() => handleEdit(testimonial)}
+                    className="flex-1 min-w-[80px] px-3 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 text-sm flex items-center justify-center"
+                  >
+                    <Edit className="mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Edit</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedTestimonial(testimonial);
+                      setIsDeleteModalOpen(true);
+                    }}
+                    className="flex-1 min-w-[80px] px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm flex items-center justify-center"
+                  >
+                    <Delete className="mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Delete</span>
+                  </button>
+                  {testimonial.status === "pending" && (
+                    <button
+                      onClick={() => handleApprove(testimonial._id)}
+                      className="w-full mt-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm flex items-center justify-center"
+                    >
+                      <CheckCircle className="mr-2" />
+                      Approve
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {currentItems.length === 0 && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <FilterList className="w-16 h-16 mx-auto" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-100 mb-2">
+              No testimonials found
+            </h3>
+            <p className="text-gray-200">
+              Try adjusting your filters or add a new testimonial
+            </p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-gray-600 text-sm">
+              Showing {indexOfFirstItem + 1} to{" "}
+              {Math.min(indexOfLastItem, filteredTestimonials.length)} of{" "}
+              {filteredTestimonials.length} entries
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={prevPage}
+                disabled={currentPage === 1}
+                className="px-3 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
+                <ArrowBack />
+              </button>
+
+              {/* Page Numbers */}
+              <div className="flex space-x-1">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => goToPage(pageNum)}
+                      className={`w-10 h-10 rounded-lg ${
+                        currentPage === pageNum
+                          ? "bg-blue-600 text-white"
+                          : "border hover:bg-gray-50"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+
+                {totalPages > 5 && currentPage < totalPages - 2 && (
+                  <>
+                    <span className="px-2 py-2">...</span>
+                    <button
+                      onClick={() => goToPage(totalPages)}
+                      className={`w-10 h-10 rounded-lg border hover:bg-gray-50`}
+                    >
+                      {totalPages}
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <button
+                onClick={nextPage}
+                disabled={currentPage === totalPages}
+                className="px-3 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
+                <ArrowForward />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* View Modal */}
+        {isViewModalOpen && selectedTestimonial && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-4 flex justify-between items-center">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+                  Testimonial Details
+                </h2>
+                <button
+                  onClick={() => setIsViewModalOpen(false)}
+                  className="p-2 bg-gradient-to-t from-red-500 to-red-700 rounded-full"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+
+              <div className="p-4 sm:p-6">
+                {/* Student Info */}
+                <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
+                  <img
+                    src={selectedTestimonial.image?.url}
+                    alt=""
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {selectedTestimonial.name}
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <p className="text-gray-600 flex items-center">
+                        <Email className="w-4 h-4 mr-2" />
+                        {selectedTestimonial.email}
+                      </p>
+                      <p className="text-gray-600 flex items-center">
+                        <LocationOn className="w-4 h-4 mr-2" />
+                        {selectedTestimonial.country}
+                      </p>
+                      <p className="text-gray-600 flex items-center">
+                        <School className="w-4 h-4 mr-2" />
+                        {selectedTestimonial.university}
+                      </p>
+                      <p className="text-gray-600 flex items-center">
+                        <CalendarToday className="w-4 h-4 mr-2" />
+                        {selectedTestimonial.duration}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex">
+                      {renderStars(selectedTestimonial.rating)}
+                    </div>
+                    <span className="text-lg font-bold text-gray-800">
+                      {selectedTestimonial.rating.toFixed(1)}/5.0
+                    </span>
+                  </div>
+                </div>
+
+                {/* Full Content */}
+                <div>
+                  <h4 className="font-bold text-gray-800 mb-3">
+                    Full Testimonial
+                  </h4>
+                  <p className="text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg">
+                    {selectedTestimonial.content}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Add Modal */}
-      {isAddModalOpen && (
-        <AddEditModal
-          title="Add New Testimonial"
-          formData={newTestimonial}
-          setFormData={setNewTestimonial}
-          imagePreview={imagePreview}
-          handleImageChange={handleImageChange}
-          handleSubmit={handleCreate}
-          handleClose={() => {
-            setIsAddModalOpen(false);
-            resetNewTestimonialForm();
-            setImageFile(null);
-            setImagePreview('');
-          }}
-          submitText="Create"
-        />
-      )}
+        {/* Add Modal */}
+        {isAddModalOpen && (
+          <AddEditModal
+            title="Add New Testimonial"
+            formData={newTestimonial}
+            setFormData={setNewTestimonial}
+            imagePreview={imagePreview}
+            handleImageChange={handleImageChange}
+            handleSubmit={handleCreate}
+            handleClose={() => {
+              setIsAddModalOpen(false);
+              resetNewTestimonialForm();
+              setImageFile(null);
+              setImagePreview("");
+            }}
+            submitText="Create"
+          />
+        )}
 
-      {/* Edit Modal */}
-      {isEditModalOpen && editFormData && (
-        <AddEditModal
-          title="Edit Testimonial"
-          formData={editFormData}
-          setFormData={setEditFormData}
-          imagePreview={imagePreview || editFormData.image?.url}
-          handleImageChange={handleImageChange}
-          handleSubmit={handleUpdate}
-          handleClose={() => {
-            setIsEditModalOpen(false);
-            setImageFile(null);
-            setImagePreview('');
-          }}
-          submitText="Update"
-        />
-      )}
+        {/* Edit Modal */}
+        {isEditModalOpen && editFormData && (
+          <AddEditModal
+            title="Edit Testimonial"
+            formData={editFormData}
+            setFormData={setEditFormData}
+            imagePreview={imagePreview || editFormData.image?.url}
+            handleImageChange={handleImageChange}
+            handleSubmit={handleUpdate}
+            handleClose={() => {
+              setIsEditModalOpen(false);
+              setImageFile(null);
+              setImagePreview("");
+            }}
+            submitText="Update"
+          />
+        )}
 
-      {/* Delete Confirmation Modal */}
-      {isDeleteModalOpen && selectedTestimonial && (
-        <ConfirmModal
-          title="Delete Testimonial"
-          message={`Are you sure you want to delete ${selectedTestimonial.name}'s testimonial? This action cannot be undone.`}
-          confirmText="Delete"
-          cancelText="Cancel"
-          onConfirm={handleDelete}
-          onCancel={() => setIsDeleteModalOpen(false)}
-          danger={true}
-        />
-      )}
+        {/* Delete Confirmation Modal */}
+        {isDeleteModalOpen && selectedTestimonial && (
+          <ConfirmModal
+            title="Delete Testimonial"
+            message={`Are you sure you want to delete ${selectedTestimonial.name}'s testimonial? This action cannot be undone.`}
+            confirmText="Delete"
+            cancelText="Cancel"
+            onConfirm={handleDelete}
+            onCancel={() => setIsDeleteModalOpen(false)}
+            danger={true}
+          />
+        )}
 
-      {/* Success Modal */}
-      {isSuccessModalOpen && (
-        <ResultModal
-          type="success"
-          title={modalTitle}
-          message={modalMessage}
-          onClose={() => setIsSuccessModalOpen(false)}
-        />
-      )}
+        {/* Success Modal */}
+        {isSuccessModalOpen && (
+          <ResultModal
+            type="success"
+            title={modalTitle}
+            message={modalMessage}
+            onClose={() => setIsSuccessModalOpen(false)}
+          />
+        )}
 
-      {/* Error Modal */}
-      {isErrorModalOpen && (
-        <ResultModal
-          type="error"
-          title={modalTitle}
-          message={modalMessage}
-          onClose={() => setIsErrorModalOpen(false)}
-        />
-      )}
+        {/* Error Modal */}
+        {isErrorModalOpen && (
+          <ResultModal
+            type="error"
+            title={modalTitle}
+            message={modalMessage}
+            onClose={() => setIsErrorModalOpen(false)}
+          />
+        )}
+      </div>
     </div>
   );
 };
@@ -838,13 +903,13 @@ const AddEditModal = ({
   handleImageChange,
   handleSubmit,
   handleClose,
-  submitText
+  submitText,
 }) => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -852,7 +917,9 @@ const AddEditModal = ({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">{title}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+            {title}
+          </h2>
           <button
             onClick={handleClose}
             className="p-2 bg-gradient-to-t from-red-500 to-red-700 rounded-full"
@@ -860,7 +927,7 @@ const AddEditModal = ({
             <CloseIcon />
           </button>
         </div>
-        
+
         <div className="p-4 sm:p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left Column */}
@@ -873,7 +940,7 @@ const AddEditModal = ({
                 <div className="flex items-center space-x-4">
                   <div className="relative">
                     <img
-                      src={imagePreview }
+                      src={imagePreview}
                       alt="Preview"
                       className="w-32 h-32 rounded-full object-cover border-4 border-white shadow"
                     />
@@ -891,16 +958,14 @@ const AddEditModal = ({
                     <p className="text-sm text-gray-600">
                       Upload a clear profile picture
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Max size: 5MB
-                    </p>
+                    <p className="text-xs text-gray-500">Max size: 5MB</p>
                   </div>
                 </div>
               </div>
 
               {/* Personal Info */}
               <div className="space-y-4">
-                <div className='text-black'>
+                <div className="text-black">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Full Name *
                   </label>
@@ -913,8 +978,8 @@ const AddEditModal = ({
                     required
                   />
                 </div>
-                
-                <div className='text-black'>
+
+                <div className="text-black">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Email *
                   </label>
@@ -927,8 +992,8 @@ const AddEditModal = ({
                     required
                   />
                 </div>
-                
-                <div className='text-black'>
+
+                <div className="text-black">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Country *
                   </label>
@@ -947,7 +1012,7 @@ const AddEditModal = ({
             {/* Right Column */}
             <div className="space-y-4">
               {/* University Info */}
-              <div className='text-black'>
+              <div className="text-black">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   University *
                 </label>
@@ -960,8 +1025,8 @@ const AddEditModal = ({
                   required
                 />
               </div>
-              
-              <div className='text-black'>
+
+              <div className="text-black">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Program *
                 </label>
@@ -974,8 +1039,8 @@ const AddEditModal = ({
                   required
                 />
               </div>
-              
-              <div className='text-black'>
+
+              <div className="text-black">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Duration *
                 </label>
@@ -989,9 +1054,9 @@ const AddEditModal = ({
                   required
                 />
               </div>
-              
+
               {/* Rating */}
-              <div className='text-black'>
+              <div className="text-black">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Rating *
                 </label>
@@ -1012,10 +1077,9 @@ const AddEditModal = ({
                   <option value="1">1 - Terrible</option>
                 </select>
               </div>
-              
-              
+
               {/* Testimonial Content */}
-              <div className='text-black'>
+              <div className="text-black">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Testimonial Content *
                 </label>
@@ -1034,7 +1098,7 @@ const AddEditModal = ({
               </div>
             </div>
           </div>
-          
+
           {/* Submit Buttons */}
           <div className="mt-8 flex justify-end space-x-4">
             <button
@@ -1065,7 +1129,7 @@ const ConfirmModal = ({
   cancelText,
   onConfirm,
   onCancel,
-  danger = false
+  danger = false,
 }) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -1073,7 +1137,7 @@ const ConfirmModal = ({
         <div className="p-6">
           <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
           <p className="text-gray-600 mb-6">{message}</p>
-          
+
           <div className="flex justify-end space-x-4">
             <button
               onClick={onCancel}
@@ -1084,9 +1148,9 @@ const ConfirmModal = ({
             <button
               onClick={onConfirm}
               className={`px-4 py-2 text-white rounded-lg ${
-                danger 
-                  ? 'bg-red-600 hover:bg-red-700' 
-                  : 'bg-blue-600 hover:bg-blue-700'
+                danger
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-blue-600 hover:bg-blue-700"
               }`}
             >
               {confirmText}
@@ -1100,46 +1164,48 @@ const ConfirmModal = ({
 
 // Reusable Result Modal Component (Success/Error)
 const ResultModal = ({ type, title, message, onClose }) => {
-  const isSuccess = type === 'success';
-  
+  const isSuccess = type === "success";
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-100">
         <div className="p-6">
           {/* Icon */}
-          <div className={`mx-auto flex items-center justify-center h-16 w-16 rounded-full ${
-            isSuccess ? 'bg-green-100' : 'bg-red-100'
-          } mb-4`}>
+          <div
+            className={`mx-auto flex items-center justify-center h-16 w-16 rounded-full ${
+              isSuccess ? "bg-green-100" : "bg-red-100"
+            } mb-4`}
+          >
             {isSuccess ? (
               <Check className="h-8 w-8 text-green-600" />
             ) : (
               <Error className="h-8 w-8 text-red-600" />
             )}
           </div>
-          
+
           {/* Title */}
-          <h3 className={`text-lg font-bold text-center mb-2 ${
-            isSuccess ? 'text-green-800' : 'text-red-800'
-          }`}>
+          <h3
+            className={`text-lg font-bold text-center mb-2 ${
+              isSuccess ? "text-green-800" : "text-red-800"
+            }`}
+          >
             {title}
           </h3>
-          
+
           {/* Message */}
-          <p className="text-gray-600 text-center mb-6">
-            {message}
-          </p>
-          
+          <p className="text-gray-600 text-center mb-6">{message}</p>
+
           {/* Button */}
           <div className="flex justify-center">
             <button
               onClick={onClose}
               className={`px-6 py-2 rounded-lg text-white ${
-                isSuccess 
-                  ? 'bg-green-600 hover:bg-green-700' 
-                  : 'bg-red-600 hover:bg-red-700'
+                isSuccess
+                  ? "bg-green-600 hover:bg-green-700"
+                  : "bg-red-600 hover:bg-red-700"
               } transition-colors`}
             >
-              {isSuccess ? 'Continue' : 'Try Again'}
+              {isSuccess ? "Continue" : "Try Again"}
             </button>
           </div>
         </div>
