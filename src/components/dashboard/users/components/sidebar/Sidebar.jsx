@@ -173,82 +173,54 @@ export const Sidebar = ({ onToggleNotifications }) => {
       id: 'dashboard',
       label: 'Dashboard',
       icon: <DashboardIcon />,
-      path: '/dashboard'
+      path: '/user/dashboard'
     },
     {
       id: 'applications',
       label: 'Applications',
       icon: <DescriptionIcon />,
-      path: '/applications',
-      badge: 24
+      path: '/user/dashboard/applicants'
     },
     {
       id: 'admissions',
       label: 'Admissions',
       icon: <SchoolIcon />,
-      path: '/admissions',
+      path: '/user/dashboard/admissions',
       badge: 12
     },
     {
       id: 'visa',
       label: 'Visa Services',
       icon: <VerifiedIcon />,
-      path: '/visa',
+      path: '/user/dashboard/visa',
       badge: 8
     },
     {
       id: 'accommodation',
       label: 'Accommodation',
       icon: <HomeIcon />,
-      path: '/accommodation'
+      path: '/user/dashboard/accomodation'
     },
     {
       id: 'airport',
       label: 'Airport Services',
       icon: <FlightTakeoffIcon />,
-      path: '/airport'
+      path: '/user/dashboard/airport'
     },
     {
       id: 'revenue',
       label: 'Revenue',
       icon: <AttachMoneyIcon />,
-      path: '/revenue'
+      path: '/user/dashboard/revenue'
     },
     {
       id: 'students',
       label: 'Students',
       icon: <PeopleIcon />,
-      path: '/students'
+      path: '/user/dashboard/students'
     }
   ];
 
-  // Analytics sub-items
-  const analyticsItems = [
-    {
-      id: 'reports',
-      label: 'Reports',
-      icon: <AssessmentIcon />,
-      path: '/analytics/reports'
-    },
-    {
-      id: 'trends',
-      label: 'Trends',
-      icon: <TimelineIcon />,
-      path: '/analytics/trends'
-    },
-    {
-      id: 'charts',
-      label: 'Charts',
-      icon: <PieChartIcon />,
-      path: '/analytics/charts'
-    },
-    {
-      id: 'data',
-      label: 'Data Export',
-      icon: <TableChartIcon />,
-      path: '/analytics/data'
-    }
-  ];
 
   // Settings items
   const settingsItems = [
@@ -270,13 +242,7 @@ export const Sidebar = ({ onToggleNotifications }) => {
       icon: <BusinessIcon />,
       path: '/settings/company'
     },
-    {
-      id: 'notifications',
-      label: 'Notifications',
-      icon: <NotificationsIcon />,
-      path: '/settings/notifications',
-      badge: 5
-    }
+
   ];
 
   // Toggle sidebar collapse - FIXED: On mobile, just collapse, don't close completely
@@ -578,9 +544,6 @@ export const Sidebar = ({ onToggleNotifications }) => {
             {/* Navigation Section */}
             <SidebarSection title="Navigation" items={navItems} />
             
-            {/* Analytics Section */}
-            <SidebarSection title="Analytics" items={analyticsItems} isSubSection={true} />
-            
             {/* Settings Section */}
             <SidebarSection title="Settings" items={settingsItems} isSubSection={true} />
             
@@ -595,31 +558,7 @@ export const Sidebar = ({ onToggleNotifications }) => {
                 {(!isCollapsed || isMobileOpen) ? 'Quick Actions' : '•'}
               </motion.h4>
               <div className="space-y-1 px-2">
-                {/* Dark Mode Toggle */}
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={toggleDarkMode}
-                  className="flex items-center w-full py-3 px-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    {isDarkMode ? (
-                      <LightModeIcon className="text-yellow-500" style={{ fontSize: '20px' }} />
-                    ) : (
-                      <DarkModeIcon className="text-gray-500" style={{ fontSize: '20px' }} />
-                    )}
-                  </div>
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ 
-                      opacity: (!isCollapsed || isMobileOpen) ? 1 : 0,
-                      x: (!isCollapsed || isMobileOpen) ? 0 : -10
-                    }}
-                    className="text-sm font-medium ml-3"
-                  >
-                    {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-                  </motion.span>
-                </motion.button>
-
+      
                 {/* Notifications */}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
@@ -660,50 +599,6 @@ export const Sidebar = ({ onToggleNotifications }) => {
 
         {/* Footer */}
         <div className="border-t border-gray-200 dark:border-gray-800">
-          {/* Help & Support */}
-          <div className="p-4">
-            <div className={`flex items-center justify-center 
-              ${(!isCollapsed || isMobileOpen) ? 'space-x-4' : 'flex-col space-y-2'}`}>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Help"
-                onClick={closeMobileSidebar}
-              >
-                <HelpIcon className="h-5 w-5 text-gray-500" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Chat"
-                onClick={closeMobileSidebar}
-              >
-                <ChatIcon className="h-5 w-5 text-gray-500" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Email"
-                onClick={closeMobileSidebar}
-              >
-                <EmailIcon className="h-5 w-5 text-gray-500" />
-              </motion.button>
-            </div>
-            
-            {(!isCollapsed || isMobileOpen) && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-center text-gray-500 dark:text-gray-400 mt-2"
-              >
-                Need help? Contact support
-              </motion.p>
-            )}
-          </div>
-
           {/* Logout Button - Only show if user is logged in */}
           {user && (
             <div className="p-4 pt-0">
