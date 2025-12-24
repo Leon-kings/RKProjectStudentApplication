@@ -29,6 +29,7 @@ import {
   LocalAirport as AirportIcon,
   Assignment as AssignmentIcon,
 } from "@mui/icons-material";
+import { Sidebar } from "../../sidebars/Sidebar";
 
 const INITIAL_BOOKING_FORM = {
   firstName: "",
