@@ -402,69 +402,6 @@ export const Navbar = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle login API call - FIXED: Improved error handling
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!validateLogin()) {
-  //     showErrorMessage("Validation Error", "Please fix the errors in the form");
-  //     return;
-  //   }
-
-  //   setIsLoading(true);
-
-  //   try {
-  //     const response = await axios.post(`${API_URL}/login`, {
-  //       email: loginData.email,
-  //       password: loginData.password,
-  //     });
-
-  //     console.log("Login response:", response.data); // Debug log
-
-  //     if (response.data.success || response.data.message === "Login successful") {
-  //       const userData = {
-  //         ...response.data.user,
-  //         token: response.data.token || response.data.accessToken,
-  //         isAuthenticated: true,
-  //       };
-
-  //       setUser(userData);
-  //       saveUserToCookies(userData);
-
-  //       showSuccessMessage(
-  //         "Login Successful!",
-  //         `Welcome back to RECAPPLY, ${response.data.user.name}!`
-  //       );
-
-  //       setTimeout(() => {
-  //         setShowSuccessModal(false);
-  //         setIsAuthModalOpen(false);
-  //         setLoginData({ email: "", password: "" });
-  //         setErrors((prev) => ({ ...prev, login: {} }));
-
-  //         // Role-based navigation - FIXED: Added null check
-  //         const userRole = response.data.user?.role?.toLowerCase() || "user";
-  //         const dashboardPath = getRoleBasedDashboard(userRole);
-  //         console.log("Navigating to:", dashboardPath, "Role:", userRole); // Debug log
-          
-  //         navigate(dashboardPath);
-  //       }, 2000);
-  //     } else {
-  //       showErrorMessage("Login Failed", response.data.message || "Invalid email or password");
-  //     }
-  //   } catch (error) {
-  //     console.error("Login error:", error.response || error);
-  //     const errorMessage =
-  //       error.response?.data?.message ||
-  //       error.response?.data?.error ||
-  //       error.message ||
-  //       "Login failed. Please check your credentials and try again.";
-  //     showErrorMessage("Login Failed", errorMessage);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const handleLogin = async (e) => {
   e.preventDefault();
 
@@ -546,7 +483,6 @@ export const Navbar = () => {
   }
 };
 
-
   // Handle register API call - FIXED
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -576,7 +512,7 @@ export const Navbar = () => {
         // Auto login after successful registration
         setTimeout(async () => {
           try {
-            const loginResponse = await axios.post(`${API_URL}/login`, {
+            const loginResponse = await axios.post(`${API_URL}/auth/login`, {
               email: registerData.email,
               password: registerData.password,
             });
@@ -655,7 +591,7 @@ export const Navbar = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/contact`, contactData);
+      const response = await axios.post(`${API_URL}/contacts`, contactData);
 
       if (response.data.success) {
         showSuccessMessage(
