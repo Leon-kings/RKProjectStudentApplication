@@ -1215,4 +1215,4 @@ export const CSCEManagementExams = () => {
       </div>
     </div>
   );
-};
+}

@@ -4261,4 +4261,4 @@ export const ContactManagement = () => {
       </div>
     </div>
   );
-};
+}
