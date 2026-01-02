@@ -2311,4 +2311,4 @@ export const ExamManagement = () => {
       </AnimatePresence>
     </div>
   );
-};
+}

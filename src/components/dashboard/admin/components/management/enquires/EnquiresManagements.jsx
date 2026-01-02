@@ -2839,4 +2839,4 @@ export const EnquiresManagements = () => {
       </AnimatePresence>
     </div>
   );
-};
+}
