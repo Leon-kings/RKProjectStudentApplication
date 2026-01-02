@@ -1041,7 +1041,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { SubscriptionManagement } from "./components/dashboard/admin/components/management/subscription/SubscriptionManagements";
 import { Subscript } from "@mui/icons-material";
 import { ExamManagement } from "./components/dashboard/admin/components/management/exams/ExamManagements";
-import {EnquiresManagements} from "./components/dashboard/admin/components/management/enquires/EnquiresManagements";
+import { EnquiresManagements } from "./components/dashboard/admin/components/management/enquires/EnquiresManagements";
 
 // AUTH CONTEXT for managing authentication state
 const AuthContext = createContext();
@@ -1158,7 +1158,7 @@ const DashboardLayout = ({ children, user, pageTitle }) => {
           name: "Contacts",
           icon: ContactMailIcon,
         },
-                {
+        {
           path: "/enquires/management",
           name: "Enquires",
           icon: ContactMailIcon,
@@ -1246,7 +1246,7 @@ const DashboardLayout = ({ children, user, pageTitle }) => {
           name: "Subscriptions",
           icon: CalendarTodayIcon,
         },
-                {
+        {
           path: "/exam/management",
           name: "Exams Registration",
           icon: CalendarTodayIcon,
@@ -1367,7 +1367,7 @@ const DashboardLayout = ({ children, user, pageTitle }) => {
       {/* Sidebar */}
       <motion.aside
         className={`fixed md:relative h-full bg-gradient-to-b from-blue-400 to-indigo-500 text-white z-40 ${
-          sidebarOpen ? "w-64" : "w-16"
+          sidebarOpen ? "w-64" : "w-20"
         } transition-all duration-300 ease-in-out`}
         initial={{ x: -300 }}
         animate={{ x: sidebarOpen || !isMobile ? 0 : -300 }}
@@ -1385,20 +1385,18 @@ const DashboardLayout = ({ children, user, pageTitle }) => {
                 <span className="font-bold text-sm">Dashboard</span>
               </motion.div>
             ) : (
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center mx-auto">
-                <DashboardIcon className="text-white text-sm" />
-              </div>
+              <div className=" rounded-lg flex items-center justify-center"></div>
             )}
-            <button
+            <div
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-1 rounded-lg hover:bg-blue-800 transition-colors"
+              className="p-1 rounded-lg bg-gradient-to-t from-blue-500 to-indigo-500 transition-colors"
             >
               {sidebarOpen ? (
                 <ChevronLeftIcon className="text-sm" />
               ) : (
                 <ChevronRightIcon className="text-sm" />
               )}
-            </button>
+            </div>
           </div>
 
           {/* User Info */}
@@ -1665,7 +1663,7 @@ const dashboardRoutes = [
     requiredRole: "admin",
     type: "admin",
   },
-    {
+  {
     path: "/enquires/management",
     name: "Enquiries Management",
     element: <EnquiresManagements />,
@@ -1673,7 +1671,7 @@ const dashboardRoutes = [
     requiredRole: "admin",
     type: "admin",
   },
-    {
+  {
     path: "/user/management",
     name: "User Management",
     element: <UserManagement />,
