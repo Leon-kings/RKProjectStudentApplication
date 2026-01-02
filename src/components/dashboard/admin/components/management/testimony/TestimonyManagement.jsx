@@ -601,7 +601,7 @@ export const TestimonyManagement = () => {
 
   return (
     <div className="min-h-screen flex bg-white text-black p-3 sm:p-4 md:p-6">
-      <Sidebar onToggleNotifications={toggleNotificationsModal} />
+      {/* <Sidebar onToggleNotifications={toggleNotificationsModal} /> */}
       <div className="w-full p-2">
         <ToastContainer position="top-right" autoClose={3000} />
 

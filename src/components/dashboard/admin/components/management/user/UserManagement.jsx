@@ -2481,7 +2481,7 @@ export const UserManagement = () => {
 
   return (
     <div className="min-h-screen flex bg-gradient-to-b from-gray-50 to-white py-8 px-4 sm:px-6 lg:px-2">
-      <Sidebar onToggleNotifications={toggleNotificationsModal} />
+      {/* <Sidebar onToggleNotifications={toggleNotificationsModal} /> */}
       <div className="p-4 w-full">
         <ToastContainer position="top-right" autoClose={3000} />
 

@@ -68,6 +68,12 @@
 // import { UserContactsManagement } from "./components/dashboard/users/components/managements/contacts/UserContactsManagement";
 // import { MeManagement } from "./components/dashboard/users/components/managements/users/MeManagement";
 // import { UserVISAManagement } from "./components/dashboard/users/components/managements/visa/UserVISAManagement";
+// import { VisaManagement } from "./components/dashboard/admin/components/management/visa/VisaManagement";
+// import { CSCEManagementExams } from "./components/dashboard/admin/components/management/csce/CreateCSCEData";
+// import { VisaForm } from "./components/visa/VisaApplicationPage";
+// import { InterviewForm } from "./components/csce-interview/InterviewForm";
+// import { BlogManagement } from "./components/dashboard/admin/components/management/blogs/BlogManagement";
+// import { BookingManagement } from "./components/dashboard/admin/components/management/bookings/BookingsManagements";
 
 // // AUTH CONTEXT for managing authentication state
 // const AuthContext = createContext();
@@ -164,6 +170,10 @@
 //   { path: "/", name: "Home", element: <Home />, icon: HomeIcon },
 //   { path: "/about", name: "About", element: <About />, icon: InfoIcon },
 //   { path: "/team", name: "Team", element: <Team />, icon: InfoIcon },
+//   // *****************************
+//   { path: "/visa/application", name: "Team", element: <VisaForm />, icon: InfoIcon },
+//   { path: "/interview/application", name: "Team", element: <InterviewForm />, icon: InfoIcon },
+//   // ****************************************8
 //   {
 //     path: "/support",
 //     name: "FAQ Support",
@@ -257,10 +267,18 @@
 //     requiredRole: "admin",
 //     type: "admin",
 //   },
-//   {
-//     path: "/accomodation/create/management",
-//     name: "Create Accommodation",
-//     element: <CreateAccommodation />,
+//     {
+//     path: "/blog/management",
+//     name: "Blog Management",
+//     element: <BlogManagement />,
+//     icon: DashboardIcon,
+//     requiredRole: "admin",
+//     type: "admin",
+//   },
+//       {
+//     path: "/booking/management",
+//     name: "Booking Management",
+//     element: <BookingManagement />,
 //     icon: DashboardIcon,
 //     requiredRole: "admin",
 //     type: "admin",
@@ -293,6 +311,22 @@
 //     path: "/csce/exams/management",
 //     name: "CSCE Exams Management",
 //     element: <CSCEManagement />,
+//     icon: DashboardIcon,
+//     requiredRole: "admin",
+//     type: "admin",
+//   },
+//   {
+//     path: "/visa/management",
+//     name: "VISA Management",
+//     element: <VisaManagement />,
+//     icon: DashboardIcon,
+//     requiredRole: "admin",
+//     type: "admin",
+//   },
+//     {
+//     path: "/csce/management",
+//     name: "VISA Management",
+//     element: <CSCEManagementExams />,
 //     icon: DashboardIcon,
 //     requiredRole: "admin",
 //     type: "admin",
@@ -371,7 +405,7 @@
 //     requiredRole: "user",
 //     type: "user",
 //   },
-//     {
+//   {
 //     path: "/user/dashboard/visa",
 //     name: "User Dashboard",
 //     element: <UserVISAManagement />,
@@ -379,14 +413,6 @@
 //     requiredRole: "user",
 //     type: "user",
 //   },
-//   //   {
-//   //   path: "/user/dashboard/students",
-//   //   name: "User Dashboard",
-//   //   element: <MeManagement />,
-//   //   icon: DashboardIcon,
-//   //   requiredRole: "user",
-//   //   type: "user",
-//   // },
 // ];
 
 // // ENHANCED PAGE LOADER COMPONENT WITH PAGE-SPECIFIC MESSAGES AND ROUTE NAME DISPLAY
@@ -830,21 +856,15 @@
 //   // FIXED: Page View Tracking with error handling
 //   const sendView = useCallback(async () => {
 //     try {
-//       const ip = await axios.get("https://ruziganodejs.onrender.com/views");
-
-//       await axios.post("https://ruziganodejs.onrender.com/views/track", {
-//         ip: ip.data.ip,
-//         page: window.location.pathname,
-//         route: location.pathname,
-//         routeName: currentPageInfo.fullName,
-//         routeType: currentPageInfo.routeType,
+//       // Just notify backend - backend will get the IP from request
+//       await axios.post("https://ruziganodejs.onrender.com/seen/track", {
 //         timestamp: new Date().toISOString(),
 //       });
+//       console.success("View tracked successfully");
 //     } catch (err) {
 //       console.warn("View tracking failed (non-critical):", err.message);
 //     }
-//   }, [location.pathname, currentPageInfo.fullName, currentPageInfo.routeType]);
-
+//   }, []);
 //   // Initial app loading effect
 //   useEffect(() => {
 //     const timer = setTimeout(() => setLoading(false), 1500);
@@ -925,6 +945,7 @@
 //     </AuthContext.Provider>
 //   );
 // }
+
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-refresh/only-export-components */
@@ -943,6 +964,7 @@ import {
   Route,
   Navigate,
   useLocation,
+  Link,
 } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -996,6 +1018,30 @@ import { UserContactsManagement } from "./components/dashboard/users/components/
 import { MeManagement } from "./components/dashboard/users/components/managements/users/MeManagement";
 import { UserVISAManagement } from "./components/dashboard/users/components/managements/visa/UserVISAManagement";
 import { VisaManagement } from "./components/dashboard/admin/components/management/visa/VisaManagement";
+import { CSCEManagementExams } from "./components/dashboard/admin/components/management/csce/CreateCSCEData";
+import { VisaForm } from "./components/visa/VisaApplicationPage";
+import { InterviewForm } from "./components/csce-interview/InterviewForm";
+import { BlogManagement } from "./components/dashboard/admin/components/management/blogs/BlogManagement";
+import { BookingManagement } from "./components/dashboard/admin/components/management/bookings/BookingsManagements";
+
+// Additional icons for dashboard
+import PeopleIcon from "@mui/icons-material/People";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import SchoolIcon from "@mui/icons-material/School";
+import HotelIcon from "@mui/icons-material/Hotel";
+import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import DescriptionIcon from "@mui/icons-material/Description";
+import BookIcon from "@mui/icons-material/Book";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { SubscriptionManagement } from "./components/dashboard/admin/components/management/subscription/SubscriptionManagements";
+import { Subscript } from "@mui/icons-material";
+import { ExamManagement } from "./components/dashboard/admin/components/management/exams/ExamManagements";
+import {EnquiresManagements} from "./components/dashboard/admin/components/management/enquires/EnquiresManagements";
 
 // AUTH CONTEXT for managing authentication state
 const AuthContext = createContext();
@@ -1058,8 +1104,459 @@ const PageTransition = ({ children }) => {
   );
 };
 
-// ENHANCED PRIVATE ROUTE COMPONENT WITH ROLE-BASED ACCESS
-const PrivateRoute = ({ children, requiredRole = null }) => {
+// DASHBOARD LAYOUT COMPONENT WITH RESPONSIVE SIDEBAR
+const DashboardLayout = ({ children, user, pageTitle }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const location = useLocation();
+  const { setUser } = useAuth();
+
+  // Check if mobile screen
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // ============================
+  // ADMIN DASHBOARD MENU ITEMS
+  // ============================
+  const adminMenuItems = [
+    // Core Dashboard
+    {
+      category: "Dashboard",
+      items: [
+        {
+          path: "/dashboard",
+          name: "Dashboard",
+          icon: DashboardIcon,
+          exact: true,
+        },
+      ],
+    },
+
+    // User Management
+    {
+      category: "User Management",
+      items: [
+        {
+          path: "/user/management",
+          name: "User Management",
+          icon: PeopleIcon,
+        },
+        {
+          path: "/contact/management",
+          name: "Contacts",
+          icon: ContactMailIcon,
+        },
+                {
+          path: "/enquires/management",
+          name: "Enquires",
+          icon: ContactMailIcon,
+        },
+      ],
+    },
+
+    // Academic Services
+    {
+      category: "Academic Services",
+      items: [
+        {
+          path: "/schoolarship/management",
+          name: "Scholarships",
+          icon: SchoolIcon,
+        },
+        {
+          path: "/admission/management",
+          name: "Admissions",
+          icon: DescriptionIcon,
+        },
+        {
+          path: "/csce/exams/management",
+          name: "CSCE Exams",
+          icon: BookIcon,
+        },
+      ],
+    },
+
+    // Travel & Accommodation
+    {
+      category: "Travel & Accommodation",
+      items: [
+        {
+          path: "/accomodation/booking/management",
+          name: "Accommodation",
+          icon: HotelIcon,
+        },
+        {
+          path: "/airport/booking/management",
+          name: "Airport Services",
+          icon: AirportShuttleIcon,
+        },
+        {
+          path: "/visa/management",
+          name: "VISA Management",
+          icon: DescriptionIcon,
+        },
+      ],
+    },
+
+    // Content Management
+    {
+      category: "Content Management",
+      items: [
+        {
+          path: "/testimony/management",
+          name: "Testimonials",
+          icon: RateReviewIcon,
+        },
+        {
+          path: "/enquires/management",
+          name: "Enquiries",
+          icon: RateReviewIcon,
+        },
+        {
+          path: "/blog/management",
+          name: "Blog Management",
+          icon: ArticleIcon,
+        },
+      ],
+    },
+
+    // Bookings Management
+    {
+      category: "Bookings",
+      items: [
+        {
+          path: "/booking/management",
+          name: "Bookings",
+          icon: CalendarTodayIcon,
+        },
+        {
+          path: "/subscription/management",
+          name: "Subscriptions",
+          icon: CalendarTodayIcon,
+        },
+                {
+          path: "/exam/management",
+          name: "Exams Registration",
+          icon: CalendarTodayIcon,
+        },
+      ],
+    },
+  ];
+
+  // ============================
+  // USER DASHBOARD MENU ITEMS
+  // ============================
+  const userMenuItems = [
+    // Dashboard
+    {
+      category: "Dashboard",
+      items: [
+        {
+          path: "/user/dashboard",
+          name: "Dashboard",
+          icon: DashboardIcon,
+          exact: true,
+        },
+      ],
+    },
+
+    // Academic Applications
+    {
+      category: "Academic Applications",
+      items: [
+        {
+          path: "/user/dashboard/admissions",
+          name: "My Admissions",
+          icon: DescriptionIcon,
+        },
+        {
+          path: "/user/dashboard/scholarship",
+          name: "My Scholarships",
+          icon: SchoolIcon,
+        },
+        {
+          path: "/user/dashboard/csce",
+          name: "My CSCE Exams",
+          icon: BookIcon,
+        },
+      ],
+    },
+
+    // Travel & Accommodation
+    {
+      category: "Travel & Accommodation",
+      items: [
+        {
+          path: "/user/dashboard/visa",
+          name: "My VISA",
+          icon: DescriptionIcon,
+        },
+        {
+          path: "/user/dashboard/accomodation",
+          name: "My Accommodation",
+          icon: HotelIcon,
+        },
+        {
+          path: "/user/dashboard/airport",
+          name: "Airport Services",
+          icon: AirportShuttleIcon,
+        },
+      ],
+    },
+
+    // Profile & Content
+    {
+      category: "Profile & Content",
+      items: [
+        {
+          path: "/user/dashboard/testimony",
+          name: "My Testimonials",
+          icon: RateReviewIcon,
+        },
+        {
+          path: "/user/dashboard/contacts",
+          name: "My Contacts",
+          icon: ContactMailIcon,
+        },
+        {
+          path: "/user/dashboard/students",
+          name: "My Profile",
+          icon: PeopleIcon,
+        },
+      ],
+    },
+  ];
+
+  const menuItems = user?.role === "admin" ? adminMenuItems : userMenuItems;
+
+  const handleLogout = () => {
+    setUser(null);
+    Cookies.remove("user");
+    window.location.href = "/";
+  };
+
+  // Set page title on mount and route change
+  useEffect(() => {
+    if (pageTitle) {
+      document.title = `${pageTitle} | Ruziga Consult`;
+    }
+  }, [pageTitle, location.pathname]);
+
+  return (
+    <div className="flex min-h-screen bg-gradient-to-b from-gray-50 to-blue-50">
+      {/* Sidebar Overlay for Mobile */}
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <motion.aside
+        className={`fixed md:relative h-full bg-gradient-to-b from-blue-400 to-indigo-500 text-white z-40 ${
+          sidebarOpen ? "w-64" : "w-16"
+        } transition-all duration-300 ease-in-out`}
+        initial={{ x: -300 }}
+        animate={{ x: sidebarOpen || !isMobile ? 0 : -300 }}
+        transition={{ type: "spring", damping: 25 }}
+      >
+        <div className="flex flex-col h-full">
+          {/* Sidebar Header */}
+          <div className="p-4 border-b border-blue-700 flex items-center justify-between">
+            {sidebarOpen ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center space-x-2"
+              >
+                <span className="font-bold text-sm">Dashboard</span>
+              </motion.div>
+            ) : (
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center mx-auto">
+                <DashboardIcon className="text-white text-sm" />
+              </div>
+            )}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-1 rounded-lg hover:bg-blue-800 transition-colors"
+            >
+              {sidebarOpen ? (
+                <ChevronLeftIcon className="text-sm" />
+              ) : (
+                <ChevronRightIcon className="text-sm" />
+              )}
+            </button>
+          </div>
+
+          {/* User Info */}
+          <div className="p-4 border-b border-blue-700">
+            {sidebarOpen ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center space-x-3"
+              >
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
+                  <span className="font-bold text-white">
+                    {user?.name?.charAt(0) || "U"}
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">{user?.name}</p>
+                  <p className="text-xs text-blue-200 capitalize">
+                    {user?.role}
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center mx-auto">
+                <span className="font-bold text-white text-xs">
+                  {user?.name?.charAt(0) || "U"}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Navigation Menu */}
+          <nav className="flex-1 overflow-y-auto py-4">
+            <ul className="space-y-6 px-2">
+              {menuItems.map((category, index) => (
+                <li key={category.category}>
+                  {/* Category Header (only shown when sidebar is open) */}
+                  {sidebarOpen && (
+                    <div className="mb-2 px-3">
+                      <span className="text-xs font-semibold text-blue-200 uppercase tracking-wider">
+                        {category.category}
+                      </span>
+                      <div className="mt-1 h-px bg-blue-700/50"></div>
+                    </div>
+                  )}
+
+                  {/* Menu Items */}
+                  <ul className="space-y-1">
+                    {category.items.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = item.exact
+                        ? location.pathname === item.path
+                        : location.pathname.startsWith(item.path);
+
+                      return (
+                        <li key={item.path}>
+                          <Link to={item.path}>
+                            <button
+                              className={`flex w-full items-center px-3 py-2.5 rounded-lg my-4 transition-all ${
+                                isActive
+                                  ? "bg-blue-800 text-white shadow-md"
+                                  : "hover:bg-blue-800/50 text-blue-100"
+                              }`}
+                            >
+                              <Icon className="text-lg" />
+                              {sidebarOpen && (
+                                <motion.span
+                                  initial={{ opacity: 0, width: 0 }}
+                                  animate={{ opacity: 1, width: "auto" }}
+                                  className="ml-3 text-sm font-medium truncate"
+                                >
+                                  {item.name}
+                                </motion.span>
+                              )}
+                            </button>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Logout Button */}
+          <div className="p-4 border-t border-blue-700">
+            <button
+              onClick={handleLogout}
+              className={`flex items-center justify-center w-full px-3 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white transition-colors ${
+                !sidebarOpen && "justify-center"
+              }`}
+            >
+              <LogoutIcon className="text-lg" />
+              {sidebarOpen && (
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="ml-3 text-sm font-medium"
+                >
+                  Logout
+                </motion.span>
+              )}
+            </button>
+          </div>
+        </div>
+      </motion.aside>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Bar */}
+        <header className="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              {isMobile && (
+                <button
+                  onClick={() => setSidebarOpen(true)}
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <MenuOpenIcon />
+                </button>
+              )}
+              <h1 className="text-lg sm:text-xl font-bold text-gray-800">
+                {pageTitle}
+              </h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="hidden sm:flex items-center space-x-2 text-sm text-gray-600">
+                <span>Welcome back,</span>
+                <span className="font-semibold text-blue-600">
+                  {user?.name}
+                </span>
+              </div>
+              <div className="relative">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center shadow-md">
+                  <span className="font-bold text-white text-sm">
+                    {user?.name?.charAt(0) || "U"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gradient-to-b from-gray-50 to-blue-50">
+          <div className="max-w-7xl mx-auto">
+            {/* Add spacing between sections in main content */}
+            <div className="space-y-8">{children}</div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+// ENHANCED PRIVATE ROUTE COMPONENT WITH DASHBOARD LAYOUT
+const PrivateRoute = ({ children, requiredRole = null, pageTitle = "" }) => {
   const { user } = useAuth();
 
   // If user is not authenticated, redirect to home
@@ -1069,7 +1566,6 @@ const PrivateRoute = ({ children, requiredRole = null }) => {
 
   // If role is required but user doesn't have it, redirect to appropriate dashboard
   if (requiredRole && user.role !== requiredRole) {
-    // Redirect to appropriate dashboard based on user's actual role
     switch (user.role?.toLowerCase()) {
       case "admin":
         return <Navigate to="/dashboard" replace />;
@@ -1084,7 +1580,11 @@ const PrivateRoute = ({ children, requiredRole = null }) => {
     }
   }
 
-  return children;
+  return (
+    <DashboardLayout user={user} pageTitle={pageTitle}>
+      {children}
+    </DashboardLayout>
+  );
 };
 
 // Route configuration
@@ -1092,6 +1592,18 @@ const publicRoutes = [
   { path: "/", name: "Home", element: <Home />, icon: HomeIcon },
   { path: "/about", name: "About", element: <About />, icon: InfoIcon },
   { path: "/team", name: "Team", element: <Team />, icon: InfoIcon },
+  {
+    path: "/visa/application",
+    name: "VISA Application",
+    element: <VisaForm />,
+    icon: InfoIcon,
+  },
+  {
+    path: "/interview/application",
+    name: "Interview Application",
+    element: <InterviewForm />,
+    icon: InfoIcon,
+  },
   {
     path: "/support",
     name: "FAQ Support",
@@ -1139,17 +1651,41 @@ const dashboardRoutes = [
   // Admin dashboard routes
   {
     path: "/dashboard",
-    name: "Admin Dashboard",
+    name: "Dashboard",
     element: <Dashboard />,
     icon: DashboardIcon,
     requiredRole: "admin",
     type: "admin",
   },
   {
+    path: "/exam/management",
+    name: "Exam Management",
+    element: <ExamManagement />,
+    icon: PeopleIcon,
+    requiredRole: "admin",
+    type: "admin",
+  },
+    {
+    path: "/enquires/management",
+    name: "Enquiries Management",
+    element: <EnquiresManagements />,
+    icon: PeopleIcon,
+    requiredRole: "admin",
+    type: "admin",
+  },
+    {
     path: "/user/management",
     name: "User Management",
     element: <UserManagement />,
-    icon: DashboardIcon,
+    icon: PeopleIcon,
+    requiredRole: "admin",
+    type: "admin",
+  },
+  {
+    path: "/subscription/management",
+    name: "Subscription Management",
+    element: <SubscriptionManagement />,
+    icon: Subscript,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1157,7 +1693,7 @@ const dashboardRoutes = [
     path: "/contact/management",
     name: "Contact Management",
     element: <ContactManagement />,
-    icon: DashboardIcon,
+    icon: ContactMailIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1165,7 +1701,7 @@ const dashboardRoutes = [
     path: "/schoolarship/management",
     name: "Scholarship Management",
     element: <ScholarshipManagement />,
-    icon: DashboardIcon,
+    icon: SchoolIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1173,7 +1709,7 @@ const dashboardRoutes = [
     path: "/accomodation/booking/management",
     name: "Accommodation Booking Management",
     element: <AccomodationBookingManagement />,
-    icon: DashboardIcon,
+    icon: HotelIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1181,7 +1717,23 @@ const dashboardRoutes = [
     path: "/accomodation/create/management",
     name: "Create Accommodation",
     element: <CreateAccommodation />,
-    icon: DashboardIcon,
+    icon: HotelIcon,
+    requiredRole: "admin",
+    type: "admin",
+  },
+  {
+    path: "/blog/management",
+    name: "Blog Management",
+    element: <BlogManagement />,
+    icon: ArticleIcon,
+    requiredRole: "admin",
+    type: "admin",
+  },
+  {
+    path: "/booking/management",
+    name: "Booking Management",
+    element: <BookingManagement />,
+    icon: CalendarTodayIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1189,7 +1741,7 @@ const dashboardRoutes = [
     path: "/testimony/management",
     name: "Testimony Management",
     element: <TestimonyManagement />,
-    icon: DashboardIcon,
+    icon: RateReviewIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1197,7 +1749,7 @@ const dashboardRoutes = [
     path: "/airport/booking/management",
     name: "Airport Booking Management",
     element: <AirportBookingManagement />,
-    icon: DashboardIcon,
+    icon: AirportShuttleIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1205,7 +1757,7 @@ const dashboardRoutes = [
     path: "/admission/management",
     name: "Admission Management",
     element: <AdmissionManagement />,
-    icon: DashboardIcon,
+    icon: DescriptionIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1213,7 +1765,7 @@ const dashboardRoutes = [
     path: "/csce/exams/management",
     name: "CSCE Exams Management",
     element: <CSCEManagement />,
-    icon: DashboardIcon,
+    icon: BookIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1221,7 +1773,15 @@ const dashboardRoutes = [
     path: "/visa/management",
     name: "VISA Management",
     element: <VisaManagement />,
-    icon: DashboardIcon,
+    icon: DescriptionIcon,
+    requiredRole: "admin",
+    type: "admin",
+  },
+  {
+    path: "/csce/management",
+    name: "CSCE Management",
+    element: <CSCEManagementExams />,
+    icon: BookIcon,
     requiredRole: "admin",
     type: "admin",
   },
@@ -1229,7 +1789,7 @@ const dashboardRoutes = [
   // User dashboard routes
   {
     path: "/user/dashboard",
-    name: "User Dashboard",
+    name: "Dashboard",
     element: <UserDashboard />,
     icon: DashboardIcon,
     requiredRole: "user",
@@ -1237,73 +1797,73 @@ const dashboardRoutes = [
   },
   {
     path: "/user/dashboard/csce",
-    name: "User Dashboard",
+    name: "My CSCE Exams",
     element: <UserCSCEManagement />,
-    icon: DashboardIcon,
+    icon: BookIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/accomodation",
-    name: "User Dashboard",
+    name: "My Accommodation",
     element: <UserAccomodationManagement />,
-    icon: DashboardIcon,
+    icon: HotelIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/admissions",
-    name: "User Dashboard",
+    name: "My Admissions",
     element: <UserAdmissionsManagement />,
-    icon: DashboardIcon,
+    icon: DescriptionIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/airport",
-    name: "User Dashboard",
+    name: "My Airport Services",
     element: <UserAirportManagement />,
-    icon: DashboardIcon,
+    icon: AirportShuttleIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/scholarship",
-    name: "User Dashboard",
+    name: "My Scholarships",
     element: <UserScholarshipManagement />,
-    icon: DashboardIcon,
+    icon: SchoolIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/testimony",
-    name: "User Dashboard",
+    name: "My Testimonials",
     element: <UserTestimonyManagement />,
-    icon: DashboardIcon,
+    icon: RateReviewIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/contacts",
-    name: "User Dashboard",
+    name: "My Contacts",
     element: <UserContactsManagement />,
-    icon: DashboardIcon,
+    icon: ContactMailIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/students",
-    name: "User Dashboard",
+    name: "My Profile",
     element: <MeManagement />,
-    icon: DashboardIcon,
+    icon: PeopleIcon,
     requiredRole: "user",
     type: "user",
   },
   {
     path: "/user/dashboard/visa",
-    name: "User Dashboard",
+    name: "My VISA Applications",
     element: <UserVISAManagement />,
-    icon: DashboardIcon,
+    icon: DescriptionIcon,
     requiredRole: "user",
     type: "user",
   },
@@ -1362,23 +1922,21 @@ const PageLoader = ({
     default: { displayName: "Page", color: "from-blue-500 to-purple-500" },
   };
 
-  // Normalize the page name by removing special characters and making it lowercase
+  // Normalize the page name
   const normalizedPageName = pageName.toLowerCase().replace(/[^a-z]/g, "");
 
-  // Try to match exact page name first, then fallback to default
-  let config;
+  let config = pageConfig["default"];
   if (pageConfig[normalizedPageName]) {
     config = pageConfig[normalizedPageName];
   } else {
-    // Try to find partial match for more complex routes
     const matchedKey = Object.keys(pageConfig).find(
       (key) =>
         normalizedPageName.includes(key) || pageName.toLowerCase().includes(key)
     );
-    config = matchedKey ? pageConfig[matchedKey] : pageConfig["default"];
+    if (matchedKey) config = pageConfig[matchedKey];
   }
 
-  // For dashboard routes, use specific colors based on dashboard type
+  // For dashboard routes, use specific colors
   let gradientColor = config.color;
   if (routeType.includes("dashboard") && config.subColors) {
     const dashType = routeType.includes("admin")
@@ -1444,7 +2002,7 @@ const PageLoader = ({
           Loading {config.displayName}
         </motion.h2>
 
-        {/* Display route name and type */}
+        {/* Display route info */}
         <div className="space-y-1 sm:space-y-2 mb-2 sm:mb-3">
           <motion.div
             className="px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 bg-white/50 rounded-lg border border-gray-200"
@@ -1531,7 +2089,6 @@ const getPageInfoHelper = (pathname) => {
     };
   }
 
-  // Default for 404
   return {
     name: "404",
     icon: ErrorIcon,
@@ -1544,7 +2101,6 @@ const getPageInfoHelper = (pathname) => {
 function MobileMenu({ isOpen, onClose, user }) {
   const location = useLocation();
 
-  // Combine public routes for mobile menu (excluding wildcard route)
   const mobileMenuItems = publicRoutes
     .filter((route) => route.path !== "*")
     .map((route) => ({
@@ -1672,7 +2228,7 @@ function MobileMenu({ isOpen, onClose, user }) {
   );
 }
 
-// MAIN APP
+// MAIN APP COMPONENT
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [pageLoading, setPageLoading] = useState(false);
@@ -1696,22 +2252,43 @@ export default function App() {
         const savedUser = Cookies.get("user");
         const currentUser = savedUser ? JSON.parse(savedUser) : null;
 
-        // Only update if user data has actually changed
         if (JSON.stringify(currentUser) !== JSON.stringify(user)) {
           setUser(currentUser);
         }
       } catch (error) {
         console.error("Error parsing user cookie:", error);
       }
-    }, 1000); // Check every second
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [user]);
 
-  // Get current page info using useMemo to prevent unnecessary recalculations
+  // Get current page info
   const currentPageInfo = useMemo(() => {
     return getPageInfoHelper(location.pathname);
   }, [location.pathname]);
+
+  // Set page title on initial load and route change
+  useEffect(() => {
+    const updatePageTitle = () => {
+      let title = "Ruziga Consult";
+
+      if (
+        currentPageInfo.fullName &&
+        currentPageInfo.fullName !== "Not Found"
+      ) {
+        if (currentPageInfo.routeType.includes("dashboard")) {
+          title = `${currentPageInfo.fullName} | Dashboard | Ruziga Consult`;
+        } else {
+          title = `${currentPageInfo.fullName} | Ruziga Consult`;
+        }
+      }
+
+      document.title = title;
+    };
+
+    updatePageTitle();
+  }, [currentPageInfo.fullName, currentPageInfo.routeType]);
 
   // Auth context value
   const authContextValue = useMemo(
@@ -1734,32 +2311,30 @@ export default function App() {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  // Page loading effect when route changes
+  // Page loading effect
   useEffect(() => {
-    // Only show page loader if not the initial load
     if (!loading) {
       setPageLoading(true);
       const timer = setTimeout(() => {
         setPageLoading(false);
-      }, 800); // Shorter duration for page transitions
+      }, 800);
 
       return () => clearTimeout(timer);
     }
   }, [location.pathname, loading]);
 
-  // FIXED: Page View Tracking with error handling
+  // Page view tracking
   const sendView = useCallback(async () => {
     try {
-      // Just notify backend - backend will get the IP from request
       await axios.post("https://ruziganodejs.onrender.com/seen/track", {
         timestamp: new Date().toISOString(),
       });
-      console.success("View tracked successfully");
     } catch (err) {
-      console.warn("View tracking failed (non-critical):", err.message);
+      console.warn("View tracking failed:", err.message);
     }
   }, []);
-  // Initial app loading effect
+
+  // Initial app loading
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     sendView();
@@ -1797,42 +2372,66 @@ export default function App() {
               user={user}
             />
 
-            <Navbar />
+            {/* Only show Navbar and Footer for public routes */}
+            {!location.pathname.includes("/dashboard") &&
+              !location.pathname.includes("/user/dashboard") && (
+                <>
+                  <Navbar />
+                  <main className="w-full pt-12 sm:pt-14 md:pt-16 bg-gradient-to-r from-blue-800 to-indigo-800">
+                    <ResponsiveContainer>
+                      <AnimatePresence mode="wait">
+                        <Routes location={location} key={location.pathname}>
+                          {publicRoutes.map((route) => (
+                            <Route
+                              key={route.path}
+                              path={route.path}
+                              element={
+                                <PageTransition>{route.element}</PageTransition>
+                              }
+                            />
+                          ))}
+                          {dashboardRoutes.map((route) => (
+                            <Route
+                              key={route.path}
+                              path={route.path}
+                              element={
+                                <PrivateRoute
+                                  requiredRole={route.requiredRole}
+                                  pageTitle={route.name}
+                                >
+                                  {route.element}
+                                </PrivateRoute>
+                              }
+                            />
+                          ))}
+                        </Routes>
+                      </AnimatePresence>
+                    </ResponsiveContainer>
+                  </main>
+                  <Footer />
+                </>
+              )}
 
-            {/* Main Content with Responsive Container - NO PADDING */}
-            <main className="w-full pt-12 sm:pt-14 md:pt-16 bg-gradient-to-r from-blue-800 to-indigo-800">
-              <ResponsiveContainer>
-                <AnimatePresence mode="wait">
-                  <Routes location={location} key={location.pathname}>
-                    {/* Public Routes */}
-                    {publicRoutes.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={
-                          <PageTransition>{route.element}</PageTransition>
-                        }
-                      />
-                    ))}
-
-                    {/* Dashboard Routes with role-based access control */}
-                    {dashboardRoutes.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={
-                          <PrivateRoute requiredRole={route.requiredRole}>
-                            <PageTransition>{route.element}</PageTransition>
-                          </PrivateRoute>
-                        }
-                      />
-                    ))}
-                  </Routes>
-                </AnimatePresence>
-              </ResponsiveContainer>
-            </main>
-
-            <Footer />
+            {/* For dashboard routes, the DashboardLayout handles the layout */}
+            {(location.pathname.includes("/dashboard") ||
+              location.pathname.includes("/user/dashboard")) && (
+              <Routes location={location} key={location.pathname}>
+                {dashboardRoutes.map((route) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={
+                      <PrivateRoute
+                        requiredRole={route.requiredRole}
+                        pageTitle={route.name}
+                      >
+                        {route.element}
+                      </PrivateRoute>
+                    }
+                  />
+                ))}
+              </Routes>
+            )}
           </>
         )}
       </div>
