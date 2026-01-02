@@ -1287,7 +1287,7 @@ export const Dashboard = () => {
   return (
     <div className="w-full flex min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
-      <Sidebar onToggleNotifications={toggleNotificationsModal} />
+      {/* <Sidebar onToggleNotifications={toggleNotificationsModal} /> */}
 
       {/* Main Content - FULLY RESPONSIVE */}
       <div className="w-full flex">

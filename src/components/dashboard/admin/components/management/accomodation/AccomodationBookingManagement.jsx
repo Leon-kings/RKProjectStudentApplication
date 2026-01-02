@@ -2448,7 +2448,7 @@ export const AccomodationBookingManagement = () => {
 
   return (
     <div className="min-h-screen w-full flex bg-gray-50">
-      <Sidebar onToggleNotifications={toggleNotificationsModal} />
+      {/* <Sidebar onToggleNotifications={toggleNotificationsModal} /> */}
       <div className="w-full p-2 sm:p-4">
         <Notification />
 

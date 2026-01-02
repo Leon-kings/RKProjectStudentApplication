@@ -62,7 +62,7 @@ import Diversity3Icon from "@mui/icons-material/Diversity3";
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 
 // API Configuration
-const API_BASE_URL = "https://ruziganodejs.onrender.com"; // Replace with your API URL
+const API_BASE_URL = "https://ruziganodejs.onrender.com/api";
 
 export const Blogs = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -89,79 +89,66 @@ export const Blogs = () => {
   });
   const [viewCounts, setViewCounts] = useState({});
   const [showAboutUs, setShowAboutUs] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [modalKey, setModalKey] = useState(0);
+  const [totalPosts, setTotalPosts] = useState(0);
   const hasTrackedView = useRef(false);
 
   // Image URLs for different categories
   const categoryImages = {
     admissions: [
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80", // University admissions
-      "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80", // Students studying
-      "https://images.unsplash.com/photo-1524178234883-043d5c3f3cf4?auto=format&fit=crop&w=800&q=80", // Graduation
-      "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80", // College campus
+      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1524178234883-043d5c3f3cf4?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=800&q=80",
     ],
     visa: [
-      "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=800&q=80", // Passport and visa
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80", // Visa stamps
-      "https://images.unsplash.com/photo-1551135042-1c0b49c7fce0?auto=format&fit=crop&w=800&q=80", // Immigration
+      "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1551135042-1c0b49c7fce0?auto=format&fit=crop&w=800&q=80",
     ],
     accommodation: [
-      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80", // Student dorm
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80", // Modern apartment
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80", // Room interior
+      "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
     ],
     travel: [
-      "https://images.unsplash.com/photo-1529472119196-cb724127a98e?auto=format&fit=crop&w=800&q=80", // Airplane travel
-      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80", // Travel luggage
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80", // Adventure travel
+      "https://images.unsplash.com/photo-1529472119196-cb724127a98e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
     ],
     culture: [
-      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=800&q=80", // Cultural festival
-      "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80", // Traditional food
-      "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=800&q=80", // Asian architecture
-      "https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?auto=format&fit=crop&w=800&q=80", // Cultural diversity
+      "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?auto=format&fit=crop&w=800&q=80",
     ],
     all: [
-      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80", // Global education
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80", // Learning
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80", // University
+      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
     ],
   };
 
   // Country-specific images for featured posts
   const countryImages = {
     china:
-      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80", // Great Wall
+      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
     india:
-      "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80", // Taj Mahal
+      "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80",
     japan:
-      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80", // Tokyo city
+      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
     korea:
-      "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?auto=format&fit=crop&w=800&q=80", // Seoul
+      "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?auto=format&fit=crop&w=800&q=80",
     canada:
-      "https://images.unsplash.com/photo-1519677100203-7c61d0b01354?auto=format&fit=crop&w=800&q=80", // Canadian landscape
+      "https://images.unsplash.com/photo-1519677100203-7c61d0b01354?auto=format&fit=crop&w=800&q=80",
     germany:
-      "https://images.unsplash.com/photo-1528728329032-2972f65dfb3f?auto=format&fit=crop&w=800&q=80", // Berlin
-    usa: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=800&q=80", // New York
+      "https://images.unsplash.com/photo-1528728329032-2972f65dfb3f?auto=format&fit=crop&w=800&q=80",
+    usa: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=800&q=80",
     poland:
-      "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80", // Warsaw
+      "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80",
     turkey:
-      "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80", // Istanbul
-  };
-
-  // Service images for About Us section
-  const serviceImages = {
-    admissions:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80",
-    csca: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80",
-    scholarship:
-      "https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=600&q=80",
-    documents:
-      "https://images.unsplash.com/photo-1586282023697-bdaf0953e627?auto=format&fit=crop&w=600&q=80",
-    visa: "https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=600&q=80",
-    predeparture:
-      "https://images.unsplash.com/photo-1529472119196-cb724127a98e?auto=format&fit=crop&w=600&q=80",
-    partnerships:
-      "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80",
   };
 
   const blogCategories = [
@@ -203,59 +190,6 @@ export const Blogs = () => {
     },
   ];
 
-  const services = [
-    {
-      id: 1,
-      name: "University Admissions",
-      icon: SchoolOutlinedIcon,
-      description:
-        "Choose best country, university & major based on your goals",
-      image: serviceImages.admissions,
-    },
-    {
-      id: 2,
-      name: "CSCA Exam Preparation",
-      icon: DescriptionOutlinedIcon,
-      description: "Full support for China Scholastic Competency Assessment",
-      image: serviceImages.csca,
-    },
-    {
-      id: 3,
-      name: "Scholarship Guidance",
-      icon: AttachMoneyIcon,
-      description: "Access fully funded & partial scholarships worldwide",
-      image: serviceImages.scholarship,
-    },
-    {
-      id: 4,
-      name: "Documents Preparation",
-      icon: DescriptionIcon,
-      description: "Professional SOP, CV, study plans & reference letters",
-      image: serviceImages.documents,
-    },
-    {
-      id: 5,
-      name: "Visa Assistance",
-      icon: FlightTakeoffIcon,
-      description: "Step-by-step visa support & interview preparation",
-      image: serviceImages.visa,
-    },
-    {
-      id: 6,
-      name: "Pre-Departure Guidance",
-      icon: FlightIcon,
-      description: "Accommodation, travel, cultural adaptation support",
-      image: serviceImages.predeparture,
-    },
-    {
-      id: 7,
-      name: "Institutional Partnerships",
-      icon: HandshakeIcon,
-      description: "University partnerships for student recruitment",
-      image: serviceImages.partnerships,
-    },
-  ];
-
   // Track view when component loads
   useEffect(() => {
     if (!hasTrackedView.current) {
@@ -264,24 +198,19 @@ export const Blogs = () => {
     }
   }, []);
 
+  // Fetch posts from API
+  useEffect(() => {
+    fetchPosts();
+  }, [currentPage, activeCategory, searchQuery]);
+
   // Track view function
   const trackView = async () => {
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/seen/track`,
-        {
-          page: "blog",
-          timestamp: new Date().toISOString(),
-          userAgent: navigator.userAgent,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("View tracked:", response.data);
+      await axios.post(`${API_BASE_URL}/seen/track`, {
+        page: "blog",
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+      });
     } catch (error) {
       console.error("Error tracking view:", error);
     }
@@ -290,364 +219,150 @@ export const Blogs = () => {
   // Track specific post view
   const trackPostView = async (postId) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/seen/track`, {
+      await axios.post(`${API_BASE_URL}/seen/track`, {
         postId,
         timestamp: new Date().toISOString(),
+        type: "post_view",
       });
 
-      // Update local view count
       setViewCounts((prev) => ({
         ...prev,
         [postId]: (prev[postId] || 0) + 1,
       }));
-
-      return response.data;
     } catch (error) {
       console.error("Error tracking post view:", error);
     }
   };
 
-  // Fetch posts from API (simulated)
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        // Sample blog posts with accurate images
-        const samplePosts = [
-          {
-            id: 1,
-            title: "Complete Guide to University Admissions in China 2024",
-            excerpt:
-              "Everything you need to know about applying to Chinese universities, from document preparation to interview tips.",
-            content: `
-              <div class="prose max-w-none">
-                <h2>Comprehensive Guide to Chinese University Admissions 2024</h2>
-                
-                <h3>Introduction</h3>
-                <p>China has become one of the most popular study destinations for international students, offering world-class education at affordable costs. This guide covers everything you need to know about the admission process for 2024.</p>
-                
-                <div class="my-6 p-4 bg-blue-50 rounded-lg">
-                  <h4 class="font-bold text-blue-800">Key Requirements:</h4>
-                  <ul class="list-disc pl-5">
-                    <li>High school diploma or equivalent</li>
-                    <li>Academic transcripts</li>
-                    <li>Chinese language proficiency (HSK) or English proficiency (for English-taught programs)</li>
-                    <li>Passport copy</li>
-                    <li>Physical examination record</li>
-                    <li>Financial proof</li>
-                  </ul>
-                </div>
-                
-                <h3>Application Timeline</h3>
-                <p>The application process typically follows this timeline:</p>
-                <ol class="list-decimal pl-5">
-                  <li><strong>September - December 2023:</strong> Research universities and programs</li>
-                  <li><strong>January - March 2024:</strong> Prepare required documents</li>
-                  <li><strong>April - June 2024:</strong> Submit applications</li>
-                  <li><strong>July - August 2024:</strong> Receive admission notices</li>
-                  <li><strong>September 2024:</strong> Begin studies</li>
-                </ol>
-                
-                <h3>Scholarship Opportunities</h3>
-                <p>China offers various scholarships including the Chinese Government Scholarship (CSC), provincial scholarships, and university-specific scholarships.</p>
-                
-                <div class="my-6 p-4 bg-green-50 rounded-lg">
-                  <h4 class="font-bold text-green-800">Tips for Success:</h4>
-                  <ul class="list-disc pl-5">
-                    <li>Start your application early</li>
-                    <li>Ensure all documents are properly notarized</li>
-                    <li>Prepare a compelling personal statement</li>
-                    <li>Apply for multiple scholarships</li>
-                    <li>Connect with current students for insights</li>
-                  </ul>
-                </div>
-                
-                <h3>Popular Universities</h3>
-                <p>Some of the top universities in China for international students include:</p>
-                <ul class="list-disc pl-5">
-                  <li>Tsinghua University</li>
-                  <li>Peking University</li>
-                  <li>Fudan University</li>
-                  <li>Shanghai Jiao Tong University</li>
-                  <li>Zhejiang University</li>
-                </ul>
-                
-                <p class="mt-6 font-semibold">Need help with your application? Contact RECAPPLY for personalized assistance!</p>
-              </div>
-            `,
-            author: "Dr. Zhang Wei",
-            date: "Mar 15, 2024",
-            readTime: "8 min read",
-            category: "admissions",
-            tags: ["China", "Admissions", "University", "Scholarship", "2024"],
-            image: countryImages.china,
-            views: 1245,
-            comments: 42,
-            likes: 189,
-            featured: true,
-          },
-          {
-            id: 2,
-            title:
-              "Study Visa Requirements for International Students in Germany",
-            excerpt:
-              "Complete breakdown of German student visa requirements, processing time, and common mistakes to avoid.",
-            content: `<h2>German Student Visa Guide</h2><p>Detailed content about German visa requirements...</p>`,
-            author: "Maria Schmidt",
-            date: "Mar 10, 2024",
-            readTime: "6 min read",
-            category: "visa",
-            tags: ["Germany", "Visa", "Europe", "Student Visa"],
-            image: countryImages.germany,
-            views: 892,
-            comments: 31,
-            likes: 156,
-          },
-          {
-            id: 3,
-            title: "Finding Student Accommodation in Seoul, South Korea",
-            excerpt:
-              "Tips for finding affordable and comfortable housing as an international student in Seoul.",
-            content: `<h2>Seoul Accommodation Guide</h2><p>Content about housing options in Seoul...</p>`,
-            author: "Kim Ji-hoon",
-            date: "Mar 5, 2024",
-            readTime: "7 min read",
-            category: "accommodation",
-            tags: ["Korea", "Seoul", "Accommodation", "Student Housing"],
-            image: countryImages.korea,
-            views: 756,
-            comments: 28,
-            likes: 142,
-          },
-          {
-            id: 4,
-            title: "Cultural Adaptation: Living and Studying in Japan",
-            excerpt:
-              "Understanding Japanese culture, etiquette, and tips for international students to adapt quickly.",
-            content: `<h2>Cultural Guide to Japan</h2><p>Content about Japanese culture...</p>`,
-            author: "Yuki Tanaka",
-            date: "Feb 28, 2024",
-            readTime: "9 min read",
-            category: "culture",
-            tags: ["Japan", "Culture", "Adaptation", "Etiquette"],
-            image: categoryImages.culture[0],
-            views: 1103,
-            comments: 45,
-            likes: 203,
-          },
-          {
-            id: 5,
-            title: "Travel Tips: Navigating Asian Countries as a Student",
-            excerpt:
-              "Essential travel tips for students moving to Asian countries for studies.",
-            content: `<h2>Travel Guide for Students</h2><p>Travel tips content...</p>`,
-            author: "Alex Chen",
-            date: "Feb 25, 2024",
-            readTime: "5 min read",
-            category: "travel",
-            tags: ["Travel", "Asia", "Tips", "Student Life"],
-            image: categoryImages.travel[0],
-            views: 934,
-            comments: 33,
-            likes: 167,
-          },
-          {
-            id: 6,
-            title: "CSCA Exam: Complete Preparation Guide 2024",
-            excerpt:
-              "Everything you need to know about the China Scholastic Competency Assessment for undergraduate admissions.",
-            content: `<h2>CSCA Exam Guide</h2><p>CSCA preparation content...</p>`,
-            author: "Dr. Li Wang",
-            date: "Feb 20, 2024",
-            readTime: "10 min read",
-            category: "admissions",
-            tags: ["CSCA", "China", "Exam", "Undergraduate"],
-            image: categoryImages.admissions[2],
-            views: 1567,
-            comments: 67,
-            likes: 289,
-          },
-          {
-            id: 7,
-            title:
-              "Scholarship Application Strategies for International Students",
-            excerpt:
-              "Proven strategies to secure scholarships for studying abroad in 2024.",
-            content: `<h2>Scholarship Strategies</h2><p>Scholarship application content...</p>`,
-            author: "Sarah Johnson",
-            date: "Feb 15, 2024",
-            readTime: "8 min read",
-            category: "admissions",
-            tags: ["Scholarship", "Funding", "Financial Aid", "Tips"],
-            image: serviceImages.scholarship,
-            views: 1245,
-            comments: 52,
-            likes: 231,
-          },
-          {
-            id: 8,
-            title:
-              "Indian Education System: A Guide for International Students",
-            excerpt:
-              "Understanding the Indian higher education system and admission process.",
-            content: `<h2>India Education Guide</h2><p>Indian education system content...</p>`,
-            author: "Rahul Sharma",
-            date: "Feb 10, 2024",
-            readTime: "7 min read",
-            category: "admissions",
-            tags: ["India", "Education System", "Universities", "Admissions"],
-            image: countryImages.india,
-            views: 876,
-            comments: 29,
-            likes: 154,
-          },
-        ];
-
-        const generatedPosts = Array.from({ length: 22 }, (_, index) => {
-          const baseIndex = index + 9;
-          const category = [
-            "admissions",
-            "visa",
-            "accommodation",
-            "travel",
-            "culture",
-          ][index % 5];
-          const categoryImagesArray =
-            categoryImages[category] || categoryImages.all;
-          const imageIndex = index % categoryImagesArray.length;
-
-          return {
-            id: baseIndex,
-            title: [
-              "Complete Guide to Canadian University Applications",
-              "Student Visa Process for Australia 2024",
-              "Budget Accommodation in Tokyo for Students",
-              "Cultural Do's and Don'ts in Thailand",
-              "Travel Insurance for International Students",
-              "How to Write a Winning Personal Statement",
-              "Language Requirements for European Universities",
-              "Part-time Work Regulations for Students Abroad",
-              "Healthcare Systems for International Students",
-              "Networking Strategies for International Students",
-              "Returning Home: Reverse Culture Shock",
-              "Digital Nomad Student Lifestyle Tips",
-              "Sustainable Travel for Students",
-              "Emergency Contacts Abroad",
-              "Building Credit History as a Student",
-              "Mental Health Support While Studying Abroad",
-              "Internship Opportunities Abroad",
-              "Alumni Networks and Career Support",
-              "Summer Programs and Short Courses",
-              "Research Opportunities for Graduate Students",
-              "Online Learning Options",
-              "Cultural Exchange Programs",
-            ][index],
-            excerpt: `Essential guide and tips for international students considering ${
-              [
-                "Canada",
-                "Australia",
-                "Japan",
-                "Thailand",
-                "global travel",
-                "applications",
-                "Europe",
-                "work",
-                "healthcare",
-                "networking",
-                "returning home",
-                "digital lifestyle",
-                "sustainable travel",
-                "emergency situations",
-                "financial management",
-                "mental wellbeing",
-                "internships",
-                "career development",
-                "summer programs",
-                "research",
-                "online education",
-                "cultural exchange",
-              ][index]
-            }.`,
-            content: `<h2>Detailed Guide</h2><p>Comprehensive information and expert advice...</p>`,
-            author: "Expert Author",
-            date: new Date(2024, 1, index + 1).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            }),
-            readTime: `${Math.floor(Math.random() * 10) + 5} min read`,
-            category: category,
-            tags: [
-              ["Canada", "University", "Applications"],
-              ["Australia", "Visa", "2024"],
-              ["Japan", "Tokyo", "Accommodation"],
-              ["Thailand", "Culture", "Etiquette"],
-              ["Travel", "Insurance", "Safety"],
-              ["Applications", "Personal Statement", "Tips"],
-              ["Europe", "Language", "Requirements"],
-              ["Work", "Regulations", "Part-time"],
-              ["Healthcare", "Insurance", "Wellbeing"],
-              ["Networking", "Career", "Connections"],
-              ["Return", "Culture Shock", "Adjustment"],
-              ["Digital", "Lifestyle", "Remote"],
-              ["Sustainable", "Eco-friendly", "Travel"],
-              ["Emergency", "Safety", "Contacts"],
-              ["Finance", "Credit", "Management"],
-              ["Mental Health", "Support", "Wellbeing"],
-              ["Internships", "Work Experience", "Career"],
-              ["Alumni", "Networks", "Career"],
-              ["Summer", "Programs", "Short-term"],
-              ["Research", "Graduate", "Opportunities"],
-              ["Online", "Learning", "Education"],
-              ["Cultural Exchange", "Programs", "Experience"],
-            ][index],
-            image: categoryImagesArray[imageIndex],
-            views: Math.floor(Math.random() * 2000) + 500,
-            comments: Math.floor(Math.random() * 50) + 10,
-            likes: Math.floor(Math.random() * 300) + 100,
-            featured: index < 3,
-          };
-        });
-
-        const allPosts = [...samplePosts, ...generatedPosts];
-
-        const filtered = allPosts.filter((post) => {
-          const matchesCategory =
-            activeCategory === "all" || post.category === activeCategory;
-          const matchesSearch =
-            post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            (post.tags &&
-              post.tags.some((tag) =>
-                tag.toLowerCase().includes(searchQuery.toLowerCase())
-              ));
-          return matchesCategory && matchesSearch;
-        });
-
-        const postsPerPage = 5;
-        const startIndex = (currentPage - 1) * postsPerPage;
-        const paginatedPosts = filtered.slice(
-          startIndex,
-          startIndex + postsPerPage
-        );
-
-        const total = Math.ceil(filtered.length / postsPerPage);
-
-        setPosts(paginatedPosts);
-        setTotalPages(total);
-
-        const trending = [...allPosts]
-          .sort((a, b) => b.views - a.views)
-          .slice(0, 3);
-
-        setTrendingPosts(trending);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
+  // Fetch posts from API
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      
+      // Build query parameters
+      const params = {
+        page: currentPage,
+        limit: 5,
+      };
+      
+      if (activeCategory !== "all") {
+        params.category = activeCategory;
       }
-    };
+      
+      if (searchQuery.trim()) {
+        params.search = searchQuery;
+      }
+      
+      const response = await axios.get(`${API_BASE_URL}/blogs`, { params });
+      
+      if (response.data && response.data.success) {
+        setPosts(response.data.data || []);
+        setTotalPages(response.data.totalPages || 1);
+        setTotalPosts(response.data.total || 0);
+        
+        // Fetch trending posts
+        await fetchTrendingPosts();
+      } else {
+        throw new Error("Invalid response format");
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      toast.error("Failed to load articles. Please try again.");
+      
+      // Fallback to sample data
+      fetchSamplePosts();
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchPosts();
-  }, [currentPage, activeCategory, searchQuery]);
+  // Fetch trending posts
+  const fetchTrendingPosts = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/blogs/trending`, {
+        params: { limit: 3 }
+      });
+      
+      if (response.data && response.data.success) {
+        setTrendingPosts(response.data.data || []);
+      }
+    } catch (error) {
+      console.error("Error fetching trending posts:", error);
+      // Use first 3 posts as trending fallback
+      setTrendingPosts(posts.slice(0, 3));
+    }
+  };
 
+  // Sample posts fallback
+  const fetchSamplePosts = () => {
+    const samplePosts = [
+      {
+        _id: "1",
+        title: "Complete Guide to University Admissions in China 2024",
+        excerpt: "Everything you need to know about applying to Chinese universities, from document preparation to interview tips.",
+        content: `<div class="prose max-w-none"><h2>Comprehensive Guide to Chinese University Admissions 2024</h2><p>Detailed content about Chinese university admissions...</p></div>`,
+        author: "Dr. Zhang Wei",
+        createdAt: new Date().toISOString(),
+        date: "Mar 15, 2024",
+        readTime: "8 min read",
+        category: "admissions",
+        tags: ["China", "Admissions", "University", "Scholarship", "2024"],
+        image: countryImages.china,
+        views: 1245,
+        comments: 42,
+        likes: 189,
+        featured: true,
+      },
+      {
+        _id: "2",
+        title: "Study Visa Requirements for International Students in Germany",
+        excerpt: "Complete breakdown of German student visa requirements, processing time, and common mistakes to avoid.",
+        content: `<h2>German Student Visa Guide</h2><p>Detailed content about German visa requirements...</p>`,
+        author: "Maria Schmidt",
+        createdAt: new Date().toISOString(),
+        date: "Mar 10, 2024",
+        readTime: "6 min read",
+        category: "visa",
+        tags: ["Germany", "Visa", "Europe", "Student Visa"],
+        image: countryImages.germany,
+        views: 892,
+        comments: 31,
+        likes: 156,
+      },
+      {
+        _id: "3",
+        title: "Finding Student Accommodation in Seoul, South Korea",
+        excerpt: "Tips for finding affordable and comfortable housing as an international student in Seoul.",
+        content: `<h2>Seoul Accommodation Guide</h2><p>Content about housing options in Seoul...</p>`,
+        author: "Kim Ji-hoon",
+        createdAt: new Date().toISOString(),
+        date: "Mar 5, 2024",
+        readTime: "7 min read",
+        category: "accommodation",
+        tags: ["Korea", "Seoul", "Accommodation", "Student Housing"],
+        image: countryImages.korea,
+        views: 756,
+        comments: 28,
+        likes: 142,
+      },
+    ];
+
+    const filtered = samplePosts.filter((post) => {
+      const matchesCategory = activeCategory === "all" || post.category === activeCategory;
+      const matchesSearch = 
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (post.tags && post.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase())));
+      return matchesCategory && matchesSearch;
+    });
+
+    setPosts(filtered);
+    setTrendingPosts(samplePosts.slice(0, 3));
+    setTotalPages(1);
+    setTotalPosts(filtered.length);
+  };
+
+  // Handle page change
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -655,67 +370,135 @@ export const Blogs = () => {
     }
   };
 
-  const toggleSavePost = (postId) => {
-    if (savedPosts.includes(postId)) {
-      setSavedPosts(savedPosts.filter((id) => id !== postId));
-      toast.info("Removed from saved articles");
-    } else {
-      setSavedPosts([...savedPosts, postId]);
-      toast.success("Article saved for later");
+  // Toggle save post
+  const toggleSavePost = async (postId) => {
+    try {
+      if (savedPosts.includes(postId)) {
+        setSavedPosts(savedPosts.filter((id) => id !== postId));
+        toast.info("Removed from saved articles");
+        
+        // API call to unsave
+        await axios.delete(`${API_BASE_URL}/blogs/${postId}/save`);
+      } else {
+        setSavedPosts([...savedPosts, postId]);
+        toast.success("Article saved for later");
+        
+        // API call to save
+        await axios.post(`${API_BASE_URL}/blogs/${postId}/save`);
+      }
+    } catch (error) {
+      console.error("Error saving post:", error);
+      // Local state update only if API fails
+      if (savedPosts.includes(postId)) {
+        setSavedPosts(savedPosts.filter((id) => id !== postId));
+        toast.info("Removed from saved articles");
+      } else {
+        setSavedPosts([...savedPosts, postId]);
+        toast.success("Article saved for later");
+      }
     }
   };
 
-  const toggleLikePost = (postId) => {
-    if (likedPosts.includes(postId)) {
-      setLikedPosts(likedPosts.filter((id) => id !== postId));
-    } else {
-      setLikedPosts([...likedPosts, postId]);
-      toast.success("Liked article!");
+  // Toggle like post
+  const toggleLikePost = async (postId) => {
+    try {
+      if (likedPosts.includes(postId)) {
+        setLikedPosts(likedPosts.filter((id) => id !== postId));
+        
+        // API call to unlike
+        await axios.delete(`${API_BASE_URL}/blogs/${postId}/like`);
+      } else {
+        setLikedPosts([...likedPosts, postId]);
+        toast.success("Liked article!");
+        
+        // API call to like
+        await axios.post(`${API_BASE_URL}/blogs/${postId}/like`);
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
+      // Local state update only if API fails
+      if (likedPosts.includes(postId)) {
+        setLikedPosts(likedPosts.filter((id) => id !== postId));
+      } else {
+        setLikedPosts([...likedPosts, postId]);
+        toast.success("Liked article!");
+      }
     }
   };
 
+  // Handle view post
   const handleViewPost = async (post) => {
-    await trackPostView(post.id);
+    await trackPostView(post._id || post.id);
     setSelectedPost(post);
+    setModalKey(prev => prev + 1);
   };
 
+  // Handle booking submit
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_BASE_URL}/book-service`, {
+      const response = await axios.post(`${API_BASE_URL}/bookings`, {
         ...bookingData,
         serviceType: "blog_consultation",
         postTitle: selectedPost?.title,
         timestamp: new Date().toISOString(),
       });
 
-      toast.success(
-        "Booking request submitted successfully! We will contact you within 24 hours."
-      );
-      setBookingModalOpen(false);
-      setBookingData({
-        name: "",
-        email: "",
-        phone: "",
-        country: "",
-        service: "",
-        date: "",
-        message: "",
-      });
+      if (response.data.success) {
+        toast.success("Booking request submitted successfully! We will contact you within 24 hours.");
+        setBookingModalOpen(false);
+        setBookingData({
+          name: "",
+          email: "",
+          phone: "",
+          country: "",
+          service: "",
+          date: "",
+          message: "",
+        });
+      }
     } catch (error) {
       toast.error("Error submitting booking. Please try again.");
       console.error("Booking error:", error);
     }
   };
 
+  // Handle comment submit
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
     try {
+      const response = await axios.post(`${API_BASE_URL}/blogs/${selectedPost._id}/comments`, {
+        content: newComment,
+        postId: selectedPost._id,
+      });
+
+      if (response.data.success) {
+        const newCommentObj = {
+          _id: response.data.data._id,
+          author: response.data.data.author || "You",
+          content: newComment,
+          date: new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+          likes: 0,
+          userLiked: false,
+        };
+
+        setCurrentComments([newCommentObj, ...currentComments]);
+        setNewComment("");
+        toast.success("Comment added successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      
+      // Fallback
       const newCommentObj = {
-        id: Date.now(),
-        author: "Current User",
+        _id: Date.now().toString(),
+        author: "You",
         content: newComment,
         date: new Date().toLocaleDateString("en-US", {
           month: "short",
@@ -729,63 +512,117 @@ export const Blogs = () => {
       setCurrentComments([newCommentObj, ...currentComments]);
       setNewComment("");
       toast.success("Comment added successfully!");
-    } catch (error) {
-      toast.error("Error adding comment");
-      console.error("Comment error:", error);
     }
   };
 
-  const handleCommentLike = (commentId) => {
-    setCurrentComments((prev) =>
-      prev.map((comment) =>
-        comment.id === commentId
-          ? {
-              ...comment,
-              likes: comment.userLiked ? comment.likes - 1 : comment.likes + 1,
-              userLiked: !comment.userLiked,
-            }
-          : comment
-      )
-    );
+  // Handle comment like
+  const handleCommentLike = async (commentId) => {
+    try {
+      await axios.post(`${API_BASE_URL}/comments/${commentId}/like`);
+      
+      setCurrentComments((prev) =>
+        prev.map((comment) =>
+          comment._id === commentId
+            ? {
+                ...comment,
+                likes: comment.userLiked ? comment.likes - 1 : comment.likes + 1,
+                userLiked: !comment.userLiked,
+              }
+            : comment
+        )
+      );
+    } catch (error) {
+      console.error("Error liking comment:", error);
+      // Local update if API fails
+      setCurrentComments((prev) =>
+        prev.map((comment) =>
+          comment._id === commentId
+            ? {
+                ...comment,
+                likes: comment.userLiked ? comment.likes - 1 : comment.likes + 1,
+                userLiked: !comment.userLiked,
+              }
+            : comment
+        )
+      );
+    }
   };
 
+  // Load comments
   const handleLoadComments = async (postId) => {
     try {
-      const demoComments = Array.from({ length: 5 }, (_, i) => ({
-        id: i + 1,
-        author: [
-          "John Doe",
-          "Jane Smith",
-          "Alex Johnson",
-          "Maria Garcia",
-          "David Chen",
-        ][i],
-        content: `This is a sample comment ${
-          i + 1
-        } about the article. Very informative!`,
-        date: new Date(2024, 2, 15 - i).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        }),
-        likes: Math.floor(Math.random() * 20),
-        userLiked: false,
-      }));
-
-      setCurrentComments(demoComments);
-      setCommentsModalOpen(true);
+      const response = await axios.get(`${API_BASE_URL}/blogs/${postId}/comments`);
+      
+      if (response.data.success) {
+        setCurrentComments(response.data.data || []);
+      } else {
+        throw new Error("Failed to load comments");
+      }
     } catch (error) {
-      toast.error("Error loading comments");
-      console.error("Comments error:", error);
+      console.error("Error loading comments:", error);
+      // Demo comments fallback
+      const demoComments = [
+        {
+          _id: "1",
+          author: "John Doe",
+          content: "This is a very informative article! Helped me understand the admission process better.",
+          date: "Mar 16, 2024",
+          likes: 12,
+          userLiked: false,
+        },
+        {
+          _id: "2",
+          author: "Jane Smith",
+          content: "Great insights! I'm planning to apply next year and this guide is perfect.",
+          date: "Mar 15, 2024",
+          likes: 8,
+          userLiked: false,
+        },
+        {
+          _id: "3",
+          author: "Alex Johnson",
+          content: "Could you provide more information about scholarship deadlines?",
+          date: "Mar 14, 2024",
+          likes: 5,
+          userLiked: false,
+        },
+      ];
+      setCurrentComments(demoComments);
     }
+    setCommentsModalOpen(true);
   };
 
+  // Close modals
+  const closeBlogModal = () => {
+    setSelectedPost(null);
+  };
+
+  const closeBookingModal = () => {
+    setBookingModalOpen(false);
+    setBookingData({
+      name: "",
+      email: "",
+      phone: "",
+      country: "",
+      service: "",
+      date: "",
+      message: "",
+    });
+  };
+
+  const closeCommentsModal = () => {
+    setCommentsModalOpen(false);
+    setCurrentComments([]);
+    setNewComment("");
+  };
+
+  // Blog Card Component
   const BlogCard = ({ post, variant = "normal" }) => {
     const CategoryIcon =
-      blogCategories.find((cat) => cat.id === post.category)?.icon ||
+      blogCategories.find((cat) => cat.id === (post.category || "all"))?.icon ||
       MenuBookIcon;
-    const isSaved = savedPosts.includes(post.id);
-    const isLiked = likedPosts.includes(post.id);
+    const isSaved = savedPosts.includes(post._id || post.id);
+    const isLiked = likedPosts.includes(post._id || post.id);
 
     return (
       <motion.article
@@ -800,7 +637,7 @@ export const Blogs = () => {
       >
         <div className="relative h-40 sm:h-44 md:h-48 overflow-hidden">
           <img
-            src={post.image}
+            src={post.image || categoryImages.all[0]}
             alt={post.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             loading="lazy"
@@ -809,18 +646,14 @@ export const Blogs = () => {
           <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
             <div
               className={`px-2 sm:px-3 md:px-4 py-1 rounded-full text-white text-xs sm:text-sm font-bold bg-gradient-to-r ${
-                blogCategories.find((cat) => cat.id === post.category)?.color
+                blogCategories.find((cat) => cat.id === (post.category || "all"))?.color || "from-blue-500 to-cyan-500"
               }`}
             >
               <span className="hidden xs:inline">
-                {blogCategories.find((cat) => cat.id === post.category)?.name}
+                {blogCategories.find((cat) => cat.id === (post.category || "all"))?.name || "Article"}
               </span>
               <span className="xs:hidden">
-                {
-                  blogCategories
-                    .find((cat) => cat.id === post.category)
-                    ?.name.split(" ")[0]
-                }
+                {blogCategories.find((cat) => cat.id === (post.category || "all"))?.name.split(" ")[0] || "Article"}
               </span>
             </div>
           </div>
@@ -828,7 +661,7 @@ export const Blogs = () => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                toggleSavePost(post.id);
+                toggleSavePost(post._id || post.id);
               }}
               className="p-1.5 sm:p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
             >
@@ -841,7 +674,7 @@ export const Blogs = () => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                toggleLikePost(post.id);
+                toggleLikePost(post._id || post.id);
               }}
               className="p-1.5 sm:p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
             >
@@ -861,11 +694,15 @@ export const Blogs = () => {
                 <CategoryIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
               </div>
               <span className="text-xs sm:text-sm text-gray-500">
-                {post.date}
+                {post.date || new Date(post.createdAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </span>
               <span className="text-xs sm:text-sm text-gray-500 flex items-center">
                 <AccessTimeIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                {post.readTime}
+                {post.readTime || "5 min read"}
               </span>
             </div>
           </div>
@@ -879,15 +716,14 @@ export const Blogs = () => {
           </p>
 
           <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4">
-            {post.tags &&
-              post.tags.slice(0, 3).map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 sm:px-3 sm:py-1 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm"
-                >
-                  #{tag}
-                </span>
-              ))}
+            {(post.tags || ["Study", "Abroad"]).slice(0, 3).map((tag, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 sm:px-3 sm:py-1 bg-gray-100 text-gray-700 rounded-full text-xs sm:text-sm"
+              >
+                #{tag}
+              </span>
+            ))}
           </div>
 
           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -895,13 +731,13 @@ export const Blogs = () => {
               <div className="flex items-center">
                 <PersonIcon className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 mr-1 sm:mr-2" />
                 <span className="text-xs sm:text-sm text-gray-600">
-                  {post.author}
+                  {post.author || "Admin"}
                 </span>
               </div>
               <div className="flex items-center">
                 <VisibilityIcon className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500 mr-1 sm:mr-2" />
                 <span className="text-xs sm:text-sm text-gray-600">
-                  {(viewCounts[post.id] || post.views).toLocaleString()}
+                  {(viewCounts[post._id || post.id] || post.views || 0).toLocaleString()}
                 </span>
               </div>
             </div>
@@ -917,19 +753,21 @@ export const Blogs = () => {
     );
   };
 
+  // Blog Modal Component
   const BlogModal = () => {
     if (!selectedPost) return null;
     const CategoryIcon =
-      blogCategories.find((cat) => cat.id === selectedPost.category)?.icon ||
+      blogCategories.find((cat) => cat.id === (selectedPost.category || "all"))?.icon ||
       MenuBookIcon;
 
     return (
       <motion.div
+        key={`blog-modal-${selectedPost._id || selectedPost.id}-${modalKey}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-50 flex items-center justify-center p-2 xs:p-3 sm:p-4 bg-black bg-opacity-60"
-        onClick={() => setSelectedPost(null)}
+        onClick={closeBlogModal}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 50 }}
@@ -945,28 +783,17 @@ export const Blogs = () => {
                 <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
                   <div
                     className={`p-1.5 sm:p-2 rounded-lg bg-gradient-to-r ${
-                      blogCategories.find(
-                        (cat) => cat.id === selectedPost.category
-                      )?.color
+                      blogCategories.find((cat) => cat.id === (selectedPost.category || "all"))?.color || "from-blue-500 to-cyan-500"
                     }`}
                   >
                     <CategoryIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                   </div>
                   <span className="text-sm font-semibold text-gray-600">
-                    {
-                      blogCategories.find(
-                        (cat) => cat.id === selectedPost.category
-                      )?.name
-                    }
+                    {blogCategories.find((cat) => cat.id === (selectedPost.category || "all"))?.name || "Article"}
                   </span>
                   {selectedPost.featured && (
                     <span className="px-2 py-1 sm:px-3 sm:py-1 bg-yellow-100 text-yellow-600 rounded-full text-xs sm:text-sm font-bold">
                       Featured
-                    </span>
-                  )}
-                  {trendingPosts.some((p) => p.id === selectedPost.id) && (
-                    <span className="px-2 py-1 sm:px-3 sm:py-1 bg-orange-100 text-orange-600 rounded-full text-xs sm:text-sm font-bold">
-                      Trending
                     </span>
                   )}
                 </div>
@@ -975,7 +802,7 @@ export const Blogs = () => {
                 </h2>
               </div>
               <button
-                onClick={() => setSelectedPost(null)}
+                onClick={closeBlogModal}
                 className="p-1 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <CloseIcon className="h-5 w-5 sm:h-7 sm:w-7 text-gray-500" />
@@ -987,19 +814,23 @@ export const Blogs = () => {
                 <div className="flex items-center">
                   <PersonIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 mr-1 sm:mr-2" />
                   <span className="font-semibold text-sm sm:text-base">
-                    {selectedPost.author}
+                    {selectedPost.author || "Admin"}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <CalendarMonthIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 mr-1 sm:mr-2" />
                   <span className="text-sm sm:text-base">
-                    {selectedPost.date}
+                    {selectedPost.date || new Date(selectedPost.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <AccessTimeIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 mr-1 sm:mr-2" />
                   <span className="text-sm sm:text-base">
-                    {selectedPost.readTime}
+                    {selectedPost.readTime || "5 min read"}
                   </span>
                 </div>
               </div>
@@ -1008,17 +839,17 @@ export const Blogs = () => {
                   <VisibilityIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500" />
                   <span className="text-sm sm:text-base">
                     {(
-                      viewCounts[selectedPost.id] || selectedPost.views
+                      viewCounts[selectedPost._id || selectedPost.id] || selectedPost.views || 0
                     ).toLocaleString()}
                   </span>
                 </button>
                 <button
-                  onClick={() => handleLoadComments(selectedPost.id)}
+                  onClick={() => handleLoadComments(selectedPost._id || selectedPost.id)}
                   className="flex items-center space-x-1 sm:space-x-2 hover:text-blue-600 transition-colors"
                 >
                   <CommentIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500" />
                   <span className="text-sm sm:text-base">
-                    {selectedPost.comments}
+                    {selectedPost.comments || 0}
                   </span>
                 </button>
               </div>
@@ -1026,7 +857,7 @@ export const Blogs = () => {
 
             <div className="mb-6 md:mb-8 rounded-xl overflow-hidden">
               <img
-                src={selectedPost.image}
+                src={selectedPost.image || categoryImages.all[0]}
                 alt={selectedPost.title}
                 className="w-full h-40 sm:h-48 md:h-64 object-cover"
               />
@@ -1034,7 +865,7 @@ export const Blogs = () => {
 
             <div
               className="prose prose-sm sm:prose-base md:prose-lg max-w-none mb-6 md:mb-8"
-              dangerouslySetInnerHTML={{ __html: selectedPost.content }}
+              dangerouslySetInnerHTML={{ __html: selectedPost.content || `<p>${selectedPost.excerpt}</p>` }}
             />
 
             <div className="mb-6 md:mb-8">
@@ -1043,55 +874,54 @@ export const Blogs = () => {
                 Tags
               </h3>
               <div className="flex flex-wrap gap-2">
-                {selectedPost.tags &&
-                  selectedPost.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-2 sm:px-3 md:px-4 py-1 sm:py-2 bg-blue-50 text-blue-600 font-semibold text-sm rounded-full"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
+                {(selectedPost.tags || ["Study", "Abroad", "Education"]).map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-2 sm:px-3 md:px-4 py-1 sm:py-2 bg-blue-50 text-blue-600 font-semibold text-sm rounded-full"
+                  >
+                    #{tag}
+                  </span>
+                ))}
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-6 sm:pt-8 border-t border-gray-200 space-y-4 sm:space-y-0">
               <div className="flex flex-wrap gap-2 sm:gap-4">
                 <button
-                  onClick={() => toggleLikePost(selectedPost.id)}
+                  onClick={() => toggleLikePost(selectedPost._id || selectedPost.id)}
                   className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-xl flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base ${
-                    likedPosts.includes(selectedPost.id)
+                    likedPosts.includes(selectedPost._id || selectedPost.id)
                       ? "bg-red-50 text-red-600"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
-                  {likedPosts.includes(selectedPost.id) ? (
+                  {likedPosts.includes(selectedPost._id || selectedPost.id) ? (
                     <FavoriteIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                   ) : (
                     <FavoriteBorderIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                   )}
                   <span>
                     Like (
-                    {selectedPost.likes +
-                      (likedPosts.includes(selectedPost.id) ? 1 : 0)}
+                    {(selectedPost.likes || 0) +
+                      (likedPosts.includes(selectedPost._id || selectedPost.id) ? 1 : 0)}
                     )
                   </span>
                 </button>
                 <button
-                  onClick={() => toggleSavePost(selectedPost.id)}
+                  onClick={() => toggleSavePost(selectedPost._id || selectedPost.id)}
                   className={`px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-xl flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base ${
-                    savedPosts.includes(selectedPost.id)
+                    savedPosts.includes(selectedPost._id || selectedPost.id)
                       ? "bg-blue-50 text-blue-600"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
-                  {savedPosts.includes(selectedPost.id) ? (
+                  {savedPosts.includes(selectedPost._id || selectedPost.id) ? (
                     <BookmarkIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                   ) : (
                     <BookmarkBorderIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                   )}
                   <span>
-                    {savedPosts.includes(selectedPost.id) ? "Saved" : "Save"}
+                    {savedPosts.includes(selectedPost._id || selectedPost.id) ? "Saved" : "Save"}
                   </span>
                 </button>
                 <button
@@ -1099,7 +929,7 @@ export const Blogs = () => {
                   className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-xl flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base bg-gray-100 text-gray-700 hover:bg-gray-200"
                 >
                   <CommentIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span>Comment ({selectedPost.comments})</span>
+                  <span>Comment ({selectedPost.comments || 0})</span>
                 </button>
               </div>
               <button
@@ -1115,14 +945,16 @@ export const Blogs = () => {
     );
   };
 
+  // Booking Modal Component
   const BookingModal = () => {
     return (
       <motion.div
+        key={`booking-modal-${modalKey}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[60] flex items-center justify-center p-2 xs:p-3 sm:p-4 bg-black bg-opacity-60"
-        onClick={() => setBookingModalOpen(false)}
+        onClick={closeBookingModal}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 50 }}
@@ -1143,7 +975,7 @@ export const Blogs = () => {
                 </p>
               </div>
               <button
-                onClick={() => setBookingModalOpen(false)}
+                onClick={closeBookingModal}
                 className="p-1 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <CloseIcon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-gray-500" />
@@ -1253,23 +1085,13 @@ export const Blogs = () => {
                     className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-sm sm:text-base"
                   >
                     <option value="">Select service</option>
-                    <option value="university-admissions">
-                      University Admissions
-                    </option>
+                    <option value="university-admissions">University Admissions</option>
                     <option value="visa-assistance">Visa Assistance</option>
                     <option value="accommodation">Accommodation</option>
-                    <option value="scholarship-guidance">
-                      Scholarship Guidance
-                    </option>
-                    <option value="general-consultation">
-                      General Consultation
-                    </option>
-                    <option value="csca-preparation">
-                      CSCA Exam Preparation
-                    </option>
-                    <option value="document-preparation">
-                      Document Preparation
-                    </option>
+                    <option value="scholarship-guidance">Scholarship Guidance</option>
+                    <option value="general-consultation">General Consultation</option>
+                    <option value="csca-preparation">CSCA Exam Preparation</option>
+                    <option value="document-preparation">Document Preparation</option>
                   </select>
                 </div>
 
@@ -1317,14 +1139,16 @@ export const Blogs = () => {
     );
   };
 
+  // Comments Modal Component
   const CommentsModal = () => {
     return (
       <motion.div
+        key={`comments-modal-${modalKey}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[60] flex items-center justify-center p-2 xs:p-3 sm:p-4 bg-black bg-opacity-60"
-        onClick={() => setCommentsModalOpen(false)}
+        onClick={closeCommentsModal}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 50 }}
@@ -1345,7 +1169,7 @@ export const Blogs = () => {
                 </p>
               </div>
               <button
-                onClick={() => setCommentsModalOpen(false)}
+                onClick={closeCommentsModal}
                 className="p-1 sm:p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <CloseIcon className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-gray-500" />
@@ -1394,17 +1218,17 @@ export const Blogs = () => {
               ) : (
                 currentComments.map((comment) => (
                   <div
-                    key={comment.id}
+                    key={comment._id || comment.id}
                     className="p-3 sm:p-4 border border-gray-200 rounded-xl"
                   >
                     <div className="flex items-start justify-between mb-2 sm:mb-3">
                       <div className="flex items-center space-x-2 sm:space-x-3">
                         <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm">
-                          {comment.author.charAt(0)}
+                          {(comment.author || "User").charAt(0)}
                         </div>
                         <div>
                           <div className="font-semibold text-sm sm:text-base">
-                            {comment.author}
+                            {comment.author || "User"}
                           </div>
                           <div className="text-xs sm:text-sm text-gray-500">
                             {comment.date}
@@ -1412,7 +1236,7 @@ export const Blogs = () => {
                         </div>
                       </div>
                       <button
-                        onClick={() => handleCommentLike(comment.id)}
+                        onClick={() => handleCommentLike(comment._id || comment.id)}
                         className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors"
                       >
                         {comment.userLiked ? (
@@ -1420,7 +1244,7 @@ export const Blogs = () => {
                         ) : (
                           <ThumbUpOutlinedIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                         )}
-                        <span className="text-sm">{comment.likes}</span>
+                        <span className="text-sm">{comment.likes || 0}</span>
                       </button>
                     </div>
                     <p className="text-gray-700 text-sm sm:text-base">
@@ -1444,9 +1268,10 @@ export const Blogs = () => {
     );
   };
 
+  // Trending Post Item Component
   const TrendingPostItem = ({ post, index }) => {
     const CategoryIcon =
-      blogCategories.find((cat) => cat.id === post.category)?.icon ||
+      blogCategories.find((cat) => cat.id === (post.category || "all"))?.icon ||
       MenuBookIcon;
 
     return (
@@ -1467,7 +1292,7 @@ export const Blogs = () => {
                 <CategoryIcon className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
               </div>
               <span className="text-xs font-semibold text-gray-500 uppercase">
-                {blogCategories.find((cat) => cat.id === post.category)?.name}
+                {blogCategories.find((cat) => cat.id === (post.category || "all"))?.name || "Article"}
               </span>
             </div>
             <h4 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors text-sm sm:text-base line-clamp-2">
@@ -1479,11 +1304,15 @@ export const Blogs = () => {
             <div className="flex items-center justify-between mt-2">
               <span className="text-xs text-gray-500 flex items-center">
                 <CalendarMonthIcon className="h-3 w-3 mr-1" />
-                {post.date}
+                {post.date || new Date(post.createdAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </span>
               <span className="text-xs text-gray-500 flex items-center">
                 <VisibilityIcon className="h-3 w-3 mr-1" />
-                {post.views.toLocaleString()}
+                {(post.views || 0).toLocaleString()}
               </span>
             </div>
           </div>
@@ -1492,6 +1321,7 @@ export const Blogs = () => {
     );
   };
 
+  // Pagination Component
   const Pagination = () => {
     const pagesToShow = 5;
     const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
@@ -1573,6 +1403,7 @@ export const Blogs = () => {
     );
   };
 
+  // About Us Section Component
   const AboutUsSection = () => {
     return (
       <motion.div
@@ -1594,8 +1425,8 @@ export const Blogs = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
-          <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm">
+        <div className="mb-6">
+          <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm mb-4">
             <h4 className="font-bold text-blue-700 mb-3 flex items-center text-sm sm:text-base">
               <VerifiedIcon className="mr-2 h-4 w-4" />
               Who We Are
@@ -1613,175 +1444,11 @@ export const Blogs = () => {
               Germany, the USA, and many others.
             </p>
           </div>
-
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 sm:p-5 rounded-lg text-white">
-            <h4 className="font-bold mb-3 text-sm sm:text-base flex items-center">
-              <PublicIcon className="mr-2 h-5 w-5" />
-              Our Mission
-            </h4>
-            <p className="text-lg italic mb-3">
-              "To guide every student confidently from application to arrival"
-            </p>
-            <p className="text-sm opacity-90">
-              We believe in education that builds futures and transforms
-              communities.
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-5 mb-6">
-          <h4 className="font-bold text-purple-700 mb-4 text-sm sm:text-base">
-            Our Services
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {services.map((service) => {
-              const Icon = service.icon;
-              return (
-                <div
-                  key={service.id}
-                  className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow duration-200"
-                >
-                  <div className="flex items-start space-x-3">
-                    <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
-                      <Icon className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <h5 className="font-semibold text-gray-800 text-sm sm:text-base mb-1">
-                        {service.name}
-                      </h5>
-                      <p className="text-gray-600 text-xs sm:text-sm">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
-          <div className="bg-white p-4 sm:p-5 rounded-lg shadow-sm">
-            <h4 className="font-bold text-green-700 mb-3 text-sm sm:text-base">
-              Why Choose RECAPPLY
-            </h4>
-            <ul className="space-y-2 text-gray-700 text-sm sm:text-base">
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2 mt-1">✓</span>
-                <span>
-                  <strong>High success rate:</strong> Excellent admission & visa
-                  approval record
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2 mt-1">✓</span>
-                <span>
-                  <strong>Transparent process:</strong> Clear, honest
-                  communication at every step
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2 mt-1">✓</span>
-                <span>
-                  <strong>Professional documents:</strong> Expertly crafted
-                  SOPs, CVs, and study plans
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2 mt-1">✓</span>
-                <span>
-                  <strong>Personalized support:</strong> Dedicated consultant
-                  for each student
-                </span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2 mt-1">✓</span>
-                <span>
-                  <strong>CSCA expertise:</strong> Specialized support for China
-                  entry requirements
-                </span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-gradient-to-r from-green-600 to-teal-600 p-4 sm:p-5 rounded-lg text-white">
-            <h4 className="font-bold mb-4 text-sm sm:text-base flex items-center">
-              <LanguageOutlinedIcon className="mr-2 h-5 w-5" />
-              Global Reach
-            </h4>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="flex items-center">
-                <span className="mr-2">🇨🇳</span>
-                <span>China</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🇨🇦</span>
-                <span>Canada</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🇵🇱</span>
-                <span>Poland</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🇹🇷</span>
-                <span>Turkey</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🇩🇪</span>
-                <span>Germany</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🇺🇸</span>
-                <span>USA</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🇯🇵</span>
-                <span>Japan</span>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">🇰🇷</span>
-                <span>South Korea</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 sm:p-5 rounded-lg text-white">
-          <h4 className="font-bold mb-4 text-sm sm:text-base">Contact Us</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm sm:text-base">
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <EmailIcon className="h-4 w-4 mr-3 flex-shrink-0" />
-                <a
-                  href="mailto:r.educationalconsultance@gmail.com"
-                  className="hover:underline break-all"
-                >
-                  r.educationalconsultance@gmail.com
-                </a>
-              </div>
-              <div className="flex items-center">
-                <PhoneIcon className="h-4 w-4 mr-3 flex-shrink-0" />
-                <span>Rwanda: +250 783 408 617</span>
-              </div>
-            </div>
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <PhoneIcon className="h-4 w-4 mr-3 flex-shrink-0" />
-                <span>China: +86 186 5833 2879</span>
-              </div>
-              <div className="flex items-start">
-                <LocationOnIcon className="h-4 w-4 mr-3 mt-0.5 flex-shrink-0" />
-                <span>
-                  Kigali – Kicukiro Centre, Sangwa Plaza, 1st Floor, R6 Door
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <button
           onClick={() => setBookingModalOpen(true)}
-          className="w-full mt-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 text-sm sm:text-base flex items-center justify-center"
+          className="w-full mt-4 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 text-sm sm:text-base flex items-center justify-center"
         >
           <SchoolIcon className="mr-2 h-5 w-5" />
           Start Your Study Abroad Journey Today
@@ -1918,9 +1585,6 @@ export const Blogs = () => {
                 }}
                 className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-3 sm:py-4 text-sm sm:text-base md:text-lg border-2 border-gray-300 rounded-xl sm:rounded-2xl focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-100 transition-all duration-200"
               />
-              <button className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 bg-gray-100 rounded-lg sm:rounded-xl hover:bg-gray-200 transition-colors">
-                <FilterListIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
-              </button>
             </div>
           </motion.div>
 
@@ -1967,19 +1631,17 @@ export const Blogs = () => {
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-0">
                   Latest Articles
                   <span className="text-blue-600 ml-2 sm:ml-3 text-lg sm:text-xl">
-                    ({posts.length} of {currentPage * 6})
+                    ({posts.length} of {totalPosts})
                   </span>
                 </h2>
-                <div className="flex items-center space-x-2 sm:space-x-4">
-                  <select className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-lg sm:rounded-xl focus:border-blue-500 focus:ring-1 sm:focus:ring-2 focus:ring-blue-200 text-sm sm:text-base">
-                    <option>Latest</option>
-                    <option>Popular</option>
-                    <option>Trending</option>
-                  </select>
-                </div>
               </div>
 
-              {posts.length === 0 ? (
+              {loading ? (
+                <div className="text-center py-8 sm:py-12">
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500"></div>
+                  <p className="mt-4 text-gray-600">Loading articles...</p>
+                </div>
+              ) : posts.length === 0 ? (
                 <div className="text-center py-8 sm:py-12">
                   <SearchIcon className="h-12 w-12 sm:h-16 sm:w-16 text-gray-300 mx-auto mb-3 sm:mb-4" />
                   <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">
@@ -1999,14 +1661,14 @@ export const Blogs = () => {
                   >
                     {posts.map((post, index) => (
                       <BlogCard
-                        key={post.id}
+                        key={post._id || post.id || index}
                         post={post}
                         variant={post.featured ? "featured" : "normal"}
                       />
                     ))}
                   </motion.div>
 
-                  <Pagination />
+                  {totalPages > 1 && <Pagination />}
                 </>
               )}
             </div>
@@ -2023,9 +1685,13 @@ export const Blogs = () => {
                   Trending Now
                 </h3>
                 <div className="space-y-3 sm:space-y-4">
-                  {trendingPosts.map((post, index) => (
-                    <TrendingPostItem key={post.id} post={post} index={index} />
-                  ))}
+                  {trendingPosts.length > 0 ? (
+                    trendingPosts.map((post, index) => (
+                      <TrendingPostItem key={post._id || post.id || index} post={post} index={index} />
+                    ))
+                  ) : (
+                    <p className="text-gray-500 text-sm">No trending posts yet</p>
+                  )}
                 </div>
               </motion.div>
 
@@ -2062,33 +1728,6 @@ export const Blogs = () => {
                       </button>
                     );
                   })}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.9 }}
-                className="bg-gradient-to-r from-green-500 to-teal-500 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 text-white"
-              >
-                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
-                  Stay Updated
-                </h3>
-                <p className="mb-4 sm:mb-6 opacity-90 text-sm sm:text-base">
-                  Get weekly study abroad tips and university updates
-                </p>
-                <div className="space-y-3 sm:space-y-4">
-                  <input
-                    type="email"
-                    placeholder="Your email address"
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-gray-900 placeholder-gray-500 text-sm sm:text-base"
-                  />
-                  <button
-                    onClick={() => toast.success("Subscribed to newsletter!")}
-                    className="w-full py-2.5 sm:py-3 bg-white text-green-600 font-bold rounded-lg sm:rounded-xl hover:bg-gray-100 transition-colors text-sm sm:text-base"
-                  >
-                    Subscribe Now
-                  </button>
                 </div>
               </motion.div>
             </div>

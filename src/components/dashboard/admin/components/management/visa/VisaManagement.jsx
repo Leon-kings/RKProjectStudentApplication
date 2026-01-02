@@ -1339,7 +1339,7 @@ export const VisaManagement = () => {
 
   return (
     <div className="min-h-screen w-full flex bg-gray-50">
-      <Sidebar onToggleNotifications={toggleNotificationsModal} />
+      {/* <Sidebar onToggleNotifications={toggleNotificationsModal} /> */}
       <div className="w-full p-2 sm:p-4">
         <ToastContainer position="top-right" autoClose={5000} theme="colored" />
 
