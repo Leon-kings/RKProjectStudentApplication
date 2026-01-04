@@ -1190,7 +1190,7 @@ export const Footer = () => {
                   <h4 className="font-bold text-lg mb-1">Working Hours</h4>
                   <p className="text-gray-300 text-sm">
                     Monday - Friday: 8:00 - 18:00<br />
-                    Saturday: 9:00 - 15:00<br />
+                   <br />
                     Sunday: By Appointment
                   </p>
                 </div>

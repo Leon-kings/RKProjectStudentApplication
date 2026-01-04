@@ -3647,7 +3647,7 @@ export const Accommodation = () => {
       };
 
       // Send to your API endpoint - REPLACE WITH YOUR ACTUAL API
-      const API_ENDPOINT = "https://api.recrecapply.com/accommodation-booking";
+      const API_ENDPOINT = "https://ruziganodejs.onrender.com/accommodation-booking";
 
       // Simulate API call - replace with actual axios.post
       console.log("Submitting booking data:", bookingData);
