@@ -44,7 +44,7 @@ export const NotFound = () => {
   ];
 
   // API Base URL
-  const API_URL = "http://localhost:5000/api";
+  const API_URL = "https://ruziganodejs.onrender.com";
 
   // Loading animation variants
   const loadingVariants = {
@@ -103,10 +103,8 @@ export const NotFound = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/assistance/request`, {
-        ...assistanceData,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent,
+      const response = await axios.post(`${API_URL}/assistance`, {
+        ...assistanceData
       });
 
       if (response.data.success) {

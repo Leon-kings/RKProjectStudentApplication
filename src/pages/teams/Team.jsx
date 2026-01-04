@@ -33,308 +33,57 @@ export const Team = () => {
   const [activeModal, setActiveModal] = useState(null);
   const [modalContent, setModalContent] = useState(null);
 
-  // Team Members Data
+  // Team Members Data - Only 3 members
   const teamMembers = [
     {
       id: 1,
-      name: "David Niyonkuru",
+      name: "KING RUZIGA",
       position: "Chief Executive Officer",
       department: "Leadership",
       image:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "Over 15 years of experience in international education and student placement. Spearheaded RECAPPLY's expansion across Africa with a vision to make quality education accessible to all African students.",
-      education: [
-        "MBA in International Education Management, Harvard University",
-        "BSc in Business Administration, University of Rwanda",
-        "Certification in Global Education Leadership, University of Oxford",
-      ],
-      expertise: [
-        "International Education Strategy",
-        "University Partnerships",
-        "Market Development",
-        "Business Expansion",
-        "Leadership Development",
-      ],
-      achievements: [
-        "Founded RECAPPLY in 2010",
-        "Expanded to 20+ countries",
-        "Helped 13,000+ students",
-        "Built 500+ university partnerships",
-      ],
-      languages: ["English", "French", "Kinyarwanda", "Swahili"],
-      yearsExperience: 15,
+      bio: "Visionary leader with extensive experience in international education consulting. Founded RECApply to bridge the gap between African students and global educational opportunities.",
       contact: {
-        email: "david.niyonkuru@recapply.com",
-        phone: "+250 788 123 456",
-        linkedin: "https://linkedin.com/in/davidniyonkuru",
-        twitter: "https://twitter.com/davidniyonkuru",
-        schedule: "https://calendly.com/david-recapply",
+        email: "r.educationalconsultance@gmail.com",
+        phone: "+8618658332879",
       },
       color: "from-blue-600 to-cyan-600",
     },
     {
       id: 2,
-      name: "Grace Uwimana",
-      position: "Director of Admissions",
-      department: "Admissions & Placement",
+      name: "MANZI ALI SHARIF",
+      position: "Admission Officer",
+      department: "Admissions",
       image:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "10+ years specializing in university admissions and scholarship placements. Has personally guided over 5,000 students to secure admissions in top universities worldwide with a 98% success rate.",
-      education: [
-        "MSc in Educational Leadership, University of Toronto",
-        "BA in International Relations, Makerere University",
-        "Certification in Admissions Counseling, NACAC",
-      ],
-      expertise: [
-        "Admissions Strategy",
-        "Scholarship Matching",
-        "Document Preparation",
-        "Interview Coaching",
-        "Application Review",
-      ],
-      achievements: [
-        "5,000+ successful admissions",
-        "98% admission success rate",
-        "$10M+ in scholarships secured",
-        "Top performer 5 years running",
-      ],
-      languages: ["English", "French", "Kinyarwanda"],
-      yearsExperience: 10,
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      bio: "Dedicated admission specialist with expertise in guiding students through complex application processes. Committed to helping students secure placements in their dream institutions.",
       contact: {
-        email: "grace.uwimana@recapply.com",
-        phone: "+250 788 234 567",
-        linkedin: "https://linkedin.com/in/graceuwimana",
-        schedule: "https://calendly.com/grace-recapply",
+        email: "Office.recapply@gmail.com",
+        phone: "+250783408617",
       },
-      color: "from-purple-600 to-pink-600",
+      color: "from-green-600 to-teal-600",
     },
     {
       id: 3,
-      name: "James Chen",
-      position: "China Education Specialist",
-      department: "China Admissions",
-      image:
-        "https://images.unsplash.com/photo-1507591064344-4c6ce005-128?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "Former admission officer at Tsinghua University with 8 years of experience in Chinese education system and CSCA preparation. Fluent in Mandarin and deeply connected with Chinese universities.",
-      education: [
-        "PhD in Education, Tsinghua University",
-        "MA in Chinese Language Education, Beijing University",
-        "BSc in Computer Science, Fudan University",
-      ],
-      expertise: [
-        "CSCA Exam Preparation",
-        "Chinese University Admissions",
-        "Scholarship Applications",
-        "Mandarin Tutoring",
-        "Cultural Adaptation",
-      ],
-      achievements: [
-        "2,000+ China placements",
-        "95% CSCA pass rate",
-        "Expert in Chinese scholarship system",
-        "Connections with 100+ Chinese universities",
-      ],
-      languages: ["Mandarin", "English", "French"],
-      yearsExperience: 8,
-      contact: {
-        email: "james.chen@recapply.com",
-        phone: "+86 186 5833 2879",
-        linkedin: "https://linkedin.com/in/jameschen",
-        wechat: "James_Chen_Edu",
-        schedule: "https://calendly.com/james-recapply",
-      },
-      color: "from-red-600 to-orange-600",
-    },
-    {
-      id: 4,
-      name: "Sarah Kamau",
-      position: "Visa & Compliance Manager",
-      department: "Visa Services",
-      image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "Former visa officer with extensive experience in student visa processing for multiple countries including Canada, UK, USA, and Schengen areas. Specializes in complex cases and appeal processes.",
-      education: [
-        "LLM in Immigration Law, University of London",
-        "BA in Political Science, University of Nairobi",
-        "Certification in Visa Processing, IATA",
-      ],
-      expertise: [
-        "Visa Documentation",
-        "Compliance Management",
-        "Interview Preparation",
-        "Appeal Processes",
-        "Financial Documentation",
-      ],
-      achievements: [
-        "99% visa success rate",
-        "500+ complex cases resolved",
-        "Expert in 15+ countries' visa requirements",
-        "Zero compliance violations",
-      ],
-      languages: ["English", "Swahili", "French"],
-      yearsExperience: 7,
-      contact: {
-        email: "sarah.kamau@recapply.com",
-        phone: "+250 788 345 678",
-        linkedin: "https://linkedin.com/in/sarahkamau",
-        schedule: "https://calendly.com/sarah-recapply",
-      },
-      color: "from-green-600 to-emerald-600",
-    },
-    {
-      id: 5,
-      name: "Michael Okafor",
-      position: "Student Support Coordinator",
+      name: "PRINCE RUZIGA",
+      position: "Student Success Officer",
       department: "Student Services",
       image:
         "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "Dedicated to providing comprehensive pre-departure and post-arrival support to ensure student success abroad. Specializes in cultural adaptation and emergency support coordination.",
-      education: [
-        "MA in Student Affairs, University of Cape Town",
-        "BEd in Guidance & Counseling, University of Lagos",
-        "Certification in Crisis Management, Red Cross",
-      ],
-      expertise: [
-        "Student Support",
-        "Cultural Adaptation",
-        "Accommodation Coordination",
-        "Emergency Support",
-        "Mental Health Support",
-      ],
-      achievements: [
-        "10,000+ students supported",
-        "24/7 emergency hotline",
-        "95% student satisfaction rate",
-        "Established 200+ accommodation partnerships",
-      ],
-      languages: ["English", "Yoruba", "French"],
-      yearsExperience: 6,
+      bio: "Passionate about student welfare and success. Provides comprehensive support from pre-departure preparation to post-arrival adjustment, ensuring students thrive in their new academic environments.",
       contact: {
-        email: "michael.okafor@recapply.com",
-        phone: "+250 788 456 789",
-        linkedin: "https://linkedin.com/in/michaelokafor",
-        schedule: "https://calendly.com/michael-recapply",
+        email: "Recapply.students@gmail.com",
+        phone: "+250783408617",
       },
-      color: "from-indigo-600 to-blue-600",
-    },
-    {
-      id: 6,
-      name: "Amina Diallo",
-      position: "Scholarship Coordinator",
-      department: "Financial Aid",
-      image:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "Specializes in identifying and securing scholarship opportunities for African students across various disciplines. Has helped students secure over $20 million in scholarships and financial aid.",
-      education: [
-        "MSc in Educational Finance, University of Oxford",
-        "BA in Economics, University of Ghana",
-        "Certification in Grant Writing, Stanford University",
-      ],
-      expertise: [
-        "Scholarship Applications",
-        "Financial Aid",
-        "Grant Writing",
-        "Budget Planning",
-        "Financial Documentation",
-      ],
-      achievements: [
-        "$20M+ in scholarships secured",
-        "500+ full scholarships",
-        "Expert in 1000+ scholarship programs",
-        "Financial planning workshops",
-      ],
-      languages: ["English", "French", "Arabic", "Hausa"],
-      yearsExperience: 8,
-      contact: {
-        email: "amina.diallo@recapply.com",
-        phone: "+250 788 567 890",
-        linkedin: "https://linkedin.com/in/aminadiallo",
-        schedule: "https://calendly.com/amina-recapply",
-      },
-      color: "from-teal-600 to-green-600",
-    },
-    {
-      id: 7,
-      name: "Robert Ndayambaje",
-      position: "CSCA Exam Trainer",
-      department: "Test Preparation",
-      image:
-        "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "Specialized in CSCA exam preparation with 5+ years of experience. Develops customized study plans and provides intensive training in Mathematics, Physics, Chemistry, and Chinese language.",
-      education: [
-        "MSc in Mathematics Education, Peking University",
-        "BSc in Physics, University of Rwanda",
-        "Certification in Test Preparation, ETS",
-      ],
-      expertise: [
-        "CSCA Mathematics",
-        "Physics Training",
-        "Chemistry Preparation",
-        "Exam Strategies",
-        "Mock Test Design",
-      ],
-      achievements: [
-        "98% CSCA pass rate",
-        "300+ successful candidates",
-        "Customized study materials",
-        "Intensive training programs",
-      ],
-      languages: ["English", "Mandarin", "Kinyarwanda", "French"],
-      yearsExperience: 5,
-      contact: {
-        email: "robert.ndayambaje@recapply.com",
-        phone: "+250 788 678 901",
-        linkedin: "https://linkedin.com/in/robertndayambaje",
-        schedule: "https://calendly.com/robert-recapply",
-      },
-      color: "from-amber-600 to-orange-600",
-    },
-    {
-      id: 8,
-      name: "Esther Mwangi",
-      position: "Digital Marketing Manager",
-      department: "Marketing",
-      image:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      bio: "Leads digital marketing efforts to connect with students across Africa. Expert in social media marketing, content creation, and digital outreach strategies for educational services.",
-      education: [
-        "MBA in Digital Marketing, University of Cape Town",
-        "BA in Communications, University of Nairobi",
-        "Google Digital Marketing Certification",
-      ],
-      expertise: [
-        "Social Media Marketing",
-        "Content Strategy",
-        "Brand Management",
-        "Student Outreach",
-        "Digital Analytics",
-      ],
-      achievements: [
-        "200% social media growth",
-        "50,000+ community members",
-        "Award-winning campaigns",
-        "Increased leads by 300%",
-      ],
-      languages: ["English", "Swahili", "French"],
-      yearsExperience: 6,
-      contact: {
-        email: "esther.mwangi@recapply.com",
-        phone: "+250 788 789 012",
-        linkedin: "https://linkedin.com/in/esthermwangi",
-        schedule: "https://calendly.com/esther-recapply",
-      },
-      color: "from-pink-600 to-rose-600",
+      color: "from-purple-600 to-indigo-600",
     },
   ];
 
   // Departments
   const departments = [
     { name: "Leadership", icon: <CorporateFare />, count: 1 },
-    { name: "Admissions", icon: <SchoolIcon />, count: 2 },
-    { name: "China Specialists", icon: <LanguageIcon />, count: 2 },
-    { name: "Visa Services", icon: <Flag />, count: 1 },
-    { name: "Student Support", icon: <ConnectWithoutContact />, count: 2 },
-    { name: "Marketing", icon: <PsychologyAlt />, count: 1 },
+    { name: "Admissions", icon: <SchoolIcon />, count: 1 },
+    { name: "Student Support", icon: <ConnectWithoutContact />, count: 1 },
   ];
 
   // Contact Information
@@ -442,10 +191,6 @@ export const Team = () => {
                         <span className="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r bg-gray-100 text-gray-700 text-sm">
                           {modalContent.data.department}
                         </span>
-                        <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm">
-                          <Timer className="w-3 h-3 mr-1" />
-                          {modalContent.data.yearsExperience} years
-                        </span>
                       </div>
                     </div>
 
@@ -459,17 +204,6 @@ export const Team = () => {
                           Email
                         </a>
                       )}
-                      {modalContent.data.contact.schedule && (
-                        <a
-                          href={modalContent.data.contact.schedule}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm"
-                        >
-                          <CalendarMonth className="w-4 h-4 mr-2" />
-                          Schedule
-                        </a>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -481,86 +215,6 @@ export const Team = () => {
                     Professional Bio
                   </h5>
                   <p className="text-gray-600">{modalContent.data.bio}</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xs:gap-6">
-                  {/* Education */}
-                  <div>
-                    <h5 className="font-bold text-gray-800 mb-2 text-lg flex items-center">
-                      <SchoolIcon className="w-5 h-5 mr-2 text-purple-600" />
-                      Education
-                    </h5>
-                    <ul className="space-y-2">
-                      {modalContent.data.education.map((edu, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <div className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0">
-                            ✓
-                          </div>
-                          <span className="text-gray-700 text-sm xs:text-base">
-                            {edu}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Expertise */}
-                  <div>
-                    <h5 className="font-bold text-gray-800 mb-2 text-lg flex items-center">
-                      <WorkIcon className="w-5 h-5 mr-2 text-orange-600" />
-                      Expertise
-                    </h5>
-                    <div className="flex flex-wrap gap-2">
-                      {modalContent.data.expertise.map((exp, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs xs:text-sm"
-                        >
-                          {exp}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Achievements */}
-                  <div>
-                    <h5 className="font-bold text-gray-800 mb-2 text-lg flex items-center">
-                      <ArrowUpward className="w-5 h-5 mr-2 text-amber-600" />
-                      Key Achievements
-                    </h5>
-                    <ul className="space-y-2">
-                      {modalContent.data.achievements.map(
-                        (achievement, idx) => (
-                          <li key={idx} className="flex items-start">
-                            <div className="w-5 h-5 text-yellow-500 mr-2 mt-0.5 flex-shrink-0">
-                              ★
-                            </div>
-                            <span className="text-gray-700 text-sm xs:text-base">
-                              {achievement}
-                            </span>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-
-                  {/* Languages */}
-                  <div>
-                    <h5 className="font-bold text-gray-800 mb-2 text-lg flex items-center">
-                      <LanguageIcon2 className="w-5 h-5 mr-2 text-green-600" />
-                      Languages
-                    </h5>
-                    <div className="flex flex-wrap gap-2">
-                      {modalContent.data.languages.map((lang, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs xs:text-sm"
-                        >
-                          {lang}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 {/* Contact Details */}
@@ -595,35 +249,6 @@ export const Team = () => {
                           >
                             {modalContent.data.contact.phone}
                           </a>
-                        </div>
-                      </div>
-                    )}
-
-                    {modalContent.data.contact.linkedin && (
-                      <div className="flex items-center">
-                        <LinkedIn className="w-5 h-5 text-blue-700 mr-3 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm text-gray-600">LinkedIn</p>
-                          <a
-                            href={modalContent.data.contact.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-700 hover:text-blue-900"
-                          >
-                            Connect on LinkedIn
-                          </a>
-                        </div>
-                      </div>
-                    )}
-
-                    {modalContent.data.contact.wechat && (
-                      <div className="flex items-center">
-                        <Chat className="w-5 h-5 text-green-600 mr-3 flex-shrink-0" />
-                        <div>
-                          <p className="text-sm text-gray-600">WeChat</p>
-                          <span className="text-gray-700">
-                            {modalContent.data.contact.wechat}
-                          </span>
                         </div>
                       </div>
                     )}
@@ -805,12 +430,12 @@ export const Team = () => {
               </span>
             </h2>
             <p className="text-white text-base xs:text-lg md:text-xl max-w-3xl mx-auto px-3">
-              8 experts across 6 specialized departments working together for
+              3 experts across 3 specialized departments working together for
               your success
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-6 gap-3 xs:gap-4 md:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 xs:grid-cols-3 lg:grid-cols-3 gap-3 xs:gap-4 md:gap-6 max-w-4xl mx-auto">
             {departments.map((dept, index) => (
               <motion.div
                 key={index}
@@ -856,7 +481,7 @@ export const Team = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xs:gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xs:gap-6 md:gap-8 max-w-6xl mx-auto">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={member.id}
@@ -898,35 +523,14 @@ export const Team = () => {
                         <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
                           {member.department}
                         </span>
-                        <span className="ml-2 text-xs text-gray-500 flex items-center">
-                          <Timer className="w-3 h-3 mr-1" />
-                          {member.yearsExperience}yrs
-                        </span>
                       </div>
                     </div>
                   </div>
 
                   {/* Bio Preview */}
-                  <p className="text-gray-600 text-sm xs:text-base mb-4 line-clamp-3">
+                  <p className="text-gray-600 text-sm xs:text-base mb-6 line-clamp-3">
                     {member.bio}
                   </p>
-
-                  {/* Expertise Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {member.expertise.slice(0, 3).map((exp, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs"
-                      >
-                        {exp}
-                      </span>
-                    ))}
-                    {member.expertise.length > 3 && (
-                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
-                        +{member.expertise.length - 3} more
-                      </span>
-                    )}
-                  </div>
 
                   {/* Action Button */}
                   <motion.button
@@ -935,7 +539,7 @@ export const Team = () => {
                     onClick={() => openTeamMemberModal(member)}
                     className={`w-full py-2 xs:py-3 rounded-lg font-medium hover:shadow-lg transition-all text-sm xs:text-base bg-gradient-to-r ${member.color} text-white`}
                   >
-                    View Full Profile
+                    View Profile
                   </motion.button>
                 </div>
               </motion.div>
@@ -943,7 +547,6 @@ export const Team = () => {
           </div>
         </div>
       </section>
-
 
       {/* Contact CTA */}
       <section className="py-12 md:py-20 ">
@@ -964,7 +567,7 @@ export const Team = () => {
                 team for more information
               </p>
 
-              <div className="flex flex-col  gap-3 xs:gap-4 justify-center">
+              <div className="flex flex-col gap-3 xs:gap-4 justify-center">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -973,8 +576,6 @@ export const Team = () => {
                 >
                   Contact Our Team
                 </motion.button>
-
-
               </div>
             </motion.div>
           </div>
